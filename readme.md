@@ -1,6 +1,6 @@
 <p align="center">
   <div align="center">
-    <a href="https://anipaca.free.nf">
+    <a href="https://dpaca.rf.gd/">
       <img src="public/logo/logo.png?v=0.1" alt="Logo" width="50%" height="50%">
     </a>
     <h3>(<a href="https://hianime.to/">Hianime.to</a> Clone) Anipaca - Watch High Quality Anime Online</h3>
@@ -21,7 +21,7 @@
 * And you can host it totally free ...(*￣０￣)ノ
 <p align="center">
   <h1 align="center">Anime Application</h1>
-  Demo: <a href="https://anipaca.free.nf/">https://anipaca.fun/</a> <br>
+  Demo: <a href="https://dpaca.rf.gd/">https://anipaca.fun/</a> <br>
   This is a PHP application used for browsing, searching, and watching anime. The application is built on top of GogoAnimeAPI. 
 </p>
 
