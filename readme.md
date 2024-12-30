@@ -29,8 +29,11 @@
 ## Screenshots
 
 <div style="display: flex; flex-wrap: nowrap; gap: 10px;">
-  <img src="public/images/image1.jpg" alt="Screenshot 1" style="width: 48%;"/>
-  <img src="public/images/image2.jpg" alt="Screenshot 2" style="width: 48%;"/>
+  <img src="public/images/image1.png" alt="Screenshot 1" style="width: 48%;"/>
+  <img src="public/images/image2.png" alt="Screenshot 2" style="width: 48%;"/>
+  <img src="public/images/image3.png" alt="Screenshot 3" style="width: 48%;"/>
+  <img src="public/images/image4.png" alt="Screenshot 4" style="width: 48%;"/>
+  <img src="public/images/image5.png" alt="Screenshot 5" style="width: 48%;"/>
 </div>
 
 
