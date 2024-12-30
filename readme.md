@@ -1,19 +1,76 @@
-# AniPaca
+<p align="center">
+  <div align="center">
+    <a href="https://anipaca.free.nf">
+      <img src="public/logo/logo.png?v=0.1" alt="Logo" width="50%" height="50%">
+    </a>
+    <h3>(<a href="https://hianime.to/">Hianime.to</a> Clone) Anipaca - Watch High Quality Anime Online</h3>
+    <a href="https://discord.gg/aVvqx77RGs">
+      <img src="https://img.shields.io/discord/1012901585896087652?label=discord&logo=discord&color=5460e6&style=flat-square&labelColor=2b2f35">
+    </a>
+  </div>
 
-AniPaca is a comprehensive web-based platform designed for anime enthusiasts. It offers a seamless streaming experience with a user-friendly interface and a variety of features to enhance your anime viewing experience.
+  <hr />
+</p>
 
-## Project Overview
 
-AniPaca is built using PHP and MySQL for the backend, with a focus on delivering high-quality anime content. The platform integrates several APIs to fetch and display anime data efficiently.
+#### NOTE:
 
-## Features
+* This's an **Educational** Project.
+* I am **NOT** promoting the use of free anime websites by any means.
+* Open Source :)
+* And you can host it totally free ...(*￣０￣)ノ
+<p align="center">
+  <h1 align="center">Anime Application</h1>
+  Demo: <a href="https://anipaca.free.nf/">https://anipaca.fun/</a> <br>
+  This is a PHP application used for browsing, searching, and watching anime. The application is built on top of GogoAnimeAPI. 
+</p>
 
-- **Anime Streaming**: Watch your favorite anime series with ease.
-- **Responsive Design**: Optimized for both desktop and mobile devices.
-- **Community Engagement**: Connect with other anime fans through our Discord and social media channels.
-- **APIs Integration**: Utilizes multiple APIs for fetching anime data.
-- **User Profiles**: Create and manage your own profile to keep track of your favorite shows.
-- **Notifications**: Stay updated with the latest episodes and announcements.
+
+## Screenshots
+<div style="text-align: center;">
+  <p><strong>Landing Page, Homepage, and Player Screens</strong></p>
+  
+  <div style="display: flex; justify-content: center; gap: 20px;">
+    <div>
+      <p><strong>Landing Page</strong></p>
+      <img src="public/images/landing page.png?v=0.1" alt="Landing Page" style="width: 300px; height: auto;">
+    </div>
+  <div>
+      <p><strong>Homepage</strong></p>
+      <img src="files/images/Homepage.png?v=0.1" alt="Homepage" style="width: 300px; height: auto;">
+    </div>
+  <div>
+      <p><strong>Player Screen</strong></p>
+      <img src="public/images/player.png?v=0.1" alt="Player Screen" style="width: 300px; height: auto;">
+    </div>
+  </div>
+</div>
+
+
+<hr/>
+
+## Features 
+--> No Annoying Video Ads<br>
+--> Episode Title<br>
+--> Stream in 1080p, 720p, 480p and 360p<br>
+--> Supported Devices: PCs, Laptops, Tablets, Android and iOS mobile, smart TVs, and much more.<br>
+--> Responsive<br>
+--> Anime Available Based on Genres, Seasons and more<br>
+--> Anilist integration maybe in future <br>
+--> and many moreeee...
+
+
+
+
+## Requirements
+--> **Before running check .htaccess file is present in root dir**
+<br>
+--> Php environment or Directly Upload the code on php supported hosting (No editing Required Just Upload and Enjoy)
+<br>
+--> **To Update Website Info (Website name, logo, favicon, socials url) Edit `_config.php` file**
+<br>
+
+
 
 ## Technologies Used
 
@@ -43,18 +100,6 @@ AniPaca is built using PHP and MySQL for the backend, with a focus on delivering
 4. **Start the server**:
    - Use a local server like XAMPP or WAMP to run the project.
 
-## Configuration
-
-The main configuration file is `_config.php`, which contains essential settings such as database connection details, API endpoints, and social media links.
-
-## License
-
-This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for more details.
-
-## Contact
-
-For any inquiries or support, please contact us at [your-email@example.com](mailto:your-email@example.com).
-
 ## Community
 
 Join our community and stay connected:
@@ -76,3 +121,4 @@ We welcome contributions from the community. Please fork the repository and subm
 ---
 
 Thank you for using AniPaca! We hope you enjoy your anime streaming experience.
+
