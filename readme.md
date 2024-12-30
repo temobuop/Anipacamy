@@ -27,23 +27,10 @@
 
 
 ## Screenshots
-<div style="text-align: center;">
-  <p><strong>Landing Page, Homepage, and Player Screens</strong></p>
-  
-  <div style="display: flex; justify-content: center; gap: 20px;">
-    <div>
-      <p><strong>Landing Page</strong></p>
-      <img src="public/images/landing page.png?v=0.1" alt="Landing Page" style="width: 300px; height: auto;">
-    </div>
-  <div>
-      <p><strong>Homepage</strong></p>
-      <img src="files/images/Homepage.png?v=0.1" alt="Homepage" style="width: 300px; height: auto;">
-    </div>
-  <div>
-      <p><strong>Player Screen</strong></p>
-      <img src="public/images/player.png?v=0.1" alt="Player Screen" style="width: 300px; height: auto;">
-    </div>
-  </div>
+
+<div style="display: flex; flex-wrap: nowrap; gap: 10px;">
+  <img src="public/images/image1.jpg" alt="Screenshot 1" style="width: 48%;"/>
+  <img src="public/images/image2.jpg" alt="Screenshot 2" style="width: 48%;"/>
 </div>
 
 
