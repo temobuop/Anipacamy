@@ -369,7 +369,7 @@ $data = $data['data'];
                                                             data-jname="<?= $anime['title'] ?>"><?= $anime['title'] ?></a>
                                                     </h3>
                                                     <div class="fd-infor">
-                                                        <span class="fdi-item"><i class="fas fa-calendar-alt"></i> <?= $anime['releaseDate'] ?></span>
+                                                       
                                                         <span class="fdi-item"><?= $anime['tvInfo']['showType'] ?></span>
                                                         <span class="dot"></span>
                                                         <span class="fdi-item"><?= $anime['tvInfo']['duration'] ?></span>
