@@ -20,7 +20,7 @@
 * Open Source :)
 * And you can host it totally free ...(*￣０￣)ノ
 <p align="center">
-  <h1 align="center">Anime Application</h1>
+  <h1 align="center">Anime Website</h1>
   Demo: <a href="https://dpaca.rf.gd/">https://anipaca.fun/</a> <br>
   This is a PHP application used for browsing, searching, and watching anime. The application is built on top of GogoAnimeAPI. 
 </p>
