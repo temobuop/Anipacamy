@@ -27,5 +27,4 @@ $proxy = "your-hosted-proxy.com/cors?url="; //https://github.com/itzzzme/m3u8pro
 
 $banner = $websiteUrl . "/public/images/banner.png";
 
-?>
     
