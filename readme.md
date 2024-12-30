@@ -28,12 +28,12 @@ AniPaca is built using PHP and MySQL for the backend, with a focus on delivering
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/PacaHat/AniPaca.git
+   git clone https://github.com/PacaHat/Anipaca.git
    ```
 
 2. **Navigate to the project directory**:
    ```bash
-   cd AniPaca
+   cd Anipaca
    ```
 
 3. **Set up the database**:
