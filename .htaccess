@@ -33,14 +33,6 @@ RewriteRule ^play/([a-zA-Z0-9\-]+)/?$ src/pages/play.php?slug=$1 [L,QSA]
 RewriteRule ^genre/([a-zA-Z0-9\-]+)/?$ src/pages/genre.php?keyword=$1 [L,QSA]
 
 
-RewriteRule ^sitemaps/recentCN-sitemap.xml sitemaps/recentCN-sitemap.php [L]
-RewriteRule ^sitemaps/recentDUB-sitemap.xml sitemaps/recentDUB-sitemap.php [L]
-RewriteRule ^sitemaps/recentSUB-sitemap.xml sitemaps/recentSUB-sitemap.php [L]
-RewriteRule ^sitemaps/ongoing-sitemap.xml sitemaps/ongoing-sitemap.php [L]
-RewriteRule ^sitemaps/allanime-sitemap.xml sitemaps/allanime-sitemap.php [L]
-RewriteRule ^sitemaps/sitemap.xml sitemaps/sitemap.php [L]
-RewriteRule ^sitemap.xml sitemap.php [L]
 
-RewriteRule ^anilist-callback/?$ src/user/anilist-callback.php [L,QSA]
 
 ErrorDocument 404 /404.php
