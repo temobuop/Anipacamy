@@ -11,7 +11,9 @@ RewriteRule ^.*random.*$ src/component/random.php [L,QSA]
 RewriteRule ^.*anime.*$ src/pages/anime.php [L,QSA]
 RewriteRule ^.*dmca.*$ src/pages/extra/dmca.php [L,QSA]
 RewriteRule ^.*terms.*$ src/pages/extra/terms.php [L,QSA]
+RewriteRule ^.*manga.*$ src/pages/manga.php [L,QSA]
 RewriteRule ^.*az-list.*$ src/pages/az-list.php [L,QSA]
+RewriteRule ^.*pre-qtip.*$ src/ajax/pre-qtip.php [L,QSA]
 RewriteRule ^.*login.*$ src/user/login.php [L,QSA]
 RewriteRule ^.*register.*$ src/user/register.php [L,QSA]
 RewriteRule ^.*logout.*$ src/user/logout.php [L,QSA]
@@ -19,6 +21,26 @@ RewriteRule ^.*profile.*$ src/user/profile.php [L,QSA]
 RewriteRule ^.*watchlist.*$ src/user/watchlist.php [L,QSA]
 RewriteRule ^.*changepass.*$ src/user/changepass.php [L,QSA]
 RewriteRule ^.*continue-watching.*$ src/user/continue-watching.php [L,QSA]
+
+RewriteRule ^.*streaming.*$ src/pages/streaming.php [L,QSA]
+
+
+RewriteRule ^details/([a-zA-Z0-9\-]+)/?$ src/pages/details.php?slug=$1 [L,QSA]
+RewriteRule ^anime/([a-zA-Z0-9\-]+)/?$ src/pages/anime.php?slug=$1 [L,QSA]
+RewriteRule ^watch/([a-zA-Z0-9\-]+)/?$ src/pages/watch.php?slug=$1 [L,QSA]
+RewriteRule ^play/([a-zA-Z0-9\-]+)/?$ src/pages/play.php?slug=$1 [L,QSA]
+
 RewriteRule ^genre/([a-zA-Z0-9\-]+)/?$ src/pages/genre.php?keyword=$1 [L,QSA]
+
+
+RewriteRule ^sitemaps/recentCN-sitemap.xml sitemaps/recentCN-sitemap.php [L]
+RewriteRule ^sitemaps/recentDUB-sitemap.xml sitemaps/recentDUB-sitemap.php [L]
+RewriteRule ^sitemaps/recentSUB-sitemap.xml sitemaps/recentSUB-sitemap.php [L]
+RewriteRule ^sitemaps/ongoing-sitemap.xml sitemaps/ongoing-sitemap.php [L]
+RewriteRule ^sitemaps/allanime-sitemap.xml sitemaps/allanime-sitemap.php [L]
+RewriteRule ^sitemaps/sitemap.xml sitemaps/sitemap.php [L]
+RewriteRule ^sitemap.xml sitemap.php [L]
+
+RewriteRule ^anilist-callback/?$ src/user/anilist-callback.php [L,QSA]
 
 ErrorDocument 404 /404.php
