@@ -10,6 +10,7 @@ RewriteRule ^genre/([a-zA-Z0-9\-]+)/?$ src/pages/genre.php?keyword=$1 [L,QSA]
 
 # Broad Rules
 RewriteRule ^.*details.*$ src/pages/details.php [L,QSA]
+RewriteRule ^.*details.*$ src/pages/details.php [L,QSA]
 RewriteRule ^.*random.*$ src/component/random.php [L,QSA]
 RewriteRule ^.*anime.*$ src/pages/anime.php [L,QSA]
 RewriteRule ^.*dmca.*$ src/pages/extra/dmca.php [L,QSA]
