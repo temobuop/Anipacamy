@@ -17,33 +17,32 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
+// Pagination logic
+$page = $_GET['page'] ?? 1; // Default to page 1 if not set
+$items_per_page = 10; // Adjust as per your need
+$offset = ($page - 1) * $items_per_page; // Calculate offset
+
+// Site Watchlist SQL
 $site_watchlist_sql = "SELECT * FROM watchlist WHERE user_id = ?";
 $site_watchlist_sql .= " LIMIT ? OFFSET ?";
 
+// Preparing the statement
 $site_stmt = $conn->prepare($site_watchlist_sql);
 $site_stmt->bind_param("iii", $user_id, $items_per_page, $offset);
 $site_stmt->execute();
 $site_watchlist_result = $site_stmt->get_result();
 
+// Counting the total items in the watchlist
 $count_site_sql = "SELECT COUNT(*) as total FROM watchlist WHERE user_id = ?";
 $count_site_stmt = $conn->prepare($count_site_sql);
 $count_site_stmt->bind_param("i", $user_id);
 $count_site_stmt->execute();
 $total_site_items = $count_site_stmt->get_result()->fetch_assoc()['total'];
 
-// Assuming $items_per_page is the variable used in the division operation
-if ($items_per_page == 0) {
-    // Handle the division by zero case
-    $total_site_pages = 0; // or any other default value
-} else {
-    $total_site_pages = ceil($total_site_items / $items_per_page);
-}
+// Calculate total pages based on items per page
+$total_pages = ceil($total_site_items / $items_per_page);
 
 $status = $_GET['status'] ?? 'All'; // Default status
-
-$total_pages = $total_site_pages ?? 0; // Ensure $total_pages is defined
-
-// Use htmlspecialchars safely
 $safeStatus = htmlspecialchars($status ?? '', ENT_QUOTES, 'UTF-8');
 ?>
 
