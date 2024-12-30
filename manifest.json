@@ -1,0 +1,24 @@
+{
+    "short_name": "<?=$websiteTitle?>",
+    "name": "<?=$websiteTitle?>", 
+    "icons": [
+        {
+            "src": "/public/logo/touch-icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/public/logo/favicon-32x32.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "start_url": "/home?source=pwa",
+    "background_color": "#202125",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#202125",
+    "description": "<?=$websiteDescription?>"
+}
