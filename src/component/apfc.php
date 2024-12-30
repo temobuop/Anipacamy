@@ -13,12 +13,11 @@
                             <?php foreach ($data['topAiringAnimes'] as $index => $anime): ?>
                             <li>
                                 <div class="film-poster item-qtip" data-id="<?php echo $anime['id']; ?>">
-                                    <a href="/details/<?php echo $anime['id']; ?>">
-                                        <img data-src="<?php echo $anime['poster']; ?>" 
-                                             class="film-poster-img lazyloaded"
-                                             loading="lazy"
-                                             alt="<?php echo htmlspecialchars($anime['name']); ?>"
-                                             src="<?php echo $anime['poster']; ?>">
+                                <a href="/details/<?php echo htmlspecialchars($anime['id']); ?>">
+                                        <img data-src="<?php echo htmlspecialchars($anime['poster']); ?>" 
+                                             class="film-poster-img lazyload"
+                                             src="<?= $websiteUrl ?>/public/images/no_poster.jpg"
+                                             alt="<?php echo htmlspecialchars($anime['name']); ?>">
                                     </a>
                                 </div>
                                 <div class="film-detail">
@@ -76,12 +75,11 @@
                             <?php foreach($data['mostPopularAnimes'] as $anime): ?>
                             <li>
                                 <div class="film-poster item-qtip" data-id="<?php echo htmlspecialchars($anime['id']); ?>">
-                                    <a href="/details/<?php echo htmlspecialchars($anime['id']); ?>">
-                                        <img data-src="<?php echo htmlspecialchars($anime['poster']); ?>"
-                                             class="film-poster-img lazyloaded"
-                                             loading="lazy"
-                                             alt="<?php echo htmlspecialchars($anime['name']); ?>"
-                                             src="<?php echo htmlspecialchars($anime['poster']); ?>">
+                                <a href="/details/<?php echo htmlspecialchars($anime['id']); ?>">
+                                        <img data-src="<?php echo htmlspecialchars($anime['poster']); ?>" 
+                                             class="film-poster-img lazyload"
+                                             src="<?= $websiteUrl ?>/public/images/no_poster.jpg"
+                                             alt="<?php echo htmlspecialchars($anime['name']); ?>">
                                     </a>
                                 </div>
                                 <div class="film-detail">
@@ -139,12 +137,11 @@
                             <?php foreach($data['mostFavoriteAnimes'] as $anime): ?>
                             <li>
                                 <div class="film-poster item-qtip" data-id="<?php echo htmlspecialchars($anime['id']); ?>">
-                                    <a href="/details/<?php echo htmlspecialchars($anime['id']); ?>">
-                                        <img data-src="<?php echo htmlspecialchars($anime['poster']); ?>"
-                                             class="film-poster-img lazyloaded"
-                                             loading="lazy"
-                                             alt="<?php echo htmlspecialchars($anime['name']); ?>"
-                                             src="<?php echo htmlspecialchars($anime['poster']); ?>">
+                                <a href="/details/<?php echo htmlspecialchars($anime['id']); ?>">
+                                        <img data-src="<?php echo htmlspecialchars($anime['poster']); ?>" 
+                                             class="film-poster-img lazyload"
+                                             src="<?= $websiteUrl ?>/public/images/no_poster.jpg"
+                                             alt="<?php echo htmlspecialchars($anime['name']); ?>">
                                     </a>
                                 </div>
                                 <div class="film-detail">
