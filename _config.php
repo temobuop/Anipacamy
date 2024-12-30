@@ -20,9 +20,9 @@ $twitter = "https://x.com/PacaHat";
 
 // all the api you need
 
-$api = ""; //https://github.com/ghoshRitesh12/aniwatch-api Also use this in src/component/qtip.php
-$zpi = ""; //https://github.com/itzzzme/anime-api
-$proxy = ""; //https://github.com/itzzzme/m3u8proxy
+$api = "your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api Also use this in src/component/qtip.php
+$zpi = "your-hosted-api.com/api"; //https://github.com/itzzzme/anime-api
+$proxy = "your-hosted-proxy.com/cors?url="; //https://github.com/itzzzme/m3u8proxy
 
 
 $banner = $websiteUrl . "/public/images/banner.png";
