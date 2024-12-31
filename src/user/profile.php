@@ -170,13 +170,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_X_REQUESTED_WI
           <div class="ph-tabs">
             <div class="bah-tabs">
               <ul class="nav nav-tabs pre-tabs">
-                <li class="nav-item"><a class="nav-link active" href="<?= $websiteUrl ?>/profile"><i
+                <li class="nav-item"><a class="nav-link active" href="<?= $websiteUrl ?>/src/user/profile.php"><i
                       class="fas fa-user mr-2"></i>Profile</a></li>
-                <li class="nav-item"><a class="nav-link " href="<?= $websiteUrl ?>/continue-watching"><i class="fas fa-history mr-2"></i>Continue Watching
+                <li class="nav-item"><a class="nav-link " href="<?= $websiteUrl ?>/src/user/continue-watching.php"><i class="fas fa-history mr-2"></i>Continue Watching
                       </a></li>
-                <li class="nav-item"><a class="nav-link " href="<?= $websiteUrl ?>/watchlist"><i class="fas fa-heart mr-2"></i>Watch
+                <li class="nav-item"><a class="nav-link " href="<?= $websiteUrl ?>/src/user/watchlist.php"><i class="fas fa-heart mr-2"></i>Watch
                     List</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= $websiteUrl ?>/changepass"><i class="fas fa-key mr-2"></i>Change
+                <li class="nav-item"><a class="nav-link" href="<?= $websiteUrl ?>/src/user/changepass.php"><i class="fas fa-key mr-2"></i>Change
                     Password</a></li>
 
                 <li class="nav-item">
