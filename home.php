@@ -147,15 +147,17 @@ $data = $data['data'];
      
         <?php include('./src/component/trending.php') ?>
 
-        <div class="share-buttons share-buttons-min mt-3">
-            <div class="share-buttons-block" style="padding-bottom: 0 !important;">
-                <div class="share-icon"></div>
-                <div class="sbb-title mr-3">
-                    <span>Share <?=$websiteTitle?></span>
-                    <p class="mb-0">to your friends</p>
+        <div class="share-buttons share-buttons-home">
+            <div class="container">
+                <div class="share-buttons-block">
+                    <div class="share-icon"></div>
+                    <div class="sbb-title mr-3">
+                        <span>Share <?=$websiteTitle?></span>
+                        <p class="mb-0">to your friends</p>
+                    </div>
+                   <div class="sharethis-inline-share-buttons"></div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="sharethis-inline-share-buttons st-center st-has-labels st-inline-share-buttons st-animated" id="st-1"></div>
-                <div class="clearfix"></div>
             </div>
         </div>
 
