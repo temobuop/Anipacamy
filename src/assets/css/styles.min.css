@@ -3197,23 +3197,20 @@ ul.color-list li:nth-of-type(7n+6) a {
 }
 
 .anis-content {
-    position: relative
+    position: relative;
 }
 
 .anis-content .anisc-poster {
-    width: 180px;
+    width: 230px;
     position: absolute;
-    top: 70px;
-    left: 200px
-}
-
-.anis-content .anisc-poster .film-poster {
-    box-shadow: 0 40px 40px rgba(0,0,0,.2)
+    top: 68px;
+    left: 0;
+    box-shadow: 0 40px 40px rgba(0, 0, 0, .2)
 }
 
 .anis-content .anisc-detail {
-    padding-left: 240px;
-    padding-right: calc(18% + 220px);
+    padding-left: 300px;
+    padding-right: calc(18% + 215px);
     min-height: 360px
 }
 
@@ -3225,30 +3222,19 @@ ul.color-list li:nth-of-type(7n+6) a {
 
 .anis-content .anisc-detail .film-stats {
     margin-bottom: 30px;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap
-}
-
-.anis-content .anisc-detail .film-stats .item {
-    margin: 5px 0
+    font-size: 13px
 }
 
 .anis-content .anisc-detail .film-stats .item .tick-item {
-    background: 0 0!important;
-    color: #fff!important;
-    border: 1px solid #fff!important;
+    background: 0 0 !important;
+    color: #fff !important;
+    border: 1px solid #fff !important;
     line-height: 1em
 }
 
-.anis-content .anisc-detail .film-stats .dot {
-    margin: 0 10px
-}
-
 .anis-content .anisc-detail .film-stats .item .tick-item.tick-pg {
-    background: #fff!important;
-    color: #111!important
+    background: #fff !important;
+    color: #111 !important
 }
 
 .anis-content .anisc-detail .film-description {
@@ -3261,25 +3247,21 @@ ul.color-list li:nth-of-type(7n+6) a {
     font-size: 13px
 }
 
-.anis-content .anisc-detail .film-description .text .btn-more-desc {
+.btn-more-desc {
     margin-left: 5px;
     cursor: pointer;
     font-weight: 500;
     font-size: 12px;
     display: inline-block;
-    height: 16px
+    background: rgba(255, 255, 255, 0);
+    color: rgb(255, 255, 255);
+    padding: 1px 3px;
+    border-radius: 3px
 }
 
-.anis-content .anisc-detail .film-description .text .btn-more-desc.active {
-    font-size: 0
-}
 
-.anis-content .anisc-detail .film-description .text .btn-more-desc.active:before {
-    content: "- Less";
-    font-size: 12px
-}
-
-.anis-content .anisc-detail .film-text,.anisc-info .film-text {
+.anis-content .anisc-detail .film-text,
+.anisc-info .film-text {
     font-weight: 300;
     line-height: 1.5em;
     margin-top: 15px;
@@ -3292,28 +3274,27 @@ ul.color-list li:nth-of-type(7n+6) a {
 }
 
 .anis-content .anisc-detail .film-buttons {
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center
+    margin-bottom: 30px
 }
 
 .anis-content .anisc-detail .film-buttons .btn {
     padding-left: 20px;
     padding-right: 20px;
     margin-right: 10px;
-    box-shadow: none!important
+    margin-bottom: 5px;
+    box-shadow: none !important
 }
 
 .anis-content .anisc-detail .film-buttons .btn-circle {
-    width: 42px;
+    width: 38px;
     padding-left: 5px;
     padding-right: 5px;
     border-radius: 50%
 }
 
 .anis-content .anisc-detail .film-buttons .btn-fav.active {
-    color: #fc887b!important;
-    background: 0 0!important;
+    color: #fc887b !important;
+    background: 0 0 !important;
     border: 1px solid #fc887b
 }
 
@@ -3331,14 +3312,14 @@ ul.color-list li:nth-of-type(7n+6) a {
     left: 0;
     bottom: 0;
     right: 0;
-    background: #191826
+    background: #121315
 }
 
 .anis-content .block-live .btn {
-    background: 0 0;
+    background: 0;
     color: #fff;
     font-size: 13px;
-    box-shadow: none!important
+    box-shadow: none !important
 }
 
 .anis-content .block-live .btn i {
@@ -3351,7 +3332,7 @@ ul.color-list li:nth-of-type(7n+6) a {
     right: 0;
     bottom: 0;
     width: calc(25% - 30px);
-    background: rgba(255,255,255,.1);
+    background: rgba(255, 255, 255, .1);
     overflow: hidden
 }
 
@@ -3384,8 +3365,8 @@ ul.color-list li:nth-of-type(7n+6) a {
 
 .anis-content .anisc-info .item-list {
     padding: 10px 0 5px;
-    border-top: 1px solid rgba(255,255,255,.1);
-    border-bottom: 1px solid rgba(255,255,255,.1)
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    border-bottom: 1px solid rgba(255, 255, 255, .1)
 }
 
 .anis-content .anisc-info .item-list .item-head {
@@ -3398,7 +3379,7 @@ ul.color-list li:nth-of-type(7n+6) a {
     font-size: 12px;
     line-height: 1.1em;
     padding: 4px 8px;
-    border: 1px solid rgba(255,255,255,.4);
+    border: 1px solid rgba(255, 255, 255, .4);
     border-radius: 20px;
     margin: 0 2px 5px 0
 }
@@ -3409,21 +3390,19 @@ ul.color-list li:nth-of-type(7n+6) a {
     left: 0;
     right: 0;
     bottom: 0;
-    overflow: hidden;
-    filter: grayscale(1)
+    overflow: hidden
 }
 
 .anis-cover {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
     background-size: cover;
     background-position: center center;
     filter: blur(20px);
-    opacity: .35;
-    transform: scale(1.2)
+    opacity: .35
 }
 
 .w-hide {
@@ -3437,49 +3416,39 @@ ul.color-list li:nth-of-type(7n+6) a {
     padding-bottom: 50px
 }
 
-
 .anis-watch-detail {
-    position: relative; 
-    width: 100% !important; 
-    margin: 30px 0; 
-    right: auto;
-    top: auto;
+    position: absolute;
+    width: calc(25% - 30px);
+    right: 0;
+    top: 30px
 }
-
 
 .anis-watch-detail .anis-content {
-    display: flex; 
-    align-items: flex-start; 
-    flex-wrap: nowrap; 
-    width: 100%;
-    padding: 25px; 
-    box-sizing: border-box; 
+    padding: 25px 0 !important;
 }
 
-/* Fixed poster width and spacing */
 .anis-watch-detail .anis-content .anisc-poster {
-    flex: 0 0 120px;
-    max-width: 120px;
-    margin-right: 20px; 
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 120px;
+    margin-bottom: 30px
 }
 
 .anis-watch-detail .anis-content .anisc-detail {
-    flex: 1; 
-    min-width: 0;
-    padding: 0;
-    overflow: hidden; 
+    padding-left: 0 !important;
+    padding-right: 0 !important
 }
 
-
-.anis-watch-detail .anisc-detail .film-name {
-    font-size: 20px;
-    margin-bottom: 10px;
+.anis-watch-detail .anis-content .anisc-detail .film-name {
+    font-size: 20px
 }
 
-.anis-watch-detail .anisc-detail .film-stats {
-    margin-bottom: 20px;
+.anis-watch-detail .anis-content .anisc-detail .film-stats {
+    margin-bottom: 20px
 }
-
 
 .anis-watch {
     width: 75%
@@ -3488,7 +3457,7 @@ ul.color-list li:nth-of-type(7n+6) a {
 .player-frame {
     width: 100%;
     padding-bottom: 56.25%;
-    background: #000;
+    background: #18191c;
     position: relative;
     margin-bottom: 0
 }
@@ -3499,8 +3468,8 @@ ul.color-list li:nth-of-type(7n+6) a {
     left: 0;
     right: 0;
     bottom: 0;
-    width: 100%!important;
-    height: 100%!important
+    width: 100% !important;
+    height: 100% !important
 }
 
 .pf-notice {
@@ -13240,7 +13209,7 @@ span#AddMalDiv #AddMal {
     }
 
     #ani_detail .anis-content {
-        padding: 70px 25% 70px 0
+        padding: 70px 25% 70px 25px
     }
 
     .anis-content .anisc-detail {

@@ -57,7 +57,6 @@ $data = $data['data'];
     <meta property="og:image:height" content="350">
     <meta name="apple-mobile-web-app-status-bar" content="#202125">
     <meta name="theme-color" content="#202125">
-    <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/min.css?v=<?= $version ?>">
     <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/styles.min.css?v=<?= $version ?>">
     <link rel="apple-touch-icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" />
     <link rel="shortcut icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" type="image/x-icon" />
@@ -148,15 +147,17 @@ $data = $data['data'];
      
         <?php include('./src/component/trending.php') ?>
 
-        <div class="share-buttons share-buttons-min mt-3">
-            <div class="share-buttons-block" style="padding-bottom: 0 !important;">
-                <div class="share-icon"></div>
-                <div class="sbb-title mr-3">
-                    <span>Share <?=$websiteTitle?></span>
-                    <p class="mb-0">to your friends</p>
+        <div class="share-buttons share-buttons-home">
+            <div class="container">
+                <div class="share-buttons-block">
+                    <div class="share-icon"></div>
+                    <div class="sbb-title mr-3">
+                        <span>Share <?=$websiteTitle?></span>
+                        <p class="mb-0">to your friends</p>
+                    </div>
+                   <div class="sharethis-inline-share-buttons"></div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="sharethis-inline-share-buttons st-center st-has-labels st-inline-share-buttons st-animated" id="st-1"></div>
-                <div class="clearfix"></div>
             </div>
         </div>
 
@@ -370,7 +371,7 @@ $data = $data['data'];
                                                             data-jname="<?= $anime['title'] ?>"><?= $anime['title'] ?></a>
                                                     </h3>
                                                     <div class="fd-infor">
-                                                        <span class="fdi-item"><i class="fas fa-calendar-alt"></i> <?= $anime['releaseDate'] ?></span>
+                                                       
                                                         <span class="fdi-item"><?= $anime['tvInfo']['showType'] ?></span>
                                                         <span class="dot"></span>
                                                         <span class="fdi-item"><?= $anime['tvInfo']['duration'] ?></span>
@@ -454,7 +455,7 @@ $data = $data['data'];
                                                             data-jname="<?= $anime['title'] ?>"><?= $anime['title'] ?></a>
                                                     </h3>
                                                     <div class="fd-infor">
-                                                        <span class="fdi-item"><i class="fas fa-calendar-alt"></i> <?= $anime['releaseDate'] ?></span>
+                                                       
                                                         <span class="fdi-item"><?= $anime['tvInfo']['showType'] ?></span>
                                                         <span class="dot"></span>
                                                         <span class="fdi-item"><?= $anime['tvInfo']['duration'] ?></span>

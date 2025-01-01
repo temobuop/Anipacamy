@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 if ($insert_stmt->execute()) {
                     $message[] = "Registration successful!";
-                    header('location:login.php');
+                    header('location:/login');
                     exit();
                 } else {
                     $message[] = "Registration failed: " . $insert_stmt->error;

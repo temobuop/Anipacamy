@@ -1,26 +1,3 @@
--- Table structure for table `anime_list`
-CREATE TABLE `anime_list` (
-    `user_id` INT(11) NOT NULL,
-    `media_id` INT(11) NOT NULL,
-    `title_romaji` VARCHAR(255) DEFAULT NULL,
-    `title_english` VARCHAR(255) DEFAULT NULL,
-    `progress` INT(11) DEFAULT 0,
-    `status` VARCHAR(50) DEFAULT NULL,
-    `poster_url` TEXT DEFAULT NULL,
-    `episodes` INT(11) DEFAULT NULL,
-    `duration` INT(11) DEFAULT NULL,
-    `genres` TEXT DEFAULT NULL,
-    `average_score` INT(11) DEFAULT NULL,
-    `popularity` INT(11) DEFAULT NULL,
-    `season` VARCHAR(20) DEFAULT NULL,
-    `season_year` INT(11) DEFAULT NULL,
-    `studios` TEXT DEFAULT NULL,
-    `format` VARCHAR(20) DEFAULT NULL,
-    `media_status` VARCHAR(20) DEFAULT NULL,
-    `sub_count` INT(11) DEFAULT 0,
-    `dub_count` INT(11) DEFAULT 0,
-    PRIMARY KEY(`user_id`, `media_id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 -- Table structure for table `comments`
 CREATE TABLE `comments` (
@@ -53,25 +30,6 @@ CREATE TABLE `comment_reactions` (
     KEY `idx_reactions_user`(`user_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
--- Table structure for table `manga_list`
-CREATE TABLE `manga_list` (
-    `user_id` INT(11) NOT NULL,
-    `media_id` INT(11) NOT NULL,
-    `title_romaji` VARCHAR(255) DEFAULT NULL,
-    `title_english` VARCHAR(255) DEFAULT NULL,
-    `progress` INT(11) DEFAULT 0,
-    `status` VARCHAR(50) DEFAULT NULL,
-    `poster_url` TEXT DEFAULT NULL,
-    `chapters` INT(11) DEFAULT NULL,
-    `volumes` INT(11) DEFAULT NULL,
-    `genres` TEXT DEFAULT NULL,
-    `average_score` INT(11) DEFAULT NULL,
-    `popularity` INT(11) DEFAULT NULL,
-    `start_date` DATE DEFAULT NULL,
-    `format` VARCHAR(20) DEFAULT NULL,
-    PRIMARY KEY(`user_id`, `media_id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
 -- Table structure for table `users`
 CREATE TABLE `users` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -87,16 +45,6 @@ CREATE TABLE `users` (
     `image` TEXT DEFAULT NULL,
     `custom_avatar` INT(11) DEFAULT NULL,
     PRIMARY KEY(`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
--- Table structure for table `user_tokens`
-CREATE TABLE `user_tokens` (
-    `user_id` INT(11) NOT NULL,
-    `access_token` TEXT NOT NULL,
-    `expires_at` DATETIME NOT NULL,
-    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
-    PRIMARY KEY(`user_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 -- Table structure for table `watched_episode`

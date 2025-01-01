@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 session_start();
 
 if(isset($_COOKIE['userID'])){
-  header('location:../home');
+  header('location:../../home');
   exit();
 }
 
@@ -35,7 +35,7 @@ if(isset($_POST['submit']) || isset($_POST['anilist_login'])){
               header('location:'.$redirectUrl);
               exit();
           } else {
-              header('location:../home');
+              header('location:../../home');
               exit();
           }
       } else {
