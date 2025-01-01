@@ -14,7 +14,7 @@ if (!$episodeId) {
 // Debug log
 error_log("Fetching servers for episode: " . $episodeId);
 
-$api_url = "https://hianime-psi.vercel.app/api/v2/hianime/episode/servers?animeEpisodeId=" . urlencode($episodeId);
+$api_url = "your-hosted-api.app/api/v2/hianime/episode/servers?animeEpisodeId=" . urlencode($episodeId); //https://github.com/ghoshRitesh12/aniwatch-api
 
 // Debug log
 error_log("API URL: " . $api_url);
