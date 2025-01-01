@@ -152,7 +152,7 @@ $safeStatus = htmlspecialchars($status ?? '', ENT_QUOTES, 'UTF-8');
 <body data-page="page_watchlist">
   <div id="sidebar_menu_bg"></div>
   <div id="wrapper" data-page="page_home">
-    <?php include '../component/header.php'; ?>
+    <?php include 'src/component/header.php'; ?>
     <div class="clearfix"></div>
 
     <div id="main-wrapper" class="layout-page layout-watchlist">
@@ -288,7 +288,7 @@ $safeStatus = htmlspecialchars($status ?? '', ENT_QUOTES, 'UTF-8');
         <div class="clearfix"></div>
       </div>
     </div>
-    <?php include '../component/footer.php' ?>
+    <?php include 'src/component/footer.php' ?>
     <div id="mask-overlay"></div>
     
 <script type="text/javascript">
