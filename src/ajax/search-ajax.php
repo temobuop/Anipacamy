@@ -1,5 +1,5 @@
 <?php
-require_once('../../_config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 header('Content-Type: application/json');
 
 if (isset($_GET['keyword'])) {
@@ -7,7 +7,7 @@ if (isset($_GET['keyword'])) {
     $keyword = str_replace(' ', '-', strtolower($keyword));
     
     $cacheKey = md5($keyword);
-    $cachePath = __DIR__ . '/../../cache/search/';
+    $cachePath = __DIR__ . '/src/cache/search/';
     $cacheFile = $cachePath . $cacheKey . '.json';
     $cacheTime = 300; 
 

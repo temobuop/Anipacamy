@@ -37,7 +37,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
     <link rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css?v=<?= $version ?>">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?v=<?= $version ?>">
-    <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/landing.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/home.css?v=<?= $version ?>">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
@@ -77,15 +77,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
     <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YPHG6GEQ40"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-YPHG6GEQ40');
-</script>
 
 
 
@@ -126,7 +118,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
             <div id="mw-top">
                 <div class="container">
                     <div class="mwt-content">
-                        <div class="mwt-icon"><img src="https://hianime.to/images/anw-min.webp?v=0.1" onerror="this.onerror=null; this.src='<?= $websiteUrl ?>/public/images/zorowaifu.png';">
+                        <div class="mwt-icon"><img src="https://i.postimg.cc/t47G1CN9/In-Shot-20241231-125942835.gif" onerror="this.onerror=null; this.src='<?= $websiteUrl ?>/public/images/zorowaifu.png';">
                         </div>
                         <div class="mwh-logo">
                             <a href="<?= $websiteUrl ?>/home" class="mwh-logo-div">
@@ -193,17 +185,18 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
                 <div class="container">
                     
                 <div class="share-buttons share-buttons-home">
-                    <div class="container">
-                        <div class="share-buttons-block">
-                           
-                <div class="sbb-title mr-3">
-                                <span>Share <?=$websiteTitle?></span>
-                                <p class="mb-0">to your friends</p>
-                            </div> 
-                            <div class="sharethis-inline-share-buttons"></div>
-                            <div class="clearfix"></div>
-                            </div>
+            <div class="container">
+                <div class="share-buttons-block">
+                    <div class="share-icon"></div>
+                    <div class="sbb-title mr-3">
+                        <span>Share <?=$websiteTitle?></span>
+                        <p class="mb-0">to your friends</p>
                     </div>
+                   <div class="sharethis-inline-share-buttons"></div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
                     <div class="mwb-2col">
                         <div class="mwb-left">
                             <h1 class="mw-heading">

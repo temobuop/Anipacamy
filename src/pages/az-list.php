@@ -128,7 +128,7 @@ if (!$azResults) {
 <body data-page="page_anime">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-    <?php include('../component/header.php'); ?>
+    <?php include('src/component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper" class="layout-page page-az">
             <div class="container">
@@ -151,34 +151,34 @@ if (!$azResults) {
                         </div>
                         <div class="main-az">
                             <ul class="ulclear az-list">
-                                <li class="<?= empty($letter) ? 'active' : '' ?>"><a href="/src/pages/az-list.php">All</a></li>                               
-                                <li class="<?= $letter === '0-9' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/0-9">0-9</a></li>
-                                <li class="<?= $letter === 'a' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/a">A</a></li>
-                                <li class="<?= $letter === 'b' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/b">B</a></li>
-                                <li class="<?= $letter === 'c' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/c">C</a></li>
-                                <li class="<?= $letter === 'd' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/d">D</a></li>
-                                <li class="<?= $letter === 'e' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/e">E</a></li>
-                                <li class="<?= $letter === 'f' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/f">F</a></li>
-                                <li class="<?= $letter === 'g' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/g">G</a></li>
-                                <li class="<?= $letter === 'h' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/h">H</a></li>
-                                <li class="<?= $letter === 'i' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/i">I</a></li>
-                                <li class="<?= $letter === 'j' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/j">J</a></li>
-                                <li class="<?= $letter === 'k' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/k">K</a></li>
-                                <li class="<?= $letter === 'l' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/l">L</a></li>
-                                <li class="<?= $letter === 'm' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/m">M</a></li>
-                                <li class="<?= $letter === 'n' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/n">N</a></li>
-                                <li class="<?= $letter === 'o' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/o">O</a></li>
-                                <li class="<?= $letter === 'p' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/p">P</a></li>
-                                <li class="<?= $letter === 'q' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/q">Q</a></li>
-                                <li class="<?= $letter === 'r' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/r">R</a></li>
-                                <li class="<?= $letter === 's' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/s">S</a></li>
-                                <li class="<?= $letter === 't' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/t">T</a></li>
-                                <li class="<?= $letter === 'u' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/u">U</a></li>
-                                <li class="<?= $letter === 'v' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/v">V</a></li>
-                                <li class="<?= $letter === 'w' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/w">W</a></li>
-                                <li class="<?= $letter === 'x' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/x">X</a></li>
-                                <li class="<?= $letter === 'y' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/y">Y</a></li>
-                                <li class="<?= $letter === 'z' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/z">Z</a></li>
+                                <li class="<?= empty($letter) ? 'active' : '' ?>"><a href="/az-list">All</a></li>                               
+                                <li class="<?= $letter === '0-9' ? 'active' : '' ?>"><a href="/az-list/0-9">0-9</a></li>
+                                <li class="<?= $letter === 'a' ? 'active' : '' ?>"><a href="/az-list/a">A</a></li>
+                                <li class="<?= $letter === 'b' ? 'active' : '' ?>"><a href="/az-list/b">B</a></li>
+                                <li class="<?= $letter === 'c' ? 'active' : '' ?>"><a href="/az-list/c">C</a></li>
+                                <li class="<?= $letter === 'd' ? 'active' : '' ?>"><a href="/az-list/d">D</a></li>
+                                <li class="<?= $letter === 'e' ? 'active' : '' ?>"><a href="/az-list/e">E</a></li>
+                                <li class="<?= $letter === 'f' ? 'active' : '' ?>"><a href="/az-list/f">F</a></li>
+                                <li class="<?= $letter === 'g' ? 'active' : '' ?>"><a href="/az-list/g">G</a></li>
+                                <li class="<?= $letter === 'h' ? 'active' : '' ?>"><a href="/az-list/h">H</a></li>
+                                <li class="<?= $letter === 'i' ? 'active' : '' ?>"><a href="/az-list/i">I</a></li>
+                                <li class="<?= $letter === 'j' ? 'active' : '' ?>"><a href="/az-list/j">J</a></li>
+                                <li class="<?= $letter === 'k' ? 'active' : '' ?>"><a href="/az-list/k">K</a></li>
+                                <li class="<?= $letter === 'l' ? 'active' : '' ?>"><a href="/az-list/l">L</a></li>
+                                <li class="<?= $letter === 'm' ? 'active' : '' ?>"><a href="/az-list/m">M</a></li>
+                                <li class="<?= $letter === 'n' ? 'active' : '' ?>"><a href="/az-list/n">N</a></li>
+                                <li class="<?= $letter === 'o' ? 'active' : '' ?>"><a href="/az-list/o">O</a></li>
+                                <li class="<?= $letter === 'p' ? 'active' : '' ?>"><a href="/az-list/p">P</a></li>
+                                <li class="<?= $letter === 'q' ? 'active' : '' ?>"><a href="/az-list/q">Q</a></li>
+                                <li class="<?= $letter === 'r' ? 'active' : '' ?>"><a href="/az-list/r">R</a></li>
+                                <li class="<?= $letter === 's' ? 'active' : '' ?>"><a href="/az-list/s">S</a></li>
+                                <li class="<?= $letter === 't' ? 'active' : '' ?>"><a href="/az-list/t">T</a></li>
+                                <li class="<?= $letter === 'u' ? 'active' : '' ?>"><a href="/az-list/u">U</a></li>
+                                <li class="<?= $letter === 'v' ? 'active' : '' ?>"><a href="/az-list/v">V</a></li>
+                                <li class="<?= $letter === 'w' ? 'active' : '' ?>"><a href="/az-list/w">W</a></li>
+                                <li class="<?= $letter === 'x' ? 'active' : '' ?>"><a href="/az-list/x">X</a></li>
+                                <li class="<?= $letter === 'y' ? 'active' : '' ?>"><a href="/az-list/y">Y</a></li>
+                                <li class="<?= $letter === 'z' ? 'active' : '' ?>"><a href="/az-list/z">Z</a></li>
                             </ul>
                             <div class="clearfix"></div>
                         </div>
@@ -276,7 +276,7 @@ if (!$azResults) {
                 </div>
             </div>
         </div>
-        <?php include('../component/footer.php'); ?>
+        <?php include('src/component/footer.php'); ?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

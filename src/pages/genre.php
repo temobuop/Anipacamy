@@ -1,3 +1,4 @@
+
 <?php
 
 error_reporting(E_ALL);
@@ -6,10 +7,20 @@ ini_set('display_errors', 1);
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 session_start();
 
-$keyword = isset($_GET['keyword']) ? urlencode($_GET['keyword']) : '';
+// Get the last part of the URL (the keyword)
+$uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+$uriParts = explode('/', $uri);
+
+// Check if there's a valid part at the end (the keyword)
+$keyword = isset($uriParts[count($uriParts) - 1]) ? $uriParts[count($uriParts) - 1] : '';
+$keyword = urlencode($keyword); // URL-encode the keyword
+
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1; 
 
-$query = isset($_GET['keyword']) ? str_replace(' ', '-', $_GET['keyword']) : '';
+$query = $keyword ? str_replace(' ', '-', $keyword) : '';
+
+// Set default value for $tP to avoid "undefined variable" notice
+$tP = 1; 
 
 if ($query) {
     $apiUrl = "$api/genre/{$query}?page={$page}";
@@ -18,10 +29,11 @@ if ($query) {
         $response = file_get_contents($apiUrl);
         if ($response !== false) {
             $data = json_decode($response, true);
-            if ($data && isset($data['success']) && $data['success'] && isset($data['data']['animes'])) {
-                $searchResults = $data['data']['animes'];
-                $currentPage = $data['data']['currentPage'];
-                $totalPages = $data['data']['totalPages'];
+            if ($data && isset($data['success']) && $data['success'] && isset($data['data'])) {
+                // Safely extract the required values
+                $searchResults = isset($data['data']['animes']) ? $data['data']['animes'] : [];
+                $currentPage = isset($data['data']['currentPage']) ? $data['data']['currentPage'] : 1;
+                $tP = isset($data['data']['totalPages']) ? $data['data']['totalPages'] : 1;
             } else {
                 $errorMessage = 'Failed to fetch search results. Please try again later.';
             }
@@ -32,8 +44,11 @@ if ($query) {
         $errorMessage = 'An error occurred: ' . $e->getMessage();
     }
 }
-
 ?>
+
+<?php if (isset($errorMessage)) : ?>
+    <p>Error: <?php echo htmlspecialchars($errorMessage); ?></p>
+<?php endif; ?>
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
@@ -117,7 +132,7 @@ if ($query) {
 <body data-page="page_anime">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-    <?php include('../component/header.php'); ?>
+    <?php include('src/component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper">
             <div class="container">
@@ -194,19 +209,19 @@ if ($query) {
             <div class="pre-pagination mt-5 mb-5">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination pagination-lg justify-content-center">
-                                    <?php for ($i = 1; $i <= min(3, $totalPages); $i++): ?>
+                                    <?php for ($i = 1; $i <= min(3, $tP); $i++): ?>
                                         <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
                                             <a class="page-link" title="Page <?= $i ?>" href="?keyword=<?= urlencode($query) ?>&page=<?= $i ?>"><?= $i ?></a>
                                         </li>
                                     <?php endfor; ?>
-                                    <?php if ($currentPage < $totalPages): ?>
+                                    <?php if ($currentPage < $tP): ?>
                                         <li class="page-item">
                                             <a class="page-link" title="Next" href="?keyword=<?= urlencode($query) ?>&page=<?= $currentPage + 1 ?>">›</a>
                                         </li>
                                     <?php endif; ?>
-                                    <?php if ($totalPages > 1): ?>
+                                    <?php if ($tP > 1): ?>
                                         <li class="page-item">
-                                            <a class="page-link" title="Last" href="?keyword=<?= urlencode($query) ?>&page=<?= $totalPages ?>">»</a>
+                                            <a class="page-link" title="Last" href="?keyword=<?= urlencode($query) ?>&page=<?= $tP ?>">»</a>
                                         </li>
                                     <?php endif; ?>
                                 </ul>
@@ -216,11 +231,11 @@ if ($query) {
                 </section>
                     <div class="clearfix"></div>
                 </div>
-                <?php include('../component/sidenav.php'); ?>
+                <?php include('src/component/sidenav.php'); ?>
                 <div class="clearfix"></div>
             </div>
         </div>
-        <?php include('../component/footer.php'); ?>
+        <?php include('src/component/footer.php'); ?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

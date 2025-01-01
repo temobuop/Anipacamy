@@ -1,6 +1,6 @@
 <?php
 
-require_once('../component/qtip.php');
+require_once('src/component/qtip.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
 
@@ -157,7 +157,7 @@ if (!$animeData) {
 <body data-page="movie_watch">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="movie_watch">
-        <?php include('../component/header.php'); ?>
+        <?php include('src/component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper" class="layout-page layout-page-detail layout-page-watchtv">
             <div id="ani_detail">
@@ -432,6 +432,13 @@ if (!$animeData) {
                 </div>
             </div>
 
+            <!-- Future Ads -->
+            <!--
+            <div class="pizza pizza-x">
+                <div class="in-text">Want your Ads here?</div>
+                <div class="in-contact">Contact us at: <a style="margin-left: 4px;" href="/cdn-cgi/l/email-protection#56373225163e3f37383f3b333833222139243d7835393b" target="_blank"><span class="__cf_email__" data-cfemail="5f3e3b2c1f37363e3136323a313a2b28302d34713c3032">[email&#160;protected]</span></a></div>
+            </div> -->
+
             <div class="container">
                 <div id="main-content">
                     <?php if (!empty($animeData['actors'])): ?>
@@ -501,11 +508,18 @@ if (!$animeData) {
                             ]
                         ];
                         
-                        include('../component/comment.php');
+                        include('src/component/comment.php');
                         ?>
                     </section>
 
-                  
+                    <section class="w-full flex items-center justify-center">
+                        <section class="block_area block_area_category">
+                            <div class="text-center">
+                                <img src="<?= htmlspecialchars($websiteUrl) ?>/public/images/construction.gif" alt="under construction image" class="img-fluid">
+                                <h1 class="text-center mt-3" style="font-size: calc(1.5rem + 1vw);">This part is currently under construction! ??</h1>
+                            </div>
+                        </section>
+                    </section>
 
                       <!-- Recommended for you -->
                 <section class="block_area block_area_category">
@@ -556,11 +570,11 @@ if (!$animeData) {
 
 
         </div>
-        <?php include('../component/sidenav.php'); ?>
+        <?php include('src/component/sidenav.php'); ?>
         <div class="clearfix"></div>
     </div>
     </div>
-    <?php include('../component/footer.php'); ?>
+    <?php include('src/component/footer.php'); ?>
     <div id="mask-overlay"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>

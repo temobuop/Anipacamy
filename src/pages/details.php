@@ -1,6 +1,6 @@
 <?php
 
-require_once('../component/qtip.php');
+require_once('src/component/qtip.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
 error_reporting(E_ALL); 
@@ -198,7 +198,7 @@ echo "<script>
 <body data-page="movie_info">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-        <?php include('../component/header.php'); ?>
+        <?php include('src/component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper" date-page="movie_info" data-id="<?= htmlspecialchars($animeId) ?>">
             <div id="ani_detail">
@@ -522,12 +522,12 @@ echo "<script>
                 <div class="clearfix"></div>
             </div>
             <div class="lazy-component">
-                <?php include('../component/sidenav.php'); ?>
+                <?php include('src/component/sidenav.php'); ?>
             </div>
             <div class="clearfix"></div>
         </div>
     </div>
-    <?php include('../component/footer.php'); ?>
+    <?php include('src/component/footer.php'); ?>
     <div id="mask-overlay"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
