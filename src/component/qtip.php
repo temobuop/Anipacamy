@@ -5,7 +5,7 @@ function fetchAnimeData($animeId) {
     session_start();
 
 
-    $api = "https://hianime-psi.vercel.app/api/v2/hianime";
+    $api = ""; //https://github.com/ghoshRitesh12/aniwatch-api
 
     $url = $api . "/anime/$animeId";
     $animeDataResponse = file_get_contents($url);
