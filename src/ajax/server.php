@@ -1,4 +1,5 @@
 <?php
+require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php'); 
 header('Content-Type: application/json');
 
 $episodeId = $_GET['episodeId'] ?? null;
@@ -11,12 +12,11 @@ if (!$episodeId) {
     exit;
 }
 
-// Debug log
+
 error_log("Fetching servers for episode: " . $episodeId);
 
-$api_url = "your-hosted-api.app/api/v2/hianime/episode/servers?animeEpisodeId=" . urlencode($episodeId); //https://github.com/ghoshRitesh12/aniwatch-api
+$api_url = "$api/episode/servers?animeEpisodeId=" . urlencode($episodeId);
 
-// Debug log
 error_log("API URL: " . $api_url);
 
 $response = file_get_contents($api_url);
@@ -31,7 +31,6 @@ if ($response === false) {
 
 $data = json_decode($response, true);
 
-// Debug log
 error_log("API Response: " . print_r($data, true));
 
 if (!$data || !isset($data['data'])) {
@@ -42,19 +41,17 @@ if (!$data || !isset($data['data'])) {
     exit;
 }
 
-// Check for fallback logic for sub servers only
+
 $sub_servers = $data['data']['sub'] ?? [];
 $raw_servers = $data['data']['raw'] ?? [];
 
-// Use `raw` servers as a fallback if `sub` is empty
 if (empty($sub_servers) && !empty($raw_servers)) {
     $sub_servers = $raw_servers;
 }
 
-// Fetch `dub` servers without fallback
 $dub_servers = $data['data']['dub'] ?? [];
 
-// Function to replace specific servers with placeholders
+
 function replaceWithPlaceholder($servers) {
     return array_map(function($server) {
         return [
@@ -64,7 +61,6 @@ function replaceWithPlaceholder($servers) {
     }, $servers);
 }
 
-// Format the response to match what the frontend expects
 $result = [
     'sub' => replaceWithPlaceholder($sub_servers),
     'dub' => replaceWithPlaceholder($dub_servers)

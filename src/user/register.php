@@ -257,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </form>
                     </div>
-                    <div class="c4-small">You already have an account? <a href="<?=$websiteUrl?>/user/login"
+                    <div class="c4-small">You already have an account? <a href="<?=$websiteUrl?>/login"
                             class="link-highlight register-tab-link" title="Login">Login</a></div>
                     <div class="c4-button">
                         <a href="<?=$websiteUrl?>" class="btn btn-radius btn-focus"><i class="fa fa-chevron-circle-left mr-2"></i>Back

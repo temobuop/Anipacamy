@@ -14,7 +14,7 @@
                     <div class="hst-icon"><i class="fas fa-star"></i></div>
                     <div class="name"><span>Popular</span></div>
                 </a>
-                <a href="<?= $websiteUrl ?>/src/component/random.php" rel="nofollow" class="hst-item" data-toggle="tooltip"
+                <a href="<?= $websiteUrl ?>/random" rel="nofollow" class="hst-item" data-toggle="tooltip"
                     data-original-title="Select Random Anime">
                     <div class="hst-icon"><i class="fas fa-random"></i></div>
                     <div class="name"><span>Random</span></div>
@@ -165,7 +165,7 @@
                     <div class="item"><a href="<?= $discord ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-discord"></i></a></div>
                     <div class="item"><a href="<?= $facebook ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-facebook"></i></a></div>
                     <div class="item"><a href="<?= $twitter ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-twitter"></i></a></div>
-                    <div class="item"><a href="<?= $github ?>" target="_blank" class="zr-social-button gh-btn"><i class="fab fa-github"></i></a></div>
+                    <div class="item"><a href="<?= $instagram ?>" target="_blank" class="zr-social-button gh-btn"><i class="fab fa-instagram"></i></a></div>
                 </div>
                 <div class="clearfix"></div>
             </div>
@@ -262,7 +262,7 @@
                                         <a class="dropdown-item" href="#" onclick="showToast('(＞︿＜)', 'Please let me finish my homework first, I will develop this page later, baka!', 'info')"><i class="fas fa-cog mr-2"></i>Settings</a>
                                         <div class="clearfix"></div>
                                     </div>
-                                    <a class="dropdown-item text-right text-white" href="<?= $websiteUrl ?>/logout">Logout<i class="fas fa-arrow-right ml-2 mr-1"></i></a>
+                                    <a class="dropdown-item text-right text-white" href="<?= $websiteUrl ?>/src/user/logout.php">Logout<i class="fas fa-arrow-right ml-2 mr-1"></i></a>
                                 </div>
                             </div>
                         </div>

@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 session_start();
 
 if(!isset($_COOKIE['userID'])){
-  header('location:/login');
+  header('location:../user/login.php');
 };
 
 if(isset($_COOKIE['userID'])){
@@ -191,13 +191,13 @@ if(!empty($current_pass) || !empty($new_pass) || !empty($confirm_pass)){
           <div class="ph-tabs">
             <div class="bah-tabs">
               <ul class="nav nav-tabs pre-tabs">
-                <li class="nav-item"><a class="nav-link" href="<?= $websiteUrl ?>/src/user/profile.php"><i
+                <li class="nav-item"><a class="nav-link" href="<?= $websiteUrl ?>/profile"><i
                       class="fas fa-user mr-2"></i>Profile</a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= $websiteUrl ?>/src/user/continue-watching.php"><i class="fas fa-history mr-2"></i>Continue Watching
+                <li class="nav-item"><a class="nav-link" href="<?= $websiteUrl ?>/continue-watching"><i class="fas fa-history mr-2"></i>Continue Watching
                       </a></li>
-                <li class="nav-item"><a class="nav-link" href="<?= $websiteUrl ?>/src/user/watchlist.php"><i class="fas fa-heart mr-2"></i>Watch
+                <li class="nav-item"><a class="nav-link" href="<?= $websiteUrl ?>/watchlist"><i class="fas fa-heart mr-2"></i>Watch
                     List</a></li>
-                <li class="nav-item"><a class="nav-link active" href="<?= $websiteUrl ?>/src/user/changepass.php"><i class="fas fa-key mr-2"></i>Change
+                <li class="nav-item"><a class="nav-link active" href="<?= $websiteUrl ?>/changepass"><i class="fas fa-key mr-2"></i>Change
                     Password</a></li>
                <li class="nav-item">
                     <a class="nav-link" href="#" onclick="showToast('(・`ω´・)', 'Do you really need settings too, baka?', 'info')">
@@ -257,13 +257,14 @@ if(!empty($current_pass) || !empty($new_pass) || !empty($confirm_pass)){
         <div class="clearfix"></div>
       </div>
     </div>
-    <?php include 'src/component/footer.php'; ?> 
-    
+    <?php include 'src/component/footer.php'; ?>
     
     <div id="mask-overlay"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js?v=1.5"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js?v=1.5"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  
+   <!-- <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/comman.js"></script> -->
     <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/movie.js?v=1.5"></script>
     <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/jquery-ui.css?v=1.5">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js?v=1.5"></script>

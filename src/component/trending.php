@@ -51,10 +51,10 @@
 
 <script>
     var trendingSlider = new Swiper('.trending-container', {
-        slidesPerView: 3,
+        slidesPerView: 4,
         breakpoints: {
             768: {
-                slidesPerView: 4
+                slidesPerView: 6
             }
         },
         navigation: {

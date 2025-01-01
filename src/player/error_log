@@ -1,0 +1,14 @@
+[31-Dec-2024 13:45:46 UTC] PHP Warning:  file_get_contents(https://hianime-psi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=overflow-tv-ver-5629?ep=79454&amp;server=hd-1&amp;category=sub): failed to open stream: HTTP request failed! HTTP/1.0 500 Internal Server Error
+ in /home/anixtvin/public_html/src/player/sub.php on line 13
+[31-Dec-2024 13:46:05 UTC] PHP Warning:  file_get_contents(https://hianime-psi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=overflow-tv-ver-5629?ep=79455&amp;server=hd-1&amp;category=sub): failed to open stream: HTTP request failed! HTTP/1.0 500 Internal Server Error
+ in /home/anixtvin/public_html/src/player/sub.php on line 13
+[31-Dec-2024 13:46:24 UTC] PHP Warning:  file_get_contents(https://hianime-psi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=overflow-tv-ver-5629?ep=79456&amp;server=hd-1&amp;category=sub): failed to open stream: HTTP request failed! HTTP/1.0 500 Internal Server Error
+ in /home/anixtvin/public_html/src/player/sub.php on line 13
+[31-Dec-2024 13:46:38 UTC] PHP Warning:  file_get_contents(https://hianime-psi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=overflow-tv-ver-5629?ep=79458&amp;server=hd-1&amp;category=sub): failed to open stream: HTTP request failed! HTTP/1.0 500 Internal Server Error
+ in /home/anixtvin/public_html/src/player/sub.php on line 13
+[31-Dec-2024 13:46:56 UTC] PHP Warning:  file_get_contents(https://hianime-psi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=overflow-tv-ver-5629?ep=79459&amp;server=hd-1&amp;category=sub): failed to open stream: HTTP request failed! HTTP/1.0 500 Internal Server Error
+ in /home/anixtvin/public_html/src/player/sub.php on line 13
+[01-Jan-2025 07:41:28 UTC] PHP Warning:  file_get_contents(https://hianime-psi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=boruto-naruto-the-movie-1391?ep=57947&amp;server=hd-1&amp;category=sub): failed to open stream: HTTP request failed! HTTP/1.0 500 Internal Server Error
+ in /home/anixtvin/public_html/src/player/sub.php on line 13
+[01-Jan-2025 07:42:57 UTC] PHP Warning:  file_get_contents(https://hianime-psi.vercel.app/api/v2/hianime/episode/sources?animeEpisodeId=boruto-naruto-the-movie-1391?ep=57947&amp;server=hd-2&amp;category=sub): failed to open stream: HTTP request failed! HTTP/1.0 500 Internal Server Error
+ in /home/anixtvin/public_html/src/player/sub.php on line 13

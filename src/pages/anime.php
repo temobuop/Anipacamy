@@ -117,7 +117,7 @@ try {
 <body data-page="page_anime">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/src/component/header.php'; ?>
+    <?php include('../component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper">
             <div class="container">
@@ -220,11 +220,11 @@ try {
 
                     <div class="clearfix"></div>
                 </div>
-                <?php include('src/component/sidenav.php'); ?>
+                <?php include('../component/sidenav.php'); ?>
                 <div class="clearfix"></div>
             </div>
         </div>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/src/component/footer.php'; ?>
+        <?php include('../component/footer.php'); ?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

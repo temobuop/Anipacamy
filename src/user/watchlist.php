@@ -46,6 +46,7 @@ $status = $_GET['status'] ?? 'All'; // Default status
 $safeStatus = htmlspecialchars($status ?? '', ENT_QUOTES, 'UTF-8');
 ?>
 
+
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
