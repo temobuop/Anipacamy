@@ -1,24 +1,9 @@
 RewriteEngine On
 RewriteBase /
 
+# Rewrite any request that is not a real file or directory to router.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-RewriteRule ^([a-zA-Z0-9\-]+)/?$ $1.php [L,QSA]
-
-RewriteRule ^.*details.*$ src/pages/details.php [L,QSA]
-RewriteRule ^.*random.*$ src/component/random.php [L,QSA]
-RewriteRule ^.*anime.*$ src/pages/anime.php [L,QSA]
-RewriteRule ^.*dmca.*$ src/pages/extra/dmca.php [L,QSA]
-RewriteRule ^.*terms.*$ src/pages/extra/terms.php [L,QSA]
-RewriteRule ^.*az-list.*$ src/pages/az-list.php [L,QSA]
-RewriteRule ^.*login.*$ src/user/login.php [L,QSA]
-RewriteRule ^.*register.*$ src/user/register.php [L,QSA]
-RewriteRule ^.*logout.*$ src/user/logout.php [L,QSA]
-RewriteRule ^.*profile.*$ src/user/profile.php [L,QSA]
-RewriteRule ^.*watchlist.*$ src/user/watchlist.php [L,QSA]
-RewriteRule ^.*changepass.*$ src/user/changepass.php [L,QSA]
-RewriteRule ^.*continue-watching.*$ src/user/continue-watching.php [L,QSA]
-RewriteRule ^genre/([a-zA-Z0-9\-]+)/?$ src/pages/genre.php?keyword=$1 [L,QSA]
-
-ErrorDocument 404 /404.php
+# This will redirect all requests to router.php
+RewriteRule ^(.+)$ router.php [L]
