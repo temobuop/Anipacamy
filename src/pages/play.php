@@ -432,13 +432,6 @@ if (!$animeData) {
                 </div>
             </div>
 
-            <!-- Future Ads -->
-            <!--
-            <div class="pizza pizza-x">
-                <div class="in-text">Want your Ads here?</div>
-                <div class="in-contact">Contact us at: <a style="margin-left: 4px;" href="/cdn-cgi/l/email-protection#56373225163e3f37383f3b333833222139243d7835393b" target="_blank"><span class="__cf_email__" data-cfemail="5f3e3b2c1f37363e3136323a313a2b28302d34713c3032">[email&#160;protected]</span></a></div>
-            </div> -->
-
             <div class="container">
                 <div id="main-content">
                     <?php if (!empty($animeData['actors'])): ?>
@@ -512,14 +505,7 @@ if (!$animeData) {
                         ?>
                     </section>
 
-                    <section class="w-full flex items-center justify-center">
-                        <section class="block_area block_area_category">
-                            <div class="text-center">
-                                <img src="<?= htmlspecialchars($websiteUrl) ?>/public/images/construction.gif" alt="under construction image" class="img-fluid">
-                                <h1 class="text-center mt-3" style="font-size: calc(1.5rem + 1vw);">This part is currently under construction! ??</h1>
-                            </div>
-                        </section>
-                    </section>
+                  
 
                       <!-- Recommended for you -->
                 <section class="block_area block_area_category">

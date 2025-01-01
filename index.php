@@ -37,7 +37,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
     <link rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css?v=<?= $version ?>">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css?v=<?= $version ?>">
-    <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/home.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/landing.css?v=<?= $version ?>">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
