@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 session_start();
 
 if(isset($_COOKIE['userID'])){
-  header('location:../../home');
+  header('location:/home');
   exit();
 }
 
@@ -28,14 +28,14 @@ if(isset($_POST['submit']) || isset($_POST['anilist_login'])){
           
           if(isset($_GET['animeId'])){
               $animeId = $_GET['animeId'];
-              header('location:../anime/'.$animeId);
+              header('location:/anime/'.$animeId);
               exit();
           } elseif(isset($_GET['redirect'])) {
               $redirectUrl = $_GET['redirect'];
               header('location:'.$redirectUrl);
               exit();
           } else {
-              header('location:../../home');
+              header('location:/home');
               exit();
           }
       } else {
@@ -130,7 +130,7 @@ cssFiles.forEach(file => {
 <body data-page="page_login">
   <div id="sidebar_menu_bg"></div>
   <div id="wrapper" data-page="page_home">
-    <?php include('../component/header.php')?>
+    <?php include('src/component/header.php')?>
     <div class="clearfix"></div>
     <div id="main-wrapper" class="layout-page layout-page-404">
       <div class="container">
@@ -171,7 +171,7 @@ cssFiles.forEach(file => {
         <div class="clearfix"></div>
       </div>
     </div>
-    <?php include '../component/footer.php'; ?>
+    <?php include 'src/component/footer.php'; ?>
     <div id="mask-overlay"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
