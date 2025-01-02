@@ -13562,7 +13562,16 @@ span#AddMalDiv #AddMal {
         font-size: 13px
     }
 }
-
+@media screen and (max-width: 600px) and (min-width:400px) {
+    .tick{
+        padding-left:65px
+    }
+}
+@media screen and (max-width: 400px) and (min-width:100px) {
+    .tick{
+        padding-left:50px
+    }
+}
 @media screen and (max-width: 1640px) and (min-width:1300px) {
     .player-controls .pc-right .pc-item .btn {
         font-size:0
