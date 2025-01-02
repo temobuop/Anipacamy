@@ -19,6 +19,7 @@ function fetchApi($url) {
 
 $category = basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 $page = max(1, (int)($_GET['page'] ?? 1));
+$currentPage = $page;
 
 $letter = ($category === 'az-list') ? '' : str_replace('az-list/', '', $category);
 
