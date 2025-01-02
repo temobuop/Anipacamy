@@ -37,13 +37,20 @@ button[type="submit"]:hover {
 }
 
 .film_list-wrap {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
-    gap: 20px;
-    justify-items: start;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0px;
 }
 
 .flw-item {
     width: 100%;
     max-width: 185px;
+}
+.block_area-content.block_area-list.film_list.film_list-grid::before {
+    content: none; /* Remove the pseudo-element */
+}
+
+.block_area-content.block_area-list.film_list.film_list-grid {
+    padding: 0; /* Remove or adjust padding */
 }
