@@ -4,11 +4,7 @@
     <div class="sb-setting">
         <div class="header-setting">
             <div class="hs-toggles">
-                <a href="<?= $websiteUrl ?>/manga" class="hst-item" data-toggle="tooltip" onclick="return false;"
-                    data-original-title="Select Manga List">
-                    <div class="hst-icon"><i class="fa-solid fa-book"></i></div>
-                    <div class="name"><span>Manga</span></div>
-                </a>
+               
                 <a href="<?= $websiteUrl ?>/popular" class="hst-item" data-toggle="tooltip"
                     data-original-title="Popular Anime List">
                     <div class="hst-icon"><i class="fas fa-star"></i></div>
@@ -165,24 +161,20 @@
                     <div class="item"><a href="<?= $discord ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-discord"></i></a></div>
                     <div class="item"><a href="<?= $facebook ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-facebook"></i></a></div>
                     <div class="item"><a href="<?= $twitter ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-twitter"></i></a></div>
-                    <div class="item"><a href="<?= $github ?>" target="_blank" class="zr-social-button gh-btn"><i class="fab fa-github"></i></a></div>
+                    <div class="item"><a href="<?= $github ?>/Anipaca" target="_blank" class="zr-social-button gh-btn"><i class="fab fa-github"></i></a></div>
                 </div>
                 <div class="clearfix"></div>
             </div>
         </div>
         <div class="header-setting">
             <div class="hs-toggles">
-                <a href="<?= $websiteUrl ?>/manga" class="hst-item" data-toggle="tooltip"
-                    data-original-title="Select Manga List">
-                    <div class="hst-icon"><i class="fa-solid fa-book"></i></div>
-                    <div class="name"><span>Manga</span></div>
-                </a>
-                <a href="<?= $websiteUrl ?>/popular" class="hst-item" data-toggle="tooltip"
+                
+                <a href="<?= $websiteUrl ?>/anime/most-popular" class="hst-item" data-toggle="tooltip"
                     data-original-title="Popular Anime List">
                     <div class="hst-icon"><i class="fas fa-star"></i></div>
                     <div class="name"><span>Popular</span></div>
                 </a>
-                <a href="<?= $websiteUrl ?>/movies" class="hst-item" data-toggle="tooltip"
+                <a href="<?= $websiteUrl ?>/anime/movie" class="hst-item" data-toggle="tooltip"
                     data-original-title="Anime Movies">
                     <div class="hst-icon"><i class="fas fa-film"></i></div>
                     <div class="name"><span>Movie</span></div>
