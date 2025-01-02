@@ -439,54 +439,7 @@ $totalVotes = $like_count + $dislike_count;
                                         </div>
                                     </div>
                                     
-                                        <!--    <php-->
-                                        <!--$likeClass = "far";-->
-                                        <!--if (isset($_COOKIE['like_' . $id])) {-->
-                                        <!--    $likeClass = "fas";-->
-                                        <!--}-->
-
-                                        <!--$dislikeClass = "far";-->
-                                        <!--if (isset($_COOKIE['dislike_' . $id])) {-->
-                                        <!--    $dislikeClass = "fas";-->
-                                        <!--}-->
-                                        <!--?>-->
-                                        <!--<div class="dt-rate">-->
-                                        <!--    <div id="vote-info">-->
-                                        <!--        <div class="block-rating">-->
-                                        <!--            <div class="rating-result">-->
-                                        <!--                <div class="rr-mark float-left">-->
-                                        <!--                    <strong><i class="fas fa-star text-warning mr-2"></i><span-->
-                                        <!--                            id="ratingAnime"><?= round((10 * $like_count + 5 * $dislike_count) / ($like_count + $dislike_count), 2) ?></span></strong>-->
-                                        <!--                    <small id="votedCount">(-->
-                                        <!--                        <php-->
-                                        <!--                        if (isset($totalVotes)) {-->
-                                        <!--                            echo $totalVotes;-->
-                                        <!--                        } ?> Voted)-->
-                                        <!--                    </small>-->
-                                        <!--                </div>-->
-                                        <!--                <div class="rr-title float-right">Vote now</div>-->
-                                        <!--                <div class="clearfix"></div>-->
-                                        <!--            </div>-->
-                                        <!--            <div class="description">What do you think about this anime?</div>-->
-                                        <!--            <div class="button-rate">-->
-                                        <!--                <button type="button"-->
-                                        <!--                    onclick="setLikeDislike('dislike','<?= $id ?>')"-->
-                                        <!--                    class="btn btn-emo rate-bad btn-vote" style="width:50%"-->
-                                        <!--                    data-mark="dislike"><i id="dislike"-->
-                                        <!--                        class="<?php echo $dislikeClass ?> fa-thumbs-down">-->
-                                        <!--                    </i><span id="dislikeMsg"-->
-                                        <!--                        class="ml-2">Dislike</span></button>-->
-                                        <!--                <button onclick="setLikeDislike('like','<?= $id ?>')"-->
-                                        <!--                    type="button" class="btn btn-emo rate-good btn-vote"-->
-                                        <!--                    style="width:50%"><i id="like"-->
-                                        <!--                        class="<?php echo $likeClass ?> fa-thumbs-up"> </i><span-->
-                                        <!--                        id="likeMsg" class="ml-2">Like</span></button>-->
-                                        <!--                <div class="clearfix"></div>-->
-                                        <!--            </div>-->
-                                        <!--            <div class="clearfix"></div>-->
-                                        <!--        </div>-->
-                                        <!--    </div>-->
-                                        <!--</div>-->
+                                       
                                     
                                     <div class="dt-rate">
                                         <div id="vote-info">
