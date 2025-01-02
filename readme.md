@@ -12,7 +12,6 @@
   <hr />
 </p>
 
-
 #### NOTE:
 
 * This's an **Educational** Project.
