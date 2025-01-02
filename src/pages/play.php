@@ -42,7 +42,33 @@ if (!$animeData) {
     exit;
 }
 
+$parts = parse_url($_SERVER['REQUEST_URI']);
+$page_url = explode('/', $parts['path']);
+$url = $page_url[count($page_url) - 1];
 
+$pageID = $url;
+
+$CurPageURL = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+$pageUrl = $CurPageURL;
+
+//check for count
+$query = mysqli_query($conn, "SELECT * FROM `pageview` WHERE pageID = '$pageID'");
+$rows = mysqli_fetch_array($query);
+$counter = $rows['totalview'];
+
+$id = $rows['id'];
+if (empty($counter)) {
+    $counter = 1;
+    mysqli_query($conn, "INSERT INTO `pageview` (pageID,totalview,like_count,dislike_count,animeID) VALUES('$pageID','$counter','1','0','$animeID')");
+    header('Location: //' . $pageUrl);
+};
+
+//increase counters by 1 on page load
+$counter = $counter + 1;
+mysqli_query($conn, "UPDATE `pageview` SET totalview ='$counter' WHERE pageID = '$pageID'");
+$like_count = $rows['like_count'];
+$dislike_count = $rows['dislike_count'];
+$totalVotes = $like_count + $dislike_count;
 
 ?>
 
@@ -390,8 +416,15 @@ if (!$animeData) {
                                                 <span class="item"><?= htmlspecialchars($animeData['showType']) ?></span>
                                                 <span class="dot"></span>
                                                 <span class="item"><?= htmlspecialchars($animeData['duration']) ?></span>
+                                                <span class="dot"></span>
+                                                <div class="tac tick-item tick-dub">
+                                                <?php if ($counter) {
+                                                    echo "VIEWS: " . $counter;
+                                                }
+                                                ; ?>
+                                                </div>
                                                 <div class="clearfix"></div>
-                                            </div>
+                                                </div>
                                         </div>
                                         <div class="film-description m-hide">
                                             <div class="text">
@@ -405,6 +438,56 @@ if (!$animeData) {
                                             <a href="/details/<?= htmlspecialchars($animeData['id']) ?>" class="btn btn-xs btn-light">View detail</a>
                                         </div>
                                     </div>
+                                    
+                                        <!--    <php-->
+                                        <!--$likeClass = "far";-->
+                                        <!--if (isset($_COOKIE['like_' . $id])) {-->
+                                        <!--    $likeClass = "fas";-->
+                                        <!--}-->
+
+                                        <!--$dislikeClass = "far";-->
+                                        <!--if (isset($_COOKIE['dislike_' . $id])) {-->
+                                        <!--    $dislikeClass = "fas";-->
+                                        <!--}-->
+                                        <!--?>-->
+                                        <!--<div class="dt-rate">-->
+                                        <!--    <div id="vote-info">-->
+                                        <!--        <div class="block-rating">-->
+                                        <!--            <div class="rating-result">-->
+                                        <!--                <div class="rr-mark float-left">-->
+                                        <!--                    <strong><i class="fas fa-star text-warning mr-2"></i><span-->
+                                        <!--                            id="ratingAnime"><?= round((10 * $like_count + 5 * $dislike_count) / ($like_count + $dislike_count), 2) ?></span></strong>-->
+                                        <!--                    <small id="votedCount">(-->
+                                        <!--                        <php-->
+                                        <!--                        if (isset($totalVotes)) {-->
+                                        <!--                            echo $totalVotes;-->
+                                        <!--                        } ?> Voted)-->
+                                        <!--                    </small>-->
+                                        <!--                </div>-->
+                                        <!--                <div class="rr-title float-right">Vote now</div>-->
+                                        <!--                <div class="clearfix"></div>-->
+                                        <!--            </div>-->
+                                        <!--            <div class="description">What do you think about this anime?</div>-->
+                                        <!--            <div class="button-rate">-->
+                                        <!--                <button type="button"-->
+                                        <!--                    onclick="setLikeDislike('dislike','<?= $id ?>')"-->
+                                        <!--                    class="btn btn-emo rate-bad btn-vote" style="width:50%"-->
+                                        <!--                    data-mark="dislike"><i id="dislike"-->
+                                        <!--                        class="<?php echo $dislikeClass ?> fa-thumbs-down">-->
+                                        <!--                    </i><span id="dislikeMsg"-->
+                                        <!--                        class="ml-2">Dislike</span></button>-->
+                                        <!--                <button onclick="setLikeDislike('like','<?= $id ?>')"-->
+                                        <!--                    type="button" class="btn btn-emo rate-good btn-vote"-->
+                                        <!--                    style="width:50%"><i id="like"-->
+                                        <!--                        class="<?php echo $likeClass ?> fa-thumbs-up"> </i><span-->
+                                        <!--                        id="likeMsg" class="ml-2">Like</span></button>-->
+                                        <!--                <div class="clearfix"></div>-->
+                                        <!--            </div>-->
+                                        <!--            <div class="clearfix"></div>-->
+                                        <!--        </div>-->
+                                        <!--    </div>-->
+                                        <!--</div>-->
+                                    
                                     <div class="dt-rate">
                                         <div id="vote-info">
                                             <div class="block-rating">
