@@ -156,7 +156,7 @@ $banner = $websiteUrl . "/public/images/banner.png";
 
 # 🌐 Launch Your Website Today!  
 
-[![Get Started](https://via.placeholder.com/150x50/0078D4/FFFFFF?text=Get+Started)](https://tohost.in)
+[![Get Started](https://img.shields.io/badge/Click%20Here-blue?style=for-the-badge)](https://tohost.in)
 
 
 <!-- ROADMAP -->
