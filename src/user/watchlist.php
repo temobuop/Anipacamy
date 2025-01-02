@@ -17,33 +17,50 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 
-// Pagination logic
-$page = $_GET['page'] ?? 1; // Default to page 1 if not set
-$items_per_page = 10; // Adjust as per your need
-$offset = ($page - 1) * $items_per_page; // Calculate offset
 
-// Site Watchlist SQL
+$page = $_GET['page'] ?? 1;
+$items_per_page = 10; 
+$offset = ($page - 1) * $items_per_page; 
+
+$status = $_GET['status'] ?? 'All'; 
+$safeStatus = htmlspecialchars($status ?? '', ENT_QUOTES, 'UTF-8');
+
+// Map status to type values
+$statusMap = [
+    'Watching' => 1,
+    'On-Hold' => 2,
+    'Plan to Watch' => 3,
+    'Dropped' => 4,
+    'Completed' => 5
+];
+
+$type = $statusMap[$status] ?? null;
+
 $site_watchlist_sql = "SELECT * FROM watchlist WHERE user_id = ?";
+if ($type !== null) {
+    $site_watchlist_sql .= " AND type = ?";
+}
 $site_watchlist_sql .= " LIMIT ? OFFSET ?";
 
-// Preparing the statement
+
 $site_stmt = $conn->prepare($site_watchlist_sql);
-$site_stmt->bind_param("iii", $user_id, $items_per_page, $offset);
+if ($type !== null) {
+    $site_stmt->bind_param("iiii", $user_id, $type, $items_per_page, $offset);
+} else {
+    $site_stmt->bind_param("iii", $user_id, $items_per_page, $offset);
+}
 $site_stmt->execute();
 $site_watchlist_result = $site_stmt->get_result();
 
-// Counting the total items in the watchlist
+
 $count_site_sql = "SELECT COUNT(*) as total FROM watchlist WHERE user_id = ?";
 $count_site_stmt = $conn->prepare($count_site_sql);
 $count_site_stmt->bind_param("i", $user_id);
 $count_site_stmt->execute();
 $total_site_items = $count_site_stmt->get_result()->fetch_assoc()['total'];
 
-// Calculate total pages based on items per page
-$total_pages = ceil($total_site_items / $items_per_page);
 
-$status = $_GET['status'] ?? 'All'; // Default status
-$safeStatus = htmlspecialchars($status ?? '', ENT_QUOTES, 'UTF-8');
+$total_pages = ceil($total_site_items / $items_per_page);
 ?>
 
 
@@ -197,15 +214,15 @@ $safeStatus = htmlspecialchars($status ?? '', ENT_QUOTES, 'UTF-8');
                         <a class="nav-link dropdown-toggle" href="#" id="statusDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Status: <?= htmlspecialchars($status) ?>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="statusDropdown">
-                            <a class="dropdown-item <?= $status == 'All' ? 'active' : '' ?>" href="?status=All">All</a>
-                            <a class="dropdown-item <?= $status == 'Watching' ? 'active' : '' ?>" href="?status=CURRENT">Watching</a>
-                            <a class="dropdown-item <?= $status == 'Rewatching' ? 'active' : '' ?>" href="?status=Rewatching">Rewatching</a>
-                            <a class="dropdown-item <?= $status == 'Completed' ? 'active' : '' ?>" href="?status=Completed">Completed</a>
-                            <a class="dropdown-item <?= $status == 'Paused' ? 'active' : '' ?>" href="?status=Paused">Paused</a>
-                            <a class="dropdown-item <?= $status == 'Dropped' ? 'active' : '' ?>" href="?status=Dropped">Dropped</a>
-                            <a class="dropdown-item <?= $status == 'Planning' ? 'active' : '' ?>" href="?status=Planning">Plan to Watch</a>
-                        </div>
+                       
+                    <div class="dropdown-menu" aria-labelledby="statusDropdown">
+                        <a class="dropdown-item <?= $status == 'Watching' ? 'active' : '' ?>" href="?status=Watching">Watching</a>
+                        <a class="dropdown-item <?= $status == 'On-Hold' ? 'active' : '' ?>" href="?status=On-Hold">On-Hold</a>
+                        <a class="dropdown-item <?= $status == 'Plan to Watch' ? 'active' : '' ?>" href="?status=Plan to Watch">Plan to Watch</a>
+                        <a class="dropdown-item <?= $status == 'Dropped' ? 'active' : '' ?>" href="?status=Dropped">Dropped</a>
+                        <a class="dropdown-item <?= $status == 'Completed' ? 'active' : '' ?>" href="?status=Completed">Completed</a>
+                       </div>
+
                     </li>
                 </ul>
                 <div class="clearfix"></div>
