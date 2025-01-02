@@ -1,109 +1,206 @@
 <p align="center">
+  <a href="https://github.com/PacaHat/Anipaca">
+    <img 
+      src="https://raw.githubusercontent.com/PacaHat/Anipaca/refs/heads/main/public/logo/Untitled255_20241231223556.png" 
+      alt="anipaca_mascot" 
+      width="275" 
+      height="275"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </a>
+</p>
+
+# <p align="center"> <img src="public/logo/logo.png?v=0.1" alt="Logo" width="50%" height="50%"></p>
+
+<p align="center">
   <div align="center">
-    <a href="https://dpaca.rf.gd/">
-      <img src="public/logo/logo.png?v=0.1" alt="Logo" width="50%" height="50%">
-    </a>
-    <h3>(<a href="https://hianime.to/">Hianime.to</a> Clone) Anipaca - Watch High Quality Anime Online</h3>
+    <h3><s>(<a href="https://hianime.to/">Hianime.to</a> Clone)</s> Anipaca - Watch High Quality Anime Online</h3>
     <a href="https://discord.gg/aVvqx77RGs">
-      <img src="https://img.shields.io/discord/1012901585896087652?label=discord&logo=discord&color=5460e6&style=flat-square&labelColor=2b2f35">
+      <img src="https://img.shields.io/discord/1012901585896087652?label=&logo=discord&color=5460e6&style=flat-square&labelColor=2b2f35">
+    </a>
+ <a href="https://github.com/PacaHat/Anipaca/graphs/contributors">
+      <img src="https://img.shields.io/github/contributors/PacaHat/Anipaca">
+    </a>
+     </a>
+ <a href="https://github.com/PacaHat/Anipaca/forks">
+      <img src="https://img.shields.io/github/forks/PacaHat/Anipaca">
+    </a>
+     <a href="https://github.com/PacaHat/Anipaca/stargazers">
+      <img src="https://img.shields.io/github/stars/PacaHat/Anipaca">
+    </a>
+    <a href="https://github.com/PacaHat/Anipaca/issues">
+      <img src="https://img.shields.io/github/issues/PacaHat/Anipaca">
     </a>
   </div>
-
   <hr />
 </p>
 
+> [!IMPORTANT]
+>
+> 1. [Pre built codebase](https://github.com/PacaHat/Anipaca/tree/demo)
+ is only meant to help you get a starting point the API's has rate-limiting enabled to minimize bandwidth consumption. It is recommended to deploy your own instance for personal use by customizing the API as you need it to be.
+> 2. This website is just an unofficial clone of [hianime.to](https://hianime.to) But both share same database.
+> 3. The content that this website provides is not mine, nor is it hosted by me. These belong to their respective owners. This website just demonstrates how to build an ANIME WEBSITE .
 
-#### NOTE:
-
-* This's an **Educational** Project.
-* I am **NOT** promoting the use of free anime websites by any means.
-* Open Source :)
-* And you can host it totally free ...(*￣０￣)ノ
-<p align="center">
-  <h1 align="center">Anime Website</h1>
-  Demo: <a href="https://dpaca.rf.gd/">https://anipaca.fun/</a> <br>
-  This is a PHP application used for browsing, searching, and watching anime. The application is built on top of GogoAnimeAPI. 
-</p>
-
-
-## Screenshots
-
-<div style="display: flex; flex-wrap: nowrap; gap: 5px;">
-  <img src="public/images/image1.png" alt="Screenshot 1" style="width: 28%;"/>
-  <img src="public/images/image2.png" alt="Screenshot 2" style="width: 28%;"/>
-  <img src="public/images/image3.png" alt="Screenshot 3" style="width: 28%;"/>
-  <img src="public/images/image4.png" alt="Screenshot 4" style="width: 28%;"/>
-  <img src="public/images/image5.png" alt="Screenshot 5" style="width: 28%;"/>
-</div>
-
-
-
-<hr/>
-
-## Features 
---> No Annoying Video Ads<br>
---> Episode Title<br>
---> Stream in 1080p, 720p, 480p and 360p<br>
---> Supported Devices: PCs, Laptops, Tablets, Android and iOS mobile, smart TVs, and much more.<br>
---> Responsive<br>
---> Anime Available Based on Genres, Seasons and more<br>
---> Anilist integration maybe in future <br>
---> and many moreeee...
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+  </ol>
+</details>
 
 
 
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-## Requirements
---> **Before running check .htaccess file is present in root dir**
-<br>
---> Php environment or Directly Upload the code on php supported hosting (No editing Required Just Upload and Enjoy)
-<br>
---> **To Update Website Info (Website name, logo, favicon, socials url) Edit `_config.php` file**
-<br>
+![Product Name Screen Shot](https://raw.githubusercontent.com/PacaHat/Anipaca/refs/heads/main/public/images/banner.png "Product Screenshot")
+
+
+<details>
+  <summary><strong>Anipaca</strong> - Click to expand</summary>
+  <p>
+     **Anipaca** is an open-source anime streaming website that provides a high-quality anime viewing experience. Built on top of the HiAnimeAPI, this PHP application offers a range of features designed for anime enthusiasts.
+  </p>
+  <h3>Why You Should Use Anipaca</h3>
+  <ul>
+    <li><strong>Ad-Free Experience</strong>: Enjoy watching anime without annoying video ads.</li>
+    <li><strong>High-Quality Streaming</strong>: Stream your favorite shows in 1080p, 720p, 480p, and 360p.</li>
+    <li><strong>Device Compatibility</strong>: Access the platform on PCs, laptops, tablets, mobile devices, and smart TVs.</li>
+    <li><strong>Extensive Browsing Options</strong>: Easily browse, search, and watch anime based on genres, seasons, and more.</li>
+    <li><strong>Future Integration</strong>: Potential integration with Anilist for enhanced features.</li>
+  </ul>
+  <p>Explore Anipaca and elevate your anime streaming experience!</p>
+</details>
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+This is an example of how you may give instructions on setting up your project on cPanle.
+To get a website running up follow these simple example steps.
+
+
+### API That you need
+
+| API Name     | Deploy Link                                                                                              | Example API Link                                     |
+|--------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| Hianime API  | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ghoshRitesh12/aniwatch-api)  | `GET https://hianime-psi.vercel.app/`        |
+| Zenime API   | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/itzzzme/anime-api)          | `GET https://zen-api-brown.vercel.app/`         |
+| M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshashstormer%2Fm3u8_proxy-cors&project-name=m3u8-proxy-cors&repository-name=m3u8-proxy-cors) | `GET https://proxy-pink-three.vercel.app/`     |
+
+
 
 
 
 ## Installation
 
-1. **Clone the repository**:
+1. **Clone or Download the repository**:
    ```bash
    git clone https://github.com/PacaHat/Anipaca.git
    ```
 
-2. **Navigate to the project directory**:
-   ```bash
-   cd Anipaca
-   ```
-
-3. **Set up the database**:
+2. **Set up the database**:
    - Import the provided SQL file into your MySQL database.
    - Update the database connection details in `_config.php`.
-   - 
 
-4. **Set up api**:
-  - [HiAnime API](https://github.com/ghoshRitesh12/aniwatch-api)
-  - [Zen API](https://github.com/itzzzme/anime-api)
-  - [M3U8 Proxy](https://github.com/itzzzme/m3u8proxy)
+3.  **Set up the database**:
+   ```bash
+<?php
+// Database connection
+$conn = new mysqli("HOSTNAME", "USERNAME", "PASSWORD", "DATABASE");
 
-## Community
+if ($conn->connect_error) {
+    error_log("Database connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
+}
 
-Join our community and stay connected:
+// Website settings
+$websiteTitle = "AniPaca";
+$websiteUrl = "//{$_SERVER['SERVER_NAME']}";
+$websiteLogo = $websiteUrl . "/public/logo/logo.png";
+$contactEmail = "@gmail.com";
 
-- **Discord**: [Join our Discord server](https://discord.gg/aVvqx77RGs)
-- **Twitter**: [Follow us on Twitter](https://x.com/PacaHat)
-- **Facebook**: [Like our Facebook page](https://www.facebook.com/pxr15)
-- **Instagram**: [Follow us on Instagram](https://instagram.com/pxr15_)
+$version = "0.1";
+
+// Social links
+$discord = "https://discord.gg/aVvqx77RGs";
+$github = "https://github.com/PacaHat";
+$twitter = "https://x.com/PacaHat";
+
+// API endpoints
+$api = "your-hosted-api.com/api/v2/hianime"; // Use this in src/component/qtip.php
+$zpi = "your-hosted-api.com/api"; // Anime API
+$proxy = "your-hosted-proxy.com/cors?url="; // CORS Proxy
+
+// Banner image
+$banner = $websiteUrl . "/public/images/banner.png";
+?>
+ ```
+
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [x] Add Comment section
+- [ ] Add Admin panel for better management
+- [x] Add PHP routing system to avoid htaccess error
+- [ ] Add Multiple video sources
+- [ ] Anime download
+- [ ] Multi-language Support
+    - [ ] Hindi
+    - [ ] Spanish
+- [ ] **Need more features? Create a request on our Discord server!** [Join here](https://discord.gg/aVvqx77RGs)
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+
+### Top contributors:
+<a href="https://github.com/PacaHat/Anipaca/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PacaHat/Anipaca" alt="Contributors" />
+</a>
 
 ## Contributing
 
-We welcome contributions from the community. Please fork the repository and submit a pull request for any improvements or bug fixes. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-## Acknowledgments
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-- Special thanks to the developers of the APIs we use.
-- Thanks to our community for their continuous support and feedback.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
----
 
-Thank you for using AniPaca! We hope you enjoy your anime streaming experience.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+
+
+
+
+
 
