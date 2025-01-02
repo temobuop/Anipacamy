@@ -11,8 +11,8 @@
                         <div class="zrg-list">
                     <div class="item"><a href="<?=$discord?>" target="_blank"
                             class="zr-social-button dc-btn"><i class="fab fa-discord"></i></a></div>
-                  <div class="item"><a href="<?= $instagram ?>" target="_blank" class="zr-social-button gh-btn"><i
-                                class="fab fa-instagram"></i></a></div>
+                  <div class="item"><a href="<?= $github ?>" target="_blank" class="zr-social-button gh-btn"><i
+                                class="fab fa-github"></i></a></div>
                             <div class="item"><a href="<?= $facebook ?>" target="_blank" class="zr-social-button dc-btn"><i
                                         class="fab fa-facebook"></i></a></div>
                         </div>
