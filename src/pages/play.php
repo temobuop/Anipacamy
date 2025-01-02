@@ -42,34 +42,6 @@ if (!$animeData) {
     exit;
 }
 
-$parts = parse_url($_SERVER['REQUEST_URI']);
-$page_url = explode('/', $parts['path']);
-$url = $page_url[count($page_url) - 1];
-
-$pageID = $url;
-
-$CurPageURL = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-$pageUrl = $CurPageURL;
-
-//check for count
-$query = mysqli_query($conn, "SELECT * FROM `pageview` WHERE pageID = '$pageID'");
-$rows = mysqli_fetch_array($query);
-$counter = $rows['totalview'];
-
-$id = $rows['id'];
-if (empty($counter)) {
-    $counter = 1;
-    mysqli_query($conn, "INSERT INTO `pageview` (pageID,totalview,like_count,dislike_count,animeID) VALUES('$pageID','$counter','1','0','$animeID')");
-    header('Location: //' . $pageUrl);
-};
-
-//increase counters by 1 on page load
-$counter = $counter + 1;
-mysqli_query($conn, "UPDATE `pageview` SET totalview ='$counter' WHERE pageID = '$pageID'");
-$like_count = $rows['like_count'];
-$dislike_count = $rows['dislike_count'];
-$totalVotes = $like_count + $dislike_count;
-
 ?>
 
 
@@ -417,12 +389,6 @@ $totalVotes = $like_count + $dislike_count;
                                                 <span class="dot"></span>
                                                 <span class="item"><?= htmlspecialchars($animeData['duration']) ?></span>
                                                 <span class="dot"></span>
-                                                <div class="tac tick-item tick-dub">
-                                                <?php if ($counter) {
-                                                    echo "VIEWS: " . $counter;
-                                                }
-                                                ; ?>
-                                                </div>
                                                 <div class="clearfix"></div>
                                                 </div>
                                         </div>
