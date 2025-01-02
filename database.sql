@@ -95,6 +95,24 @@ CREATE TABLE `watch_history` (
     PRIMARY KEY(`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
+
+
+CREATE TABLE `pageview` (
+  `id` int(255) NOT NULL,
+  `pageID` varchar(250) NOT NULL,
+  `totalview` bigint(20) NOT NULL,
+  `like_count` int(11) NOT NULL,
+  `dislike_count` int(11) NOT NULL,
+  `animeID` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+
+
+ALTER TABLE `pageview`
+  ADD PRIMARY KEY (`id`);
+--
+ALTER TABLE `pageview`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16141;
+
 -- Add foreign key constraints
 ALTER TABLE `comments`
 ADD CONSTRAINT `fk_comments_parent` FOREIGN KEY(`parent_id`) REFERENCES `comments`(`id`) ON DELETE CASCADE,
