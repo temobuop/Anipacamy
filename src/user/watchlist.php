@@ -42,7 +42,6 @@ if ($type !== null) {
 }
 $site_watchlist_sql .= " LIMIT ? OFFSET ?";
 
-
 $site_stmt = $conn->prepare($site_watchlist_sql);
 if ($type !== null) {
     $site_stmt->bind_param("iiii", $user_id, $type, $items_per_page, $offset);
@@ -216,6 +215,7 @@ $total_pages = ceil($total_site_items / $items_per_page);
                         </a>
                        
                     <div class="dropdown-menu" aria-labelledby="statusDropdown">
+                        <a class="dropdown-item <?= $status == 'All' ? 'active' : '' ?>" href="?status=All">All</a>
                         <a class="dropdown-item <?= $status == 'Watching' ? 'active' : '' ?>" href="?status=Watching">Watching</a>
                         <a class="dropdown-item <?= $status == 'On-Hold' ? 'active' : '' ?>" href="?status=On-Hold">On-Hold</a>
                         <a class="dropdown-item <?= $status == 'Plan to Watch' ? 'active' : '' ?>" href="?status=Plan to Watch">Plan to Watch</a>
