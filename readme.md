@@ -56,16 +56,12 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -87,17 +83,6 @@
 - **Future Integration**: Potential integration with Anilist for enhanced features.
 
 Explore Anipaca and elevate your anime streaming experience!
-
-
-
-
-### Built With
-
-
-* ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white) 
-* ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) 
-* ![CSS](https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white) 
-* ![Hack](https://img.shields.io/badge/Hack-000000?style=for-the-badge&logo=hack&logoColor=white) 
 
 
 <!-- GETTING STARTED -->
@@ -130,6 +115,40 @@ To get a website running up follow these simple example steps.
    - Import the provided SQL file into your MySQL database.
    - Update the database connection details in `_config.php`.
 
+3.  **Set up the database**:
+   ```bash
+<?php
+// Database connection
+$conn = new mysqli("HOSTNAME", "USERNAME", "PASSWORD", "DATABASE");
+
+if ($conn->connect_error) {
+    error_log("Database connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Website settings
+$websiteTitle = "AniPaca";
+$websiteUrl = "//{$_SERVER['SERVER_NAME']}";
+$websiteLogo = $websiteUrl . "/public/logo/logo.png";
+$contactEmail = "@gmail.com";
+
+$version = "0.1";
+
+// Social links
+$discord = "https://discord.gg/aVvqx77RGs";
+$github = "https://github.com/PacaHat";
+$twitter = "https://x.com/PacaHat";
+
+// API endpoints
+$api = "your-hosted-api.com/api/v2/hianime"; // Use this in src/component/qtip.php
+$zpi = "your-hosted-api.com/api"; // Anime API
+$proxy = "your-hosted-proxy.com/cors?url="; // CORS Proxy
+
+// Banner image
+$banner = $websiteUrl . "/public/images/banner.png";
+?>
+ ```
+
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -150,6 +169,12 @@ To get a website running up follow these simple example steps.
 
 
 <!-- CONTRIBUTING -->
+
+### Top contributors:
+<a href="https://github.com/PacaHat/Anipaca/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PacaHat/Anipaca" alt="Contributors" />
+</a>
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -163,35 +188,12 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-### Top contributors:
-<a href="https://github.com/PacaHat/Anipaca/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=PacaHat/Anipaca" alt="Contributors" />
-</a>
-
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-<!-- LICENSE -->
-## License
 
-Distributed under the Unlicense License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-<a href="https://discord.gg/aVvqx77RGs">
-      <img src="https://img.shields.io/discord/1012901585896087652?label=&logo=discord&color=5460e6&style=flat-square&labelColor=2b2f35">
-    </a>
-    
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
