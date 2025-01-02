@@ -3,21 +3,19 @@
 require_once('src/component/qtip.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $urlPath = $_SERVER['REQUEST_URI'];
 
-$streaming = ltrim($urlPath, '/play/'); 
+$streaming = ltrim($urlPath, '/play/');
 
 $parts = explode('?', $streaming);
-$animeId = $parts[0]; 
+$animeId = $parts[0];
 
 parse_str($parts[1] ?? '', $queryParams);
-$episodeId = $queryParams['ep'] ?? null; 
+$episodeId = $queryParams['ep'] ?? null;
 $animeData = fetchAnimeData($animeId);
-
 
 $episodelistUrl = "$api/anime/$animeId/episodes";
 $episodelistResponse = file_get_contents($episodelistUrl);
@@ -25,9 +23,9 @@ $episodelistData = json_decode($episodelistResponse, true);
 
 $episodelist = [];
 
-if (isset($episodelistData['success']) && 
+if (!empty($episodelistData['success']) && 
     $episodelistData['success'] === true && 
-    isset($episodelistData['data']['episodes'])) {
+    !empty($episodelistData['data']['episodes'])) {
     $episodelist = $episodelistData['data']['episodes'];
 }
 
@@ -41,6 +39,49 @@ if (!$animeData) {
     echo "Anime data not found.";
     exit;
 }
+
+$parts = parse_url($_SERVER['REQUEST_URI']);
+$page_url = explode('/', $parts['path']);
+$url = end($page_url);
+
+$pageID = $url;
+
+if (!isset($_SESSION['viewed_pages'])) {
+    $_SESSION['viewed_pages'] = [];
+}
+$counter = 1; 
+if (!in_array($pageID, $_SESSION['viewed_pages'])) {
+    $query = mysqli_query($conn, "SELECT * FROM `pageview` WHERE pageID = '$pageID'");
+    if (!$query) {
+        echo "Database query failed: " . mysqli_error($conn);
+        exit;
+    }
+    $rows = mysqli_fetch_array($query);
+    $counter = $rows['totalview'] ?? 0; 
+    $id = $rows['id'] ?? null;
+    if ($counter === 0) {
+        $counter = 1;
+        $insertQuery = mysqli_query($conn, "INSERT INTO `pageview` (pageID, totalview, like_count, dislike_count, animeID) VALUES('$pageID', '$counter', '1', '0', '$animeId')");       
+        if (!$insertQuery) {
+            echo "Failed to insert pageview count: " . mysqli_error($conn);
+            exit;
+        }      
+        header('Location: //' . $pageUrl);
+        exit; 
+    } else {
+        $counter++;
+        $updateQuery = mysqli_query($conn, "UPDATE `pageview` SET totalview = '$counter' WHERE pageID = '$pageID'");
+        if (!$updateQuery) {
+            echo "Failed to update pageview count: " . mysqli_error($conn);
+            exit;
+        }
+    }
+    $_SESSION['viewed_pages'][] = $pageID;
+}
+
+$like_count = $rows['like_count'] ?? 0;
+$dislike_count = $rows['dislike_count'] ?? 0;
+$totalVotes = $like_count + $dislike_count;
 
 ?>
 
@@ -389,8 +430,20 @@ if (!$animeData) {
                                                 <span class="dot"></span>
                                                 <span class="item"><?= htmlspecialchars($animeData['duration']) ?></span>
                                                 <span class="dot"></span>
-                                                <div class="clearfix"></div>
+                                                <div class="tac tick-item tick-eps">
+                                                <?php
+                                                $query = mysqli_query($conn, "SELECT totalview FROM `pageview` WHERE pageID = '$pageID'");
+                                                if ($query) {
+                                                    $row = mysqli_fetch_assoc($query);
+                                                    $counter = $row['totalview'] ?? 0;
+                                                    echo "VIEWS: " . $counter;
+                                                } else {
+                                                    echo "Failed to retrieve views.";
+                                                }
+                                                ?>
                                                 </div>
+                                                <div class="clearfix"></div>
+                                                </div> 
                                         </div>
                                         <div class="film-description m-hide">
                                             <div class="text">
