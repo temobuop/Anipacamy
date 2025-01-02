@@ -3,7 +3,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>
         <?= $websiteTitle ?> - Official
