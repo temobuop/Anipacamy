@@ -22,7 +22,7 @@ $twitter = "https://x.com/PacaHat";
 
 $api = "your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api Also use this in src/component/qtip.php
 $zpi = "your-hosted-api.com/api"; //https://github.com/itzzzme/anime-api
-$proxy = "your-hosted-proxy.com/cors?url="; //https://github.com/itzzzme/m3u8proxy
+$proxy = "your-hosted-proxy.com/cors?url="; //https://github.com/shashstormer/m3u8_proxy-cors
 
 
 $banner = $websiteUrl . "/public/images/banner.png";
