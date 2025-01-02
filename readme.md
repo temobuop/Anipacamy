@@ -63,15 +63,6 @@
 
 
 
-## Technologies Used
-
-- **Backend**: PHP, MySQL
-- **Frontend**: HTML, CSS, JavaScript
-- **APIs**: 
-  - [HiAnime API](https://github.com/ghoshRitesh12/aniwatch-api)
-  - [Zen API](https://github.com/itzzzme/anime-api)
-  - [M3U8 Proxy](https://github.com/itzzzme/m3u8proxy)
-
 ## Installation
 
 1. **Clone the repository**:
@@ -87,9 +78,12 @@
 3. **Set up the database**:
    - Import the provided SQL file into your MySQL database.
    - Update the database connection details in `_config.php`.
+   - 
 
-4. **Start the server**:
-   - Use a local server like XAMPP or WAMP to run the project.
+4. **Set up api**:
+  - [HiAnime API](https://github.com/ghoshRitesh12/aniwatch-api)
+  - [Zen API](https://github.com/itzzzme/anime-api)
+  - [M3U8 Proxy](https://github.com/itzzzme/m3u8proxy)
 
 ## Community
 
