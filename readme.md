@@ -154,6 +154,10 @@ $banner = $websiteUrl . "/public/images/banner.png";
 ?>
  ```
 
+# 🌐 Launch Your Website Today!  
+
+[![Get Started](https://via.placeholder.com/150x50/0078D4/FFFFFF?text=Get+Started)](https://tohost.in)
+
 
 <!-- ROADMAP -->
 ## Roadmap
