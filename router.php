@@ -10,7 +10,7 @@ $uri = strtok(trim($_SERVER['REQUEST_URI'], '/'), '?');
 
 // Define routes with regex patterns and associated files
 $routes = [
-    '/^filter$/' => 'filter.php',
+  '/^filter$/' => 'filter.php',
     '/^search$/' => 'search.php',
     '/^home$/' => 'home.php',
     '/^details$/' => 'src/pages/details.php',
@@ -26,6 +26,7 @@ $routes = [
     '/^logout$/' => 'src/user/logout.php',
     '/^profile$/' => 'src/user/profile.php',
     '/^watchlist$/' => 'src/user/watchlist.php',
+    '/^watchlist\.php(?:\?.*)?$/' => 'src/user/watchlist.php',
     '/^changepass$/' => 'src/user/changepass.php',
     '/^continue-watching$/' => 'src/user/continue-watching.php',
     '/^streaming$/' => 'src/pages/streaming.php',
@@ -34,7 +35,8 @@ $routes = [
     '/^watch\/([a-zA-Z0-9\-]+)$/' => 'src/pages/watch.php',
     '/^play\/([a-zA-Z0-9\-]+)$/' => 'src/pages/play.php',
     '/^genre\/([a-zA-Z0-9\-]+)$/' => 'src/pages/genre.php',
-    '/^anilist-callback$/' => 'src/user/anilist-callback.php',
+
+    
     // Sitemap Routes
     '/^sitemaps\/recentCN-sitemap\.xml$/' => 'sitemaps/recentCN-sitemap.php',
     '/^sitemaps\/recentDUB-sitemap\.xml$/' => 'sitemaps/recentDUB-sitemap.php',
