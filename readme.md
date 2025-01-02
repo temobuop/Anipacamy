@@ -72,17 +72,22 @@
 
 ![Product Name Screen Shot](https://raw.githubusercontent.com/PacaHat/Anipaca/refs/heads/main/public/images/banner.png "Product Screenshot")
 
-**Anipaca** is an open-source anime streaming website that provides a high-quality anime viewing experience. Built on top of the HiAnimeAPI, this PHP application offers a range of features designed for anime enthusiasts.
 
-### Why You Should Use Anipaca
-
-- **Ad-Free Experience**: Enjoy watching anime without annoying video ads.
-- **High-Quality Streaming**: Stream your favorite shows in 1080p, 720p, 480p, and 360p.
-- **Device Compatibility**: Access the platform on PCs, laptops, tablets, mobile devices, and smart TVs.
-- **Extensive Browsing Options**: Easily browse, search, and watch anime based on genres, seasons, and more.
-- **Future Integration**: Potential integration with Anilist for enhanced features.
-
-Explore Anipaca and elevate your anime streaming experience!
+<details>
+  <summary><strong>Anipaca</strong> - Click to expand</summary>
+  <p>
+     **Anipaca** is an open-source anime streaming website that provides a high-quality anime viewing experience. Built on top of the HiAnimeAPI, this PHP application offers a range of features designed for anime enthusiasts.
+  </p>
+  <h3>Why You Should Use Anipaca</h3>
+  <ul>
+    <li><strong>Ad-Free Experience</strong>: Enjoy watching anime without annoying video ads.</li>
+    <li><strong>High-Quality Streaming</strong>: Stream your favorite shows in 1080p, 720p, 480p, and 360p.</li>
+    <li><strong>Device Compatibility</strong>: Access the platform on PCs, laptops, tablets, mobile devices, and smart TVs.</li>
+    <li><strong>Extensive Browsing Options</strong>: Easily browse, search, and watch anime based on genres, seasons, and more.</li>
+    <li><strong>Future Integration</strong>: Potential integration with Anilist for enhanced features.</li>
+  </ul>
+  <p>Explore Anipaca and elevate your anime streaming experience!</p>
+</details>
 
 
 <!-- GETTING STARTED -->
