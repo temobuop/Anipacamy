@@ -117,7 +117,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
             <div id="mw-top">
                 <div class="container">
                     <div class="mwt-content">
-                        <div class="mwt-icon"><img src="https://i.postimg.cc/t47G1CN9/In-Shot-20241231-125942835.gif" onerror="this.onerror=null; this.src='<?= $websiteUrl ?>/public/images/zorowaifu.png';">
+                        <div class="mwt-icon"><img src="https://anipaca.fun/public/images/waifu.gif" onerror="this.onerror=null; this.src='<?= $websiteUrl ?>/public/images/zorowaifu.png';">
                         </div>
                         <div class="mwh-logo">
                             <a href="<?= $websiteUrl ?>/home" class="mwh-logo-div">
