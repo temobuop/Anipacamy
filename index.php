@@ -129,7 +129,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
                             <div class="search-content">
                                 <form action="<?= $websiteUrl ?>/search" autocomplete="off" id="search-form">
                                     <div class="search-submit">
-                                        <div class="search-icon btn-search"><i class="fa fa-search"></i></div>
+                                        <div class="search-icon btn-search" id="search-button"><i class="fa fa-search"></i></div>
                                     </div>
                                     <input type="text" class="form-control search-input" name="keyword"
                                         placeholder="Search anime..." required>
@@ -368,7 +368,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js?v=<?= $version ?>"></script>
     <script type="text/javascript"
         src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js?v=<?= $version ?>"></script>
-   
+   <script>
+    document.getElementById('search-button').addEventListener('click', function() {
+        document.getElementById('search-form').submit();
+    });
+</script>
 </body>
 
 </html>
