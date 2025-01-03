@@ -46,9 +46,6 @@ foreach ($data['data']['tracks'] as $track) {
         ];
     }
 }
- // Start of Selection
-
-
 
 if ($isIframe) {
     ?>
@@ -65,8 +62,8 @@ if ($isIframe) {
    
     <script>
         const settings = {
-            autoSkipIntro: false,
-            autoSkipOutro: false
+            autoSkipIntro: true,
+            autoSkipOutro: true
         };
 
         function playM3u8(video, url, art) {
@@ -84,8 +81,6 @@ if ($isIframe) {
             }
         }
 
-
-
         const art = new Artplayer({
             container: '.artplayer-app',
             theme: '#ff9a68',
@@ -101,7 +96,7 @@ if ($isIframe) {
                 setting: '<img src="icons/setting.svg">',
                 pip: '<img src="icons/pip.svg">',
                 fullscreenOn: '<img src="icons/fs-on.svg">',
-                fullscreenOff: '<img src="icons/fs-off.svg">',
+                fullscreenOff: '<img src="icons/fs-on.svg">',
                 volume: '<img src="icons/volumee.svg">',
                 volumeClose: '<img src="icons/vl-close.svg">',
            
@@ -149,9 +144,23 @@ if ($isIframe) {
                         art.subtitle.url = item.url;
                         return item.html;
                     },
+                },
+                {
+                    html: 'Auto Skip',
+                    tooltip: localStorage.getItem('autoSkipEnabled') === 'true' ? '' : '',
+                    icon: '<img width="22" height="22" src="icons/skip.svg">',
+                    switch: true,
+                    default: true,
+                    onSwitch: function(item) {
+                        const isEnabled = !settings.autoSkipIntro;
+                        settings.autoSkipIntro = isEnabled;
+                        settings.autoSkipOutro = isEnabled;
+                        item.tooltip = isEnabled ? '' : '';
+                        localStorage.setItem('autoSkipEnabled', isEnabled);
+                        return isEnabled;
+                    },
                 }
             ],
-            
             plugins: [
 
                 artplayerPluginHlsControl({
@@ -192,8 +201,6 @@ if ($isIframe) {
            
         });
 
-
-
         const fastForwardLayer = art.layers.add({
             html: '<svg viewBox="-5 -10 75 75" xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="white"><path d="M29.92 45H25.21V26.54l-4.6 2.78v-3.92l8.81-3.6h0V45zm18.18-10c0 3.34-.61 5.9-1.83 7.67-1.21 1.77-2.94 2.66-5.19 2.66-2.23 0-3.95-.86-5.17-2.6-1.21-1.77-1.84-4.24-1.84-7.55v-4.56c0-3.34.6-5.9 1.83-7.67 1.21-1.77 2.94-2.66 5.19-2.66 2.23 0 3.95.86 5.17 2.6 1.21 1.77 1.84 4.24 1.84 7.55v4.56zm-4.71-4.9c0-1.9-.19-3.32-.57-4.25-.38-.93-.97-1.47-1.74-1.47-1.49 0-2.27 1.74-2.27 4.17v5.63c0 1.95.19 3.32.57 4.25.38.93.97 1.47 1.74 1.47 1.49 0 2.27-1.74 2.27-4.17v-5.63z"/><path d="M40.01 5.45V0l10 7.79-10 7.79V10.3H4.91v29.85H18.76v4.85H0V5.45h40.01z"/></svg>',
             style: {
@@ -211,8 +218,6 @@ if ($isIframe) {
                 art.currentTime += 10; 
             }
         });
-
-
 
         const skipIntroLayer = art.layers.add({
             html: 'Skip intro',
@@ -256,20 +261,22 @@ if ($isIframe) {
 
         art.on('video:timeupdate', () => {
             const currentTime = art.currentTime;
-            if (currentTime >= <?= $intro_start ?> && currentTime < <?= $intro_end ?>) {
-                skipIntroLayer.style.display = 'block'; // Show the skip button during intro
-                skipOutroLayer.style.display = 'none'; // Hide the outro skip button
-            } else if (currentTime >= <?= $outro_start ?> && currentTime < <?= $outro_end ?>) {
-                skipOutroLayer.style.display = 'block'; // Show the skip button during outro
-                skipIntroLayer.style.display = 'none'; // Hide the intro skip button
-            } else {
-                skipIntroLayer.style.display = 'none'; // Hide the intro skip button otherwise
-                skipOutroLayer.style.display = 'none'; // Hide the outro skip button otherwise
+            const skipElement = art.controls['skip'];
+            if (skipElement) {
+                if ((currentTime >= <?= $intro_start ?> && currentTime < <?= $intro_end ?>) ||
+                    (currentTime >= <?= $outro_start ?> && currentTime < <?= $outro_end ?>)) {
+                    skipElement.style.display = 'block';
+                    if (settings.autoSkipIntro && currentTime < <?= $intro_end ?>) {
+                        art.currentTime = <?= $intro_end ?>; // Skip to the end of the intro
+                    } else if (settings.autoSkipOutro && currentTime >= <?= $outro_start ?>) {
+                        art.currentTime = <?= $outro_end ?>; // Skip to the end of the outro
+                    }
+                } else {
+                    skipElement.style.display = 'none';
+                }
             }
         });
 
-
-        
         art.controls.add({
             name: 'fast-forward',
             index: 10,
@@ -317,37 +324,25 @@ art.on('ready', () => {
         
         art.on('video:timeupdate', () => {
             const currentTime = art.currentTime;
-            const skipIntroElement = art.controls['skip-intro'];
-            if (skipIntroElement) {
-                if (currentTime >= <?= $intro_start ?> && currentTime < <?= $intro_end ?>) {
-                    skipIntroElement.style.display = 'block';
-                    if (settings.autoSkipIntro) {
-                        art.currentTime = <?= $intro_end ?>;
-                    }
-                } else {
-                    skipIntroElement.style.display = 'none';
+            if (currentTime >= <?= $intro_start ?> && currentTime < <?= $intro_end ?>) {
+                skipIntroLayer.style.display = 'block'; // Show the skip button during intro
+                skipOutroLayer.style.display = 'none'; // Hide the outro skip button
+                if (settings.autoSkipIntro) {
+                    art.currentTime = <?= $intro_end ?>;
                 }
-            }
-
-            const skipOutroElement = art.controls['skip-outro'];
-            if (skipOutroElement) {
-                if (currentTime >= <?= $outro_start ?> && currentTime < <?= $outro_end ?>) {
-                    skipOutroElement.style.display = 'block';
-                    if (settings.autoSkipOutro) {
-                        art.currentTime = <?= $outro_end ?>;
-                    }
-                } else {
-                    skipOutroElement.style.display = 'none';
+            } else if (currentTime >= <?= $outro_start ?> && currentTime < <?= $outro_end ?>) {
+                skipOutroLayer.style.display = 'block'; // Show the skip button during outro
+                skipIntroLayer.style.display = 'none'; // Hide the intro skip button
+                if (settings.autoSkipOutro) {
+                    art.currentTime = <?= $outro_end ?>;
                 }
+            } else {
+                skipIntroLayer.style.display = 'none'; // Hide the intro skip button otherwise
+                skipOutroLayer.style.display = 'none'; // Hide the outro skip button otherwise
             }
         });
 
-        // Automatically select default subtitle
-        const defaultSubtitle = art.settings[1].selector.find(s => s.default);
-        if (defaultSubtitle) {
-            art.subtitle.url = defaultSubtitle.url;
-        }
-
+      
         // Add click event for subtitle selection
         art.on('subtitle:change', (item) => {
             console.log('Subtitle changed to:', item.html);
@@ -355,6 +350,7 @@ art.on('ready', () => {
         console.info(art.icons.loading);
         const $rewind = art.layers["rewind"];
       const $forward = art.layers["forward"];
+
       Artplayer.utils.isMobile &&
         art.proxy($rewind, "dblclick", () => {
           art.currentTime = Math.max(0, art.currentTime - 10);
@@ -363,6 +359,7 @@ art.on('ready', () => {
             art.layers["backwardIcon"].style.opacity = 0;
           }, 300);
         });
+
       Artplayer.utils.isMobile &&
         art.proxy($forward, "dblclick", () => {
           art.currentTime = Math.max(0, art.currentTime + 10);
@@ -371,14 +368,30 @@ art.on('ready', () => {
             art.layers["forwardIcon"].style.opacity = 0;
           }, 300);
         });
+
         art.on('ready', () => {
     const defaultSubtitle = <?= json_encode($subtitles) ?>.find(s => s.default);
     art.subtitle.url = defaultSubtitle ? defaultSubtitle.file : '';
     art.subtitle.html = true; // Ensure HTML rendering is enabled
     art.subtitle.html = true; // Ensure HTML rendering is enabled
 });
-    
+
+art.on("resize", () => {
+      art.subtitle.style({
+        fontSize:
+          (art.width > 500 ? art.width * 0.02 : art.width * 0.03) + "px",
+      });
+    });
         
+        art.on('ready', () => {
+            const autoSkipEnabled = localStorage.getItem('autoSkipEnabled');
+            if (autoSkipEnabled === null) {
+                localStorage.setItem('autoSkipEnabled', 'true');
+            } else {
+                settings.autoSkipIntro = autoSkipEnabled === 'true';
+                settings.autoSkipOutro = autoSkipEnabled === 'true';
+            }
+        });
     </script>
     <?php
     exit;
