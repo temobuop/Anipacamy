@@ -49,7 +49,7 @@ $pageID = $url;
 if (!isset($_SESSION['viewed_pages'])) {
     $_SESSION['viewed_pages'] = [];
 }
-$counter = 1; 
+$counter = 0; 
 if (!in_array($pageID, $_SESSION['viewed_pages'])) {
     $query = mysqli_query($conn, "SELECT * FROM `pageview` WHERE pageID = '$pageID'");
     if (!$query) {
@@ -66,8 +66,6 @@ if (!in_array($pageID, $_SESSION['viewed_pages'])) {
             echo "Failed to insert pageview count: " . mysqli_error($conn);
             exit;
         }      
-        header('Location: //' . $pageUrl);
-        exit; 
     } else {
         $counter++;
         $updateQuery = mysqli_query($conn, "UPDATE `pageview` SET totalview = '$counter' WHERE pageID = '$pageID'");
@@ -83,11 +81,8 @@ $like_count = $rows['like_count'] ?? 0;
 $dislike_count = $rows['dislike_count'] ?? 0;
 $totalVotes = $like_count + $dislike_count;
 
-$episodeId = $_GET['ep'] ?? null;
-
-
-
 ?>
+
 
 
 <!DOCTYPE html>
