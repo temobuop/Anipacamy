@@ -36,7 +36,7 @@ $data = $data['data'];
     <meta name="description"
         content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads. You can watch anime online free in HD without Ads. Best place for free find and one-click anime." />
     <meta name="keywords"
-        content="<?= $websiteTitle ?>, watch anime online, free anime, anime stream, anime hd, english sub, kissanime, gogoanime, animeultima, 9anime, 123animes, vidstreaming, gogo-stream, animekisa, zoro.to, gogoanime.run, animefrenzy, animekisa" />
+        content="<?= $websiteTitle ?>, watch anime online, free anime, anime stream, anime hd, anipaca, alpaca, apaca, palahat, pacahat, rahat, raisul rahat, anpaca, pacatv, english sub, kissanime, gogoanime, animeultima, 9anime, 123animes, vidstreaming, gogo-stream, animekisa, zoro.to, gogoanime.run, animefrenzy, animekisa" />
     <meta name="charset" content="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
     <meta name="robots" content="index, follow" />
@@ -57,6 +57,7 @@ $data = $data['data'];
     <meta property="og:image:height" content="350">
     <meta name="apple-mobile-web-app-status-bar" content="#202125">
     <meta name="theme-color" content="#202125">
+    <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/min.css?v=<?= $version ?>">
     <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/styles.min.css?v=<?= $version ?>">
     <link rel="apple-touch-icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" />
     <link rel="shortcut icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" type="image/x-icon" />
@@ -131,7 +132,15 @@ $data = $data['data'];
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
     <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4XYXFMRMRC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-4XYXFMRMRC');
+</script>
 
 
 
@@ -145,8 +154,9 @@ $data = $data['data'];
         
         <?php include('./src/component/slidebar.php'); ?>
      
+        <div class="lazy-component mt-3 ml-3 mr-3" data-component="trending">
         <?php include('./src/component/trending.php') ?>
-
+        </div>
         <div class="share-buttons share-buttons-home">
             <div class="container">
                 <div class="share-buttons-block">
@@ -285,7 +295,7 @@ $data = $data['data'];
                                         </div>
                                     <?php } ?>
                                 </div>
-                                <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$anime['poster']?>" alt="<?=$anime['name']?>">
+                                <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?= $websiteUrl ?>/public/images/no_poster.jpg" alt="<?=$anime['name']?>">
                                 <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['name']?>"></a>
                             </div>
                             <div class="film-detail">
@@ -335,6 +345,7 @@ $data = $data['data'];
                                     if (isset($json['results']['data']) && is_array($json['results']['data'])) {
                                         $animeList = array_slice($json['results']['data'], 0, 12);
                                         foreach ($animeList as $anime) { ?>
+                                            <?php if (!empty($anime['tvInfo']['sub'])): ?>
                                             <div class="flw-item">
                                                 <div class="film-poster">
                                                     <!-- Age Indicator -->
@@ -346,18 +357,18 @@ $data = $data['data'];
                                                     <!-- Sub and Dub Counts -->
                                                     <div class="tick ltr" style="position: absolute; bottom: 10px; left: 10px;">
                                                         <div class="tick-item tick-sub amp-algn" style="text-align: left;">
-                                                            <i class="fas fa-closed-captioning"></i> <?= $anime['tvInfo']['sub'] ?>
+                                                            <i class="fas fa-closed-captioning"></i> &nbsp; <?= $anime['tvInfo']['sub'] ?>
                                                         </div>
                                                         <?php if(!empty($anime['tvInfo']['dub'])): ?>
                                                         <div class="tick-item tick-dub amp-algn" style="text-align: left;">
-                                                            <i class="fas fa-microphone"></i> <?= $anime['tvInfo']['dub'] ?>
+                                                            <i class="fas fa-microphone"></i> &nbsp; <?= $anime['tvInfo']['dub'] ?>
                                                         </div>
                                                         <?php endif; ?>
                                                     </div>
                                                     <!-- Anime Poster -->
                                                     <img class="film-poster-img lazyload"
                                                         data-src="<?= $anime['poster'] ?>"
-                                                        src="<?= $anime['poster']?>"
+                                                        src="<?= $websiteUrl ?>/public/images/no_poster.jpg"
                                                         alt="<?= $anime['title'] ?>">
                                                     <a class="film-poster-ahref"
                                                         href="/details/<?= $anime['id'] ?>"
@@ -379,6 +390,7 @@ $data = $data['data'];
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
+                                            <?php endif; ?>
                                     <?php }
                                     } else {
                                         echo "<p>No anime data available or invalid structure.</p>";
@@ -441,7 +453,7 @@ $data = $data['data'];
                                                     <!-- Anime Poster -->
                                                     <img class="film-poster-img lazyload"
                                                         data-src="<?= $anime['poster'] ?>"
-                                                        src="<?= $anime['poster']?>"
+                                                        src="<?= $websiteUrl ?>/public/images/no_poster.jpg"
                                                         alt="<?= $anime['title'] ?>">
                                                     <a class="film-poster-ahref"
                                                         href="/details/<?= $anime['id'] ?>"
@@ -455,7 +467,9 @@ $data = $data['data'];
                                                             data-jname="<?= $anime['title'] ?>"><?= $anime['title'] ?></a>
                                                     </h3>
                                                     <div class="fd-infor">
-                                                       
+                                                        <?php if (!empty($anime['releaseDate'])): ?>
+                                                            <span class="fdi-item"><i class="fas fa-calendar-alt"></i> <?= $anime['releaseDate'] ?></span>
+                                                        <?php endif; ?>
                                                         <span class="fdi-item"><?= $anime['tvInfo']['showType'] ?></span>
                                                         <span class="dot"></span>
                                                         <span class="fdi-item"><?= $anime['tvInfo']['duration'] ?></span>
