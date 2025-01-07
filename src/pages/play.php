@@ -191,15 +191,6 @@ $totalVotes = $like_count + $dislike_count;
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=67521dcc10699f0019237fbb&product=inline-share-buttons&source=platform" async="async"></script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-F7PYH8JF75"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-F7PYH8JF75');
-</script>
 
     <script type="text/javascript" src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/play.js"></script>
 
