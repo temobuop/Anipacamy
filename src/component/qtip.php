@@ -1,13 +1,20 @@
 <?php
 
-
 function fetchAnimeData($animeId) {
     session_start();
 
+    
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
-    $api = "https://hianime-psi.vercel.app/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api
+    
+    global $api;
 
-    $url = $api . "/anime/$animeId";
+    if (!isset($api)) {
+        echo "API endpoint is not defined in _config.php.";
+        exit();
+    }
+
+    $url = "$api/anime/$animeId";
     $animeDataResponse = file_get_contents($url);
 
     if ($animeDataResponse === false) {
