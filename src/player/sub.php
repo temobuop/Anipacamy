@@ -3,6 +3,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
 $id = $_GET['id'];
 $server = $_GET['server'] ?? 'hd-1';
+$useProxy = $server !== 'hd-1';
 $isIframe = isset($_GET['embed']) && $_GET['embed'] === 'true';
 
 $categories = ["sub", "raw"];
@@ -26,6 +27,7 @@ if (!$data || !$data['success']) {
 // Process $data here as needed
 
 $m3u8_url = $data['data']['sources'][0]['url'];
+$video_url = $useProxy ? $proxy . $m3u8_url : $m3u8_url;
 $intro_start = $data['data']['intro']['start'];
 $intro_end = $data['data']['intro']['end'];
 $outro_start = $data['data']['outro']['start'];
@@ -84,7 +86,7 @@ if ($isIframe) {
         const art = new Artplayer({
             container: '.artplayer-app',
             theme: '#ff9a68',
-            url: '<?= $proxy ?><?= $m3u8_url ?>',
+            url: '<?= $video_url ?>',
             type: 'm3u8',
             customType: {
                 m3u8: playM3u8,
@@ -119,7 +121,8 @@ if ($isIframe) {
             playsInline: true,
             autoPlayback: true,
             airplay: true,
-            theme: '#F7B3D9',
+            screenshot: true,
+            theme: '#ff545c',
             lang: navigator.language.toLowerCase(),
             moreVideoAttr: {
                 crossOrigin: 'anonymous',
@@ -192,10 +195,13 @@ if ($isIframe) {
                     ],
                 }),
                
-               // artplayerPluginChromecast({
-                    // Ensure necessary parameters are provided
-                    // Add any required options here
-                //}),
+                artplayerPluginChromecast({
+                    media: {
+                        type: 'application/x-mpegURL',
+                        title: 'HLS Stream',
+                        src: '<?= $proxy ?><?= $m3u8_url ?>'
+                    }
+                }),
             ],
 
            
