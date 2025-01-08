@@ -132,16 +132,6 @@ $data = $data['data'];
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
     <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-4XYXFMRMRC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-4XYXFMRMRC');
-</script>
-
 
 
 </head>
