@@ -311,7 +311,7 @@ if ($isIframe) {
                   
               },
             click: function() {
-                art.currentTime -= 10; // Rewind 10 seconds
+                art.currentTime -= 10; 
             },
             mounted: function(...args) {
                 console.info('mounted', args);
@@ -331,25 +331,30 @@ art.on('ready', () => {
         art.on('video:timeupdate', () => {
             const currentTime = art.currentTime;
             if (currentTime >= <?= $intro_start ?> && currentTime < <?= $intro_end ?>) {
-                skipIntroLayer.style.display = 'block'; // Show the skip button during intro
-                skipOutroLayer.style.display = 'none'; // Hide the outro skip button
+                skipIntroLayer.style.display = 'block'; 
+                skipOutroLayer.style.display = 'none'; 
                 if (settings.autoSkipIntro) {
                     art.currentTime = <?= $intro_end ?>;
                 }
             } else if (currentTime >= <?= $outro_start ?> && currentTime < <?= $outro_end ?>) {
-                skipOutroLayer.style.display = 'block'; // Show the skip button during outro
-                skipIntroLayer.style.display = 'none'; // Hide the intro skip button
+                skipOutroLayer.style.display = 'block'; 
+                skipIntroLayer.style.display = 'none'; 
                 if (settings.autoSkipOutro) {
                     art.currentTime = <?= $outro_end ?>;
                 }
             } else {
-                skipIntroLayer.style.display = 'none'; // Hide the intro skip button otherwise
-                skipOutroLayer.style.display = 'none'; // Hide the outro skip button otherwise
+                skipIntroLayer.style.display = 'none'; 
+                skipOutroLayer.style.display = 'none'; 
             }
         });
 
-      
-        // Add click event for subtitle selection
+      art.on('ready', () => {
+    art.autoHeight();
+});
+
+art.on('autoHeight', (height) => {
+    console.info('autoHeight', height);
+});
         art.on('subtitle:change', (item) => {
             console.log('Subtitle changed to:', item.html);
         });
