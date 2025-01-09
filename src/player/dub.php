@@ -103,7 +103,7 @@ foreach ($data['data']['tracks'] as $track) {
                 volumeClose: '<img src="icons/vl-close.svg">',
            
             },
-            volume: 0.5,
+            volume: 2,
             autoplay: true,
             pip: true,
             autoSize: false,
@@ -147,23 +147,9 @@ foreach ($data['data']['tracks'] as $track) {
                         art.subtitle.url = item.url;
                         return item.html;
                     },
-                },
-                {
-                    html: 'Auto Skip',
-                    tooltip: localStorage.getItem('autoSkipEnabled') === 'true' ? 'Enabled' : 'Disabled',
-                    icon: '<img width="22" height="22" src="icons/skip.svg">',
-                    switch: true,
-                    default: true,
-                    onSwitch: function(item) {
-                        const isEnabled = !settings.autoSkipIntro;
-                        settings.autoSkipIntro = isEnabled;
-                        settings.autoSkipOutro = isEnabled;
-                        item.tooltip = isEnabled ? '' : '';
-                        localStorage.setItem('autoSkipEnabled', isEnabled);
-                        return isEnabled;
-                    },
                 }
             ],
+            
             plugins: [
 
                 artplayerPluginHlsControl({
@@ -181,9 +167,9 @@ foreach ($data['data']['tracks'] as $track) {
                             start: <?= $intro_start ?>,
                             end: <?= $intro_end ?>,
                             title: 'Intro',
-                            color: '#fdd253', // Changed color to match the new style
+                            color: '#fdd253', 
                             style: {
-                                transform: 'scaleY(0.6)', // Added transform style
+                                transform: 'scaleY(0.6)',
                             },
                         },
                         {
@@ -195,16 +181,28 @@ foreach ($data['data']['tracks'] as $track) {
                     ],
                 }),
                
-                artplayerPluginChromecast({
-                    media: {
-                        type: 'application/x-mpegURL',
-                        title: 'HLS Stream',
-                        src: '<?= $proxy ?><?= $m3u8_url ?>'
-                    }
-                }),
             ],
-
-           
+            layers: [
+                {
+            name: 'poster',
+            html: `<img style="width: 105px" src="<?= $websiteUrl ?>/public/logo/logo.png">`,
+            tooltip: 'Poster Tip',
+            style: {
+                position: 'absolute',
+                top: '15px',
+                right: '15px',
+                borderRadius: '8px',
+                padding: '5px', 
+                
+            },
+            click: function (...args) {
+                console.info('click', args);
+            },
+            mounted: function (...args) {
+                console.info('mounted', args);
+            },
+        },
+            ],
         });
 
         const fastForwardLayer = art.layers.add({
@@ -347,6 +345,16 @@ art.on('ready', () => {
                 skipOutroLayer.style.display = 'none'; // Hide the outro skip button otherwise
             }
         });
+
+        if (window.innerWidth <= 700) {
+            art.on('ready', () => {
+                art.autoHeight();
+            });
+
+            art.on('autoHeight', (height) => {
+                console.info('autoHeight', height);
+            });
+        }
 
       
         // Add click event for subtitle selection
