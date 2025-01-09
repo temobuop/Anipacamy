@@ -38,10 +38,8 @@
 
 > [!IMPORTANT]
 >
-> 1. [Pre built codebase](https://github.com/PacaHat/Anipaca/tree/demo)
- is only meant to help you get a starting point the API's has rate-limiting enabled to minimize bandwidth consumption. It is recommended to deploy your own instance for personal use by customizing the API as you need it to be.
-> 2. This website is just an unofficial clone of [hianime.to](https://hianime.to) But both share same database.
-> 3. The content that this website provides is not mine, nor is it hosted by me. These belong to their respective owners. This website just demonstrates how to build an ANIME WEBSITE .
+> 1. This website is just an unofficial clone of [hianime.to](https://hianime.to) But both share same database.
+> 2. The content that this website provides is not mine, nor is it hosted by me. These belong to their respective owners. This website just demonstrates how to build an ANIME WEBSITE .
 
 <!-- TABLE OF CONTENTS -->
 <details>
