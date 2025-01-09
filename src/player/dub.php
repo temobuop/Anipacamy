@@ -353,27 +353,21 @@ art.on('ready', () => {
         art.on('subtitle:change', (item) => {
             console.log('Subtitle changed to:', item.html);
         });
-        console.info(art.icons.loading);
-        const $rewind = art.layers["rewind"];
-      const $forward = art.layers["forward"];
+        art.on('dblclick', (event) => {
+    const rect = art.template.$player.getBoundingClientRect();
+    const clickX = event.clientX;
 
-      Artplayer.utils.isMobile &&
-        art.proxy($rewind, "dblclick", () => {
-          art.currentTime = Math.max(0, art.currentTime - 10);
-          art.layers["backwardIcon"].style.opacity = 1;
-          setTimeout(() => {
-            art.layers["backwardIcon"].style.opacity = 0;
-          }, 300);
-        });
+    if (clickX > rect.width / 2) {
+       
+        art.currentTime = Math.min(art.currentTime + 10, art.duration);
+    } else {
+       
+        art.currentTime = Math.max(art.currentTime - 10, 0);
+    }
 
-      Artplayer.utils.isMobile &&
-        art.proxy($forward, "dblclick", () => {
-          art.currentTime = Math.max(0, art.currentTime + 10);
-          art.layers["forwardIcon"].style.opacity = 1;
-          setTimeout(() => {
-            art.layers["forwardIcon"].style.opacity = 0;
-          }, 300);
-        });
+    console.info('dblclick', event, 'Current Time:', art.currentTime);
+});
+
 
         art.on('ready', () => {
     const defaultSubtitle = <?= json_encode($subtitles) ?>.find(s => s.default);
