@@ -103,7 +103,7 @@ if ($isIframe) {
                 volumeClose: '<img src="icons/vl-close.svg">',
            
             },
-            volume: 0.5,
+            volume: 2,
             autoplay: true,
             pip: true,
             autoSize: false,
@@ -147,23 +147,9 @@ if ($isIframe) {
                         art.subtitle.url = item.url;
                         return item.html;
                     },
-                },
-                {
-                    html: 'Auto Skip',
-                    tooltip: localStorage.getItem('autoSkipEnabled') === 'true' ? '' : '',
-                    icon: '<img width="22" height="22" src="icons/skip.svg">',
-                    switch: true,
-                    default: true,
-                    onSwitch: function(item) {
-                        const isEnabled = !settings.autoSkipIntro;
-                        settings.autoSkipIntro = isEnabled;
-                        settings.autoSkipOutro = isEnabled;
-                        item.tooltip = isEnabled ? '' : '';
-                        localStorage.setItem('autoSkipEnabled', isEnabled);
-                        return isEnabled;
-                    },
                 }
             ],
+            
             plugins: [
 
                 artplayerPluginHlsControl({
@@ -195,17 +181,29 @@ if ($isIframe) {
                     ],
                 }),
                
-                artplayerPluginChromecast({
-                    media: {
-                        type: 'application/x-mpegURL',
-                        title: 'HLS Stream',
-                        src: '<?= $proxy ?><?= $m3u8_url ?>'
-                    }
-                }),
             ],
-
-           
+            layers: [
+                {
+            name: 'poster',
+            html: `<img style="width: 105px" src="<?= $websiteUrl ?>/public/logo/logo.png">`,
+            tooltip: 'Poster Tip',
+            style: {
+                position: 'absolute',
+                top: '20px',
+                right: '18px',
+            },
+            click: function (...args) {
+                console.info('click', args);
+            },
+            mounted: function (...args) {
+                console.info('mounted', args);
+            },
+        },
+            ],
         });
+
+
+        
 
         const fastForwardLayer = art.layers.add({
             html: '<svg viewBox="-5 -10 75 75" xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="white"><path d="M29.92 45H25.21V26.54l-4.6 2.78v-3.92l8.81-3.6h0V45zm18.18-10c0 3.34-.61 5.9-1.83 7.67-1.21 1.77-2.94 2.66-5.19 2.66-2.23 0-3.95-.86-5.17-2.6-1.21-1.77-1.84-4.24-1.84-7.55v-4.56c0-3.34.6-5.9 1.83-7.67 1.21-1.77 2.94-2.66 5.19-2.66 2.23 0 3.95.86 5.17 2.6 1.21 1.77 1.84 4.24 1.84 7.55v4.56zm-4.71-4.9c0-1.9-.19-3.32-.57-4.25-.38-.93-.97-1.47-1.74-1.47-1.49 0-2.27 1.74-2.27 4.17v5.63c0 1.95.19 3.32.57 4.25.38.93.97 1.47 1.74 1.47 1.49 0 2.27-1.74 2.27-4.17v-5.63z"/><path d="M40.01 5.45V0l10 7.79-10 7.79V10.3H4.91v29.85H18.76v4.85H0V5.45h40.01z"/></svg>',
@@ -311,7 +309,7 @@ if ($isIframe) {
                   
               },
             click: function() {
-                art.currentTime -= 10; 
+                art.currentTime -= 10; // Rewind 10 seconds
             },
             mounted: function(...args) {
                 console.info('mounted', args);
@@ -331,30 +329,36 @@ art.on('ready', () => {
         art.on('video:timeupdate', () => {
             const currentTime = art.currentTime;
             if (currentTime >= <?= $intro_start ?> && currentTime < <?= $intro_end ?>) {
-                skipIntroLayer.style.display = 'block'; 
-                skipOutroLayer.style.display = 'none'; 
+                skipIntroLayer.style.display = 'block'; // Show the skip button during intro
+                skipOutroLayer.style.display = 'none'; // Hide the outro skip button
                 if (settings.autoSkipIntro) {
                     art.currentTime = <?= $intro_end ?>;
                 }
             } else if (currentTime >= <?= $outro_start ?> && currentTime < <?= $outro_end ?>) {
-                skipOutroLayer.style.display = 'block'; 
-                skipIntroLayer.style.display = 'none'; 
+                skipOutroLayer.style.display = 'block'; // Show the skip button during outro
+                skipIntroLayer.style.display = 'none'; // Hide the intro skip button
                 if (settings.autoSkipOutro) {
                     art.currentTime = <?= $outro_end ?>;
                 }
             } else {
-                skipIntroLayer.style.display = 'none'; 
-                skipOutroLayer.style.display = 'none'; 
+                skipIntroLayer.style.display = 'none'; // Hide the intro skip button otherwise
+                skipOutroLayer.style.display = 'none'; // Hide the outro skip button otherwise
             }
         });
 
-      art.on('ready', () => {
-    art.autoHeight();
-});
 
-art.on('autoHeight', (height) => {
-    console.info('autoHeight', height);
-});
+        if (window.innerWidth <= 700) {
+            art.on('ready', () => {
+                art.autoHeight();
+            });
+
+            art.on('autoHeight', (height) => {
+                console.info('autoHeight', height);
+            });
+        }
+
+      
+        // Add click event for subtitle selection
         art.on('subtitle:change', (item) => {
             console.log('Subtitle changed to:', item.html);
         });
