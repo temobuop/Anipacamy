@@ -1,5 +1,4 @@
 <?php
-// Function to fetch all links from a given URL
 function fetch_links($url, &$visited) {
     $links = [];
     $html = file_get_contents($url);
@@ -13,7 +12,6 @@ function fetch_links($url, &$visited) {
 
     foreach ($anchorTags as $tag) {
         $link = $tag->getAttribute('href');
-        // Convert relative URLs to absolute
         $link = resolve_url($url, $link);
         if ($link && !isset($visited[$link])) {
             $visited[$link] = true;
@@ -23,31 +21,33 @@ function fetch_links($url, &$visited) {
     return $links;
 }
 
-// Function to resolve absolute URLs
 function resolve_url($base, $relative) {
-    // If already absolute
     if (parse_url($relative, PHP_URL_SCHEME) != '') {
         return $relative;
     }
 
-    // If starts with a slash, it's root-relative
-    if ($relative[0] == '/') {
-        return parse_url($base, PHP_URL_SCHEME) . '://' . parse_url($base, PHP_URL_HOST) . $relative;
+    if (!empty($relative) && $relative[0] == '/') {
+        $baseParts = parse_url($base);
+        return $baseParts['scheme'] . '://' . $baseParts['host'] . $relative;
     }
 
-    // Otherwise, it's relative to the base URL
-    $basePath = rtrim(dirname(parse_url($base, PHP_URL_PATH)), '/') . '/';
-    return parse_url($base, PHP_URL_SCHEME) . '://' . parse_url($base, PHP_URL_HOST) . $basePath . $relative;
+    $baseParts = parse_url($base);
+    $basePath = isset($baseParts['path']) ? rtrim(dirname($baseParts['path']), '/') . '/' : '/';
+    $resolved = $baseParts['scheme'] . '://' . $baseParts['host'] . $basePath . $relative;
+    $resolved = preg_replace('#/[^/]+/\.\./#', '/', $resolved);
+    $resolved = preg_replace('#(?<!:)//+#', '/', $resolved);
+
+    return $resolved;
 }
 
-// Function to generate sitemap XML
 function generate_sitemap($urls) {
     $sitemap = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
     $sitemap .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL;
 
     foreach ($urls as $url) {
+        $cleaned_url = clean_url($url);
         $sitemap .= '  <url>' . PHP_EOL;
-        $sitemap .= '    <loc>' . htmlspecialchars($url) . '</loc>' . PHP_EOL;
+        $sitemap .= '    <loc>' . htmlspecialchars($cleaned_url) . '</loc>' . PHP_EOL;
         $sitemap .= '    <lastmod>' . date('Y-m-d') . '</lastmod>' . PHP_EOL;
         $sitemap .= '    <changefreq>weekly</changefreq>' . PHP_EOL;
         $sitemap .= '    <priority>0.8</priority>' . PHP_EOL;
@@ -58,8 +58,36 @@ function generate_sitemap($urls) {
     return $sitemap;
 }
 
-// Start crawling from the base URL
-$base_url = 'https://anixtv.in'; // Change this to your website's URL
+function get_base_url($path = '') {
+    $host = $_SERVER['HTTP_HOST'];
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    return $scheme . '://' . $host . $path;
+}
+
+function clean_url($url) {
+    $parsed = parse_url($url);
+    if (!isset($parsed['host'])) return $url;
+
+    $domain = $parsed['host'];
+    $scheme = isset($parsed['scheme']) ? $parsed['scheme'] : 'http';
+    $path = isset($parsed['path']) ? $parsed['path'] : '';
+    $path = preg_replace([
+        '#^/' . preg_quote($domain) . '#i',
+        '#/' . preg_quote($domain) . '/#i',
+        '#/' . preg_quote($domain) . '$#i'
+    ], '/', $path);
+
+    $clean_url = $scheme . '://' . $domain;
+    if (!empty($path)) {
+        $path = '/' . ltrim($path, '/');
+        $clean_url .= $path;
+    }
+    $clean_url = preg_replace('#(?<!:)//+#', '/', $clean_url);
+    
+    return $clean_url;
+}
+
+$base_url = get_base_url('/');
 $visited = [];
 $toVisit = [$base_url];
 $allLinks = [];
@@ -74,13 +102,10 @@ while (!empty($toVisit)) {
     }
 }
 
-// Generate the sitemap and save it to sitemap.xml
 $sitemap = generate_sitemap(array_unique($allLinks));
 file_put_contents('sitemap.xml', $sitemap);
 
-echo "Sitemap has been generated and saved to sitemap.xml";
-// Start crawling from the base URL
-$base_url = 'https://anixtv.in/home'; // Change this to your website's URL
+$base_url = get_base_url('/home');
 $visited = [];
 $toVisit = [$base_url];
 $allLinks = [];
@@ -95,123 +120,33 @@ while (!empty($toVisit)) {
     }
 }
 
-// Generate the sitemap and save it to sitemap.xml
 $sitemap = generate_sitemap(array_unique($allLinks));
 file_put_contents('sitemaphome.xml', $sitemap);
 
-echo "<br>Sitemap has been generated and saved to sitemaphome.xml";
+$paths = [
+    '/anime/most-popular' => 'sitemappopular.xml',
+    '/anime/movie' => 'sitemapmovie.xml',
+    '/anime/top-airing' => 'sitemapairing.xml',
+    '/anime/most-favorite' => 'sitemapfav.xml',
+    '/anime/completed' => 'sitemapcompleted.xml'
+];
 
-// Start crawling from the base URL
-$base_url = 'https://anixtv.in/anime/most-popular'; // Change this to your website's URL
-$visited = [];
-$toVisit = [$base_url];
-$allLinks = [];
+foreach ($paths as $path => $filename) {
+    $base_url = get_base_url($path);
+    $visited = [];
+    $toVisit = [$base_url];
+    $allLinks = [];
 
-while (!empty($toVisit)) {
-    $url = array_shift($toVisit);
-    if (!isset($visited[$url])) {
-        $visited[$url] = true;
-        $links = fetch_links($url, $visited);
-        $allLinks = array_merge($allLinks, $links);
-        $toVisit = array_merge($toVisit, $links);
+    while (!empty($toVisit)) {
+        $url = array_shift($toVisit);
+        if (!isset($visited[$url])) {
+            $visited[$url] = true;
+            $links = fetch_links($url, $visited);
+            $allLinks = array_merge($allLinks, $links);
+            $toVisit = array_merge($toVisit, $links);
+        }
     }
+
+    $sitemap = generate_sitemap(array_unique($allLinks));
+    file_put_contents($filename, $sitemap);
 }
-
-// Generate the sitemap and save it to sitemap.xml
-$sitemap = generate_sitemap(array_unique($allLinks));
-file_put_contents('sitemappopular.xml', $sitemap);
-
-echo "<br>Sitemap has been generated and saved to sitemappopular.xml";
-
-
-// Start crawling from the base URL
-$base_url = 'https://anixtv.in/anime/movie'; // Change this to your website's URL
-$visited = [];
-$toVisit = [$base_url];
-$allLinks = [];
-
-while (!empty($toVisit)) {
-    $url = array_shift($toVisit);
-    if (!isset($visited[$url])) {
-        $visited[$url] = true;
-        $links = fetch_links($url, $visited);
-        $allLinks = array_merge($allLinks, $links);
-        $toVisit = array_merge($toVisit, $links);
-    }
-}
-
-// Generate the sitemap and save it to sitemap.xml
-$sitemap = generate_sitemap(array_unique($allLinks));
-file_put_contents('sitemapmovie.xml', $sitemap);
-
-echo "<br>Sitemap has been generated and saved to sitemapmovie.xml";
-
-// Start crawling from the base URL
-$base_url = 'https://anixtv.in/anime/top-airing'; // Change this to your website's URL
-$visited = [];
-$toVisit = [$base_url];
-$allLinks = [];
-
-while (!empty($toVisit)) {
-    $url = array_shift($toVisit);
-    if (!isset($visited[$url])) {
-        $visited[$url] = true;
-        $links = fetch_links($url, $visited);
-        $allLinks = array_merge($allLinks, $links);
-        $toVisit = array_merge($toVisit, $links);
-    }
-}
-
-// Generate the sitemap and save it to sitemap.xml
-$sitemap = generate_sitemap(array_unique($allLinks));
-file_put_contents('sitemapairing.xml', $sitemap);
-
-echo "<br>Sitemap has been generated and saved to sitemapairing.xml";
-
-
-// Start crawling from the base URL
-$base_url = 'https://anixtv.in/anime/most-favorite'; // Change this to your website's URL
-$visited = [];
-$toVisit = [$base_url];
-$allLinks = [];
-
-while (!empty($toVisit)) {
-    $url = array_shift($toVisit);
-    if (!isset($visited[$url])) {
-        $visited[$url] = true;
-        $links = fetch_links($url, $visited);
-        $allLinks = array_merge($allLinks, $links);
-        $toVisit = array_merge($toVisit, $links);
-    }
-}
-
-// Generate the sitemap and save it to sitemap.xml
-$sitemap = generate_sitemap(array_unique($allLinks));
-file_put_contents('sitemapfav.xml', $sitemap);
-
-echo "<br>Sitemap has been generated and saved to sitemapfav.xml";
-
-// Start crawling from the base URL
-$base_url = 'https://anixtv.in/anime/completed'; // Change this to your website's URL
-$visited = [];
-$toVisit = [$base_url];
-$allLinks = [];
-
-while (!empty($toVisit)) {
-    $url = array_shift($toVisit);
-    if (!isset($visited[$url])) {
-        $visited[$url] = true;
-        $links = fetch_links($url, $visited);
-        $allLinks = array_merge($allLinks, $links);
-        $toVisit = array_merge($toVisit, $links);
-    }
-}
-
-// Generate the sitemap and save it to sitemap.xml
-$sitemap = generate_sitemap(array_unique($allLinks));
-file_put_contents('sitemapcompleted.xml', $sitemap);
-
-echo "<br>Sitemap has been generated and saved to sitemapcompleted.xml";
-
-
-?>
