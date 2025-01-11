@@ -137,8 +137,9 @@ if ($isIframe) {
                                 html: '<?= $subtitle['label'] ?>',
                                 url: '<?= $subtitle['file'] ?>',
                                 default: <?= $subtitle['default'] ? 'true' : 'false' ?>,
+                                escape: false,
                                 click: function() {
-                                    art.subtitle.url = '<?= $subtitle['default'] ? 'true' : 'false' ?>';
+                                    art.subtitle.url = '<?= $subtitle['file'] ?>';
                                 }
                             },
                         <?php endforeach; ?>
@@ -200,6 +201,13 @@ if ($isIframe) {
             },
         },
             ],
+            subtitle: {
+                url: '<?= $subtitles[0]['file'] ?>',
+                type: 'srt',
+                encoding: 'utf-8',
+                escape: false,
+                
+            },
         });
 
 
@@ -321,9 +329,12 @@ if ($isIframe) {
 })
 
 art.on('ready', () => {
-    const defaultSubtitle = <?= json_encode($subtitles) ?>.find(s => s.default);
-    art.subtitle.url = defaultSubtitle ? defaultSubtitle.file : '';
+    const defaultSubtitle = <?= json_encode($subtitles, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>.find(s => s.default);
+    if (defaultSubtitle) {
+        art.subtitle.url = defaultSubtitle.file;
+    }
     art.subtitle.html = true;
+    art.subtitle.escape = false;
 });
         
         art.on('video:timeupdate', () => {
@@ -372,10 +383,11 @@ art.on('ready', () => {
 
 
         art.on('ready', () => {
-    const defaultSubtitle = <?= json_encode($subtitles) ?>.find(s => s.default);
+    const defaultSubtitle = <?= json_encode($subtitles, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>.find(s => s.default);
     art.subtitle.url = defaultSubtitle ? defaultSubtitle.file : '';
     art.subtitle.html = true; // Ensure HTML rendering is enabled
-    art.subtitle.html = true; // Ensure HTML rendering is enabled
+    art.subtitle.escape = false; // Disable escaping for subtitle rendering
+   
 });
 
 art.on("resize", () => {
