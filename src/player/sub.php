@@ -347,15 +347,7 @@ art.on('ready', () => {
         });
 
 
-        if (window.innerWidth <= 700) {
-            art.on('ready', () => {
-                art.autoHeight();
-            });
-
-            art.on('autoHeight', (height) => {
-                console.info('autoHeight', height);
-            });
-        }
+       
 
       
         // Add click event for subtitle selection
