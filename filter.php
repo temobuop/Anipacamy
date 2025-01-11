@@ -5,19 +5,12 @@
 
 require '_config.php';
 session_start();
-
-
 $keyword = isset($_GET['keyword']) ? urlencode($_GET['keyword']) : '';
 $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1; 
-
-
 $query = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 $query = isset($_GET['keyword']) ? str_replace(' ', '-', $_GET['keyword']) : '';
-
 echo $query;
-
-if ($query) {
-    
+if ($query) {  
     $genres = isset($_GET['genres']) ? $_GET['genres'] : '';
     $type = isset($_GET['type']) ? $_GET['type'] : '';
     $sort = isset($_GET['sort']) ? $_GET['sort'] : '';
