@@ -380,7 +380,7 @@ echo "<script>
                     </div>
                     <div class="os-list">
                         <?php foreach ($animeData['season'] as $season): ?>
-                            <a href="<?= $websiteUrl ?>/src/pages/details.php/<?= $season['id'] ?>" class="os-item <?= $season['id'] === $animeId ? 'active' : '' ?>" title="<?= htmlspecialchars($season['title']) ?>">
+                            <a href="<?= $websiteUrl ?>/details<?= $season['id'] ?>" class="os-item <?= $season['id'] === $animeId ? 'active' : '' ?>" title="<?= htmlspecialchars($season['title']) ?>">
                                 <div class="title"><?= htmlspecialchars($season['name']) ?></div>
                                 <div class="season-poster" style="background-image: url(<?= htmlspecialchars($season['poster']) ?>);"></div>
                             </a>
