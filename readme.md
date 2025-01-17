@@ -202,7 +202,28 @@ Don't forget to give the project a star! Thanks again!
 
 
 
+# Disclaimer: Educational Purpose Only  
 
+This repository and its contents were created solely for **educational purposes** and to showcase technical skills in web development.  
+
+## Important Notes:  
+- The author of this project does **not** promote, condone, or support any illegal activity, including but not limited to piracy or copyright infringement.  
+- The project was developed as an example of web application development and should **only** be used in lawful and ethical ways.  
+
+## Unauthorized Use  
+The code and associated materials in this project are the intellectual property of the author. Any unauthorized use, modification, or monetization of this work is strictly prohibited.  
+
+If you suspect that this code is being used inappropriately, please report the misuse to the author via **[raisulentertainment@gmail.com](mailto:raisulentertainment@gmail.com)**.  
+
+## Legal Action  
+The author reserves the right to pursue legal action against individuals or organizations found misusing this project or its contents.  
+
+---
+
+*This project is privately maintained and intended only for the developer's personal educational growth.*  
+
+**Date:** 19 January 2025  
+**Author:** Raisul Rahat
 
 
 
