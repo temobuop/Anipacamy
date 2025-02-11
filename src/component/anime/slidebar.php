@@ -51,20 +51,4 @@
 </div>
          
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.js"></script>
-    <script>
-    var mainSlider = new Swiper('.slider-container', {
-        slidesPerView: 1,
-        spaceBetween: 10,
-        loop: true,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-           
-        });
-    </script>
+

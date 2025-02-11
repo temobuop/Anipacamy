@@ -3,13 +3,13 @@
         <section class="block_area block_area_trending">
             <div class="block_area-header">
                 <div class="bah-heading">
-                    <h2 class="cat-heading">Trending</h2>
+                    <h2 class="cat-heading">Trending Anime</h2>
                 </div>
                 <div class="clearfix"></div>
             </div>
             <div class="block_area-content">
                 <div class="trending-list" id="trending-home">
-                    <div class="trending-container swiper-container">
+                    <div class="trending-container-anime swiper-container">
                         <div class="swiper-wrapper">
                             <?php if (!empty($data['trendingAnimes'])): ?>
                                 <?php foreach ($data['trendingAnimes'] as $index => $anime): ?>
@@ -33,33 +33,30 @@
                             <?php endif; ?>
                         </div>
                         <div class="clearfix"></div>
-                    </div>
+                        </div>
                     <div class="trending-navi" style="display: flex; flex-direction: column; align-items: center;">
-                        <div class="navi-next" tabindex="0" role="button" aria-label="Next slide" aria-disabled="false" style="margin-bottom: 10px;">
-                         
-                        </div>
-                        <div class="navi-prev swiper-button-disabled" tabindex="-1" role="button" aria-label="Previous slide" aria-disabled="true">
-                        
-                        </div>
+                        <div class="navi-next navi-next-anime" tabindex="0" role="button" aria-label="Next slide" aria-disabled="false"><i class="fas fa-angle-right"></i></div>
+                        <div class="navi-prev swiper-button-disabled navi-prev-anime" tabindex="-1" role="button" aria-label="Previous slide" aria-disabled="true"><i class="fas fa-angle-left"></i></div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.js"></script>
+
+<script src="<?= $websiteUrl ?>/src/assets/js/swiper-bundle.min.js"></script>
 
 <script>
-    var trendingSlider = new Swiper('.trending-container', {
-        slidesPerView: 4,
+    var trendingSlider = new Swiper('.trending-container-anime', {
+        slidesPerView: 3,
         breakpoints: {
             768: {
                 slidesPerView: 6
             }
         },
         navigation: {
-            nextEl: '.navi-next',
-            prevEl: '.navi-prev',
+            nextEl: '.navi-next-anime',
+            prevEl: '.navi-prev-anime',
         },
     });
 </script>

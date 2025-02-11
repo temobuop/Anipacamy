@@ -169,9 +169,7 @@
                                             </div>
                                             <?php endif; ?>
 
-                                            <?php if(isset($anime['episodes']['sub'])): ?>
-                                            <div class="tick-item tick-eps"><?php echo htmlspecialchars($anime['episodes']['sub']); ?></div>
-                                            <?php endif; ?>
+                                            
                                             
                                             <span class="dot"></span><?php echo htmlspecialchars($anime['type']); ?>
                                             <?php if(isset($anime['duration'])): ?>
@@ -235,9 +233,7 @@
                                             </div>
                                             <?php endif; ?>
 
-                                            <?php if(isset($anime['episodes']['sub'])): ?>
-                                            <div class="tick-item tick-eps"><?php echo htmlspecialchars($anime['episodes']['sub']); ?></div>
-                                            <?php endif; ?>
+                                            
                                             
                                             <span class="dot"></span><?php echo htmlspecialchars($anime['type']); ?>
                                             <?php if(isset($anime['duration'])): ?>
