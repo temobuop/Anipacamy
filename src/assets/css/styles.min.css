@@ -2,7 +2,42 @@
     position: relative
 }
 
+#st-1 .st-btn {
+    -moz-box-sizing: border-box !important;
+    -webkit-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+    -moz-transition: opacity 0.2s ease-in, top 0.2s ease-in !important; 
+    -ms-transition: opacity 0.2s ease-in, top 0.2s ease-in !important; 
+    -o-transition: opacity 0.2s ease-in, top 0.2s ease-in !important; 
+    -webkit-transition: opacity 0.2s ease-in, top 0.2s ease-in !important; 
+    transition: opacity 0.2s ease-in, top 0.2s ease-in !important;
+    -moz-border-radius: 4px !important;
+    -webkit-border-radius: 4px !important;
+    border-radius: 20px !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: inline-block !important;
+    font-size: 11px !important;
+    height: 32px !important;
+    line-height: 32px !important;
+    margin-right: 8px !important;
+    padding: 0 10px !important;
+    position: relative !important;
+    text-align: center !important;
+    top: 0 !important;
+    vertical-align: top !important;
+    white-space: nowrap !important;
+  }
+  #st-1 {
+    font-family: "Helvetica Neue", Verdana, Helvetica, Arial, sans-serif;;
+    direction: ltr;
+    display: block;
+    opacity: 1;
+    text-align: start !important;
+    z-index: 94034;
+  }
 
+  
 .logo-text {
     font-family: 'Poppins', sans-serif; /* Use a custom font */
     font-size: 36px;
