@@ -12,7 +12,7 @@ $websiteUrl = "//{$_SERVER['SERVER_NAME']}";
 $websiteLogo = $websiteUrl . "/public/logo/logo.png";
 $contactEmail = "@gmail.com";
 
-$version = "0.1";
+$version = "2";
 
 $discord = "https://dcd.gg/anipaca";
 $github = "https://github.com/PacaHat";
