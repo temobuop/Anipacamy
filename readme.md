@@ -7,7 +7,7 @@
       height="275"
       decoding="async"
       fetchpriority="high"
-    />
+    /> 
   </a>
 </p> 
 
