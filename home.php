@@ -142,10 +142,10 @@ $data = $data['data'];
         <?php include('./src/component/header.php'); ?>
         <div class="clearfix"></div>
         
-        <?php include('./src/component/slidebar.php'); ?>
+        <?php include('./src/component/anime/slidebar.php'); ?>
      
         <div class="lazy-component mt-3 ml-3 mr-3" data-component="trending">
-        <?php include('./src/component/trending.php') ?>
+        <?php include('./src/component/anime/trending.php') ?>
         </div>
         <div class="share-buttons share-buttons-home">
             <div class="container">
@@ -162,7 +162,7 @@ $data = $data['data'];
         </div>
 
         <div class="lazy-component mt-3" data-component="apfc">
-            <?php include('./src/component/apfc.php'); ?>
+            <?php include('./src/component/anime/apfc.php'); ?>
         </div>
         
                                         
@@ -484,12 +484,12 @@ $data = $data['data'];
 
 
 
-<?php include('./src/component/schedule.php'); ?>
+<?php include('./src/ajax/schedule.php'); ?>
 
 
                 
                 <div class="lazy-component" data-component="sidenav">
-                    <?php include('./src/component/sidenav.php'); ?>
+                    <?php include('./src/component/anime/sidenav.php'); ?>
                 </div>
                 <div class="clearfix"></div>
                                 </div>
