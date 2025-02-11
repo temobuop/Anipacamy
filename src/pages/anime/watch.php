@@ -1,6 +1,6 @@
 <?php
 
-require_once('src/component/qtip.php');
+require_once('src/component/anime/qtip.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
 error_reporting(E_ALL);

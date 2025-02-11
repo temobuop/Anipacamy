@@ -1,11 +1,10 @@
 <?php
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 session_start();
-
 
 function fetchApi($url) {
     $ch = curl_init($url);
@@ -16,35 +15,47 @@ function fetchApi($url) {
     return $response;
 }
 
-
 $category = basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 $page = max(1, (int)($_GET['page'] ?? 1));
 $currentPage = $page;
 
-$letter = ($category === 'az-list') ? '' : str_replace('az-list/', '', $category);
-
-
-$apiUrl = "$zpi/az-list/{$category}?page={$page}";
-$response = fetchApi($apiUrl);
-$data = json_decode($response, true);
-
-if (!$response || !$data['success'] ?? false) {
-    $apiUrl = "$zpi/{$category}?page={$page}";
+if (empty($category) || $category === 'az-list') {
+    $apiUrl = "$zpi/az-list?page={$page}";
     $response = fetchApi($apiUrl);
-    $data = json_decode($response, true);
+} else {
+    $letter = str_replace('az-list/', '', $category);
+    $cacheFile = $_SERVER['DOCUMENT_ROOT'] . "/cache/az-list_{$category}_page_{$page}.json";
+    $cacheDuration = 3600; 
+
+    if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheDuration) {
+        $response = file_get_contents($cacheFile);
+    } else {
+        $apiUrl = "$zpi/az-list/{$category}?page={$page}";
+        $response = fetchApi($apiUrl);
+        if ($response !== false) {
+            file_put_contents($cacheFile, $response);
+        } else {
+            $apiUrl = "$zpi/{$category}?page={$page}";
+            $response = fetchApi($apiUrl);
+            if ($response !== false) {
+                file_put_contents($cacheFile, $response);
+            }
+        }
+    }
 }
+
+$data = json_decode($response, true);
 
 $errorMessage = null;
 $azResults = $data['results']['data'] ?? null;
-$totalPages = $azResults ? ceil(count($azResults) / 20) : 0;
-
+$totalPages = $data['results']['totalPages'] ?? 1;
+$totalResults = $totalPages * 20;
 
 if (!$azResults) {
     $errorMessage = $response === false ? 'Could not connect to the API.' : 'Failed to fetch popular anime. Please try again later.';
 }
 
 ?>
-
 
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -124,12 +135,70 @@ if (!$azResults) {
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
     <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
+ 
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebSite",
+            "url": "<?= htmlspecialchars($websiteUrl) ?>",
+            "name": "<?= htmlspecialchars($websiteTitle) ?>",
+            "description": "Watch High Quality Anime Online Without Ads",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "<?= htmlspecialchars($websiteUrl) ?>/search?keyword={keyword}",
+                "query-input": "required name=keyword"
+            }
+        },
+        {
+            "@type": "CollectionPage",
+            "name": "List All <?= htmlspecialchars(str_replace('-', ' ', ucfirst($category))) ?> Anime",
+            "description": "Browse anime series starting with <?= htmlspecialchars($letter ?: 'All') ?> letters in HD quality without ads",
+            "url": "<?= htmlspecialchars($websiteUrl) ?>/<?= htmlspecialchars($category) ?>",
+            "hasPart": [
+                {
+                    "@type": "ItemList",
+                    "numberOfItems": <?= count($azResults) ?>,
+                    "itemListElement": [
+                        <?php foreach ($azResults as $index => $anime): ?>
+                        {
+                            "@type": "TVSeries",
+                            "position": <?= $index + 1 ?>,
+                            "url": "<?= htmlspecialchars($websiteUrl) ?>/details/<?= htmlspecialchars($anime['id']) ?>",
+                            "name": "<?= htmlspecialchars($anime['name']) ?>",
+                            "image": "<?= htmlspecialchars($anime['poster']) ?>",
+                            "numberOfEpisodes": {
+                                <?php if (!empty($anime['episodes']['sub'])): ?>
+                                "sub": <?= $anime['episodes']['sub'] ?>,
+                                <?php endif; ?>
+                                <?php if (!empty($anime['episodes']['dub'])): ?>
+                                "dub": <?= $anime['episodes']['dub'] ?>,
+                                <?php endif; ?>
+                                "total": <?= (!empty($anime['episodes']['sub']) ? $anime['episodes']['sub'] : 0) + (!empty($anime['episodes']['dub']) ? $anime['episodes']['dub'] : 0) ?>
+                            }
+                        }<?= ($index < count($azResults) - 1) ? ',' : '' ?>
+                        <?php endforeach; ?>
+                    ]
+                }
+            ],
+            "pageInfo": {
+                "@type": "PageInfo",
+                "currentPage": <?= $currentPage ?>,
+                "totalPages": <?= $totalPages ?>
+            }
+        }
+    ]
+}
+</script>
+
+
 </head>
 
 <body data-page="page_anime">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-    <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/header.php'); ?>
+   <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper" class="layout-page page-az">
             <div class="container">
@@ -152,34 +221,34 @@ if (!$azResults) {
                         </div>
                         <div class="main-az">
                             <ul class="ulclear az-list">
-                                <li class="<?= empty($letter) ? 'active' : '' ?>"><a href="/src/pages/az-list.php">All</a></li>                               
-                                <li class="<?= $letter === '0-9' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/0-9">0-9</a></li>
-                                <li class="<?= $letter === 'a' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/a">A</a></li>
-                                <li class="<?= $letter === 'b' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/b">B</a></li>
-                                <li class="<?= $letter === 'c' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/c">C</a></li>
-                                <li class="<?= $letter === 'd' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/d">D</a></li>
-                                <li class="<?= $letter === 'e' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/e">E</a></li>
-                                <li class="<?= $letter === 'f' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/f">F</a></li>
-                                <li class="<?= $letter === 'g' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/g">G</a></li>
-                                <li class="<?= $letter === 'h' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/h">H</a></li>
-                                <li class="<?= $letter === 'i' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/i">I</a></li>
-                                <li class="<?= $letter === 'j' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/j">J</a></li>
-                                <li class="<?= $letter === 'k' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/k">K</a></li>
-                                <li class="<?= $letter === 'l' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/l">L</a></li>
-                                <li class="<?= $letter === 'm' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/m">M</a></li>
-                                <li class="<?= $letter === 'n' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/n">N</a></li>
-                                <li class="<?= $letter === 'o' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/o">O</a></li>
-                                <li class="<?= $letter === 'p' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/p">P</a></li>
-                                <li class="<?= $letter === 'q' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/q">Q</a></li>
-                                <li class="<?= $letter === 'r' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/r">R</a></li>
-                                <li class="<?= $letter === 's' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/s">S</a></li>
-                                <li class="<?= $letter === 't' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/t">T</a></li>
-                                <li class="<?= $letter === 'u' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/u">U</a></li>
-                                <li class="<?= $letter === 'v' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/v">V</a></li>
-                                <li class="<?= $letter === 'w' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/w">W</a></li>
-                                <li class="<?= $letter === 'x' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/x">X</a></li>
-                                <li class="<?= $letter === 'y' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/y">Y</a></li>
-                                <li class="<?= $letter === 'z' ? 'active' : '' ?>"><a href="/src/pages/az-list.php/z">Z</a></li>
+                                <li class="<?= empty($letter) ? 'active' : '' ?>"><a href="/az-list">All</a></li>                               
+                                <li class="<?= $letter === '0-9' ? 'active' : '' ?>"><a href="/az-list/0-9">0-9</a></li>
+                                <li class="<?= $letter === 'a' ? 'active' : '' ?>"><a href="/az-list/a">A</a></li>
+                                <li class="<?= $letter === 'b' ? 'active' : '' ?>"><a href="/az-list/b">B</a></li>
+                                <li class="<?= $letter === 'c' ? 'active' : '' ?>"><a href="/az-list/c">C</a></li>
+                                <li class="<?= $letter === 'd' ? 'active' : '' ?>"><a href="/az-list/d">D</a></li>
+                                <li class="<?= $letter === 'e' ? 'active' : '' ?>"><a href="/az-list/e">E</a></li>
+                                <li class="<?= $letter === 'f' ? 'active' : '' ?>"><a href="/az-list/f">F</a></li>
+                                <li class="<?= $letter === 'g' ? 'active' : '' ?>"><a href="/az-list/g">G</a></li>
+                                <li class="<?= $letter === 'h' ? 'active' : '' ?>"><a href="/az-list/h">H</a></li>
+                                <li class="<?= $letter === 'i' ? 'active' : '' ?>"><a href="/az-list/i">I</a></li>
+                                <li class="<?= $letter === 'j' ? 'active' : '' ?>"><a href="/az-list/j">J</a></li>
+                                <li class="<?= $letter === 'k' ? 'active' : '' ?>"><a href="/az-list/k">K</a></li>
+                                <li class="<?= $letter === 'l' ? 'active' : '' ?>"><a href="/az-list/l">L</a></li>
+                                <li class="<?= $letter === 'm' ? 'active' : '' ?>"><a href="/az-list/m">M</a></li>
+                                <li class="<?= $letter === 'n' ? 'active' : '' ?>"><a href="/az-list/n">N</a></li>
+                                <li class="<?= $letter === 'o' ? 'active' : '' ?>"><a href="/az-list/o">O</a></li>
+                                <li class="<?= $letter === 'p' ? 'active' : '' ?>"><a href="/az-list/p">P</a></li>
+                                <li class="<?= $letter === 'q' ? 'active' : '' ?>"><a href="/az-list/q">Q</a></li>
+                                <li class="<?= $letter === 'r' ? 'active' : '' ?>"><a href="/az-list/r">R</a></li>
+                                <li class="<?= $letter === 's' ? 'active' : '' ?>"><a href="/az-list/s">S</a></li>
+                                <li class="<?= $letter === 't' ? 'active' : '' ?>"><a href="/az-list/t">T</a></li>
+                                <li class="<?= $letter === 'u' ? 'active' : '' ?>"><a href="/az-list/u">U</a></li>
+                                <li class="<?= $letter === 'v' ? 'active' : '' ?>"><a href="/az-list/v">V</a></li>
+                                <li class="<?= $letter === 'w' ? 'active' : '' ?>"><a href="/az-list/w">W</a></li>
+                                <li class="<?= $letter === 'x' ? 'active' : '' ?>"><a href="/az-list/x">X</a></li>
+                                <li class="<?= $letter === 'y' ? 'active' : '' ?>"><a href="/az-list/y">Y</a></li>
+                                <li class="<?= $letter === 'z' ? 'active' : '' ?>"><a href="/az-list/z">Z</a></li>
                             </ul>
                             <div class="clearfix"></div>
                         </div>
@@ -236,38 +305,45 @@ if (!$azResults) {
                     <p>No results found.</p>
                 <?php endif; ?>
             </div>
-             <!-- Pagination -->
-             <?php if (!empty($azResults) && $totalPages > 0): ?>
-             <div class="pre-pagination mt-5 mb-5">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-lg justify-content-center">
-                                <?php for ($i = 1; $i <= min(3, $totalPages); $i++): ?>
-                                    <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
-                                        <a class="page-link" 
-                                           href="?page=<?= $i ?>" 
-                                           title="Page <?= $i ?>"><?= $i ?></a>
-                                    </li>
-                                <?php endfor; ?>
+            <div class="pre-pagination mt-5 mb-5">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-lg justify-content-center">
+                        <?php
+                        // Determine the start and end of the pagination range
+                        $range = 2; // Number of pages to show before and after the current page
+                        $start = max(1, $currentPage - $range);
+                        $end = min($totalPages, $currentPage + $range);
 
-                                <?php if ($currentPage < $totalPages): ?>
-                                    <li class="page-item">
-                                        <a class="page-link" 
-                                           href="?page=<?= $currentPage + 1 ?>" 
-                                           title="Next">›</a>
-                                    </li>
-                                <?php endif; ?>
-                                <?php if ($totalPages > 1): ?>
-                                    <li class="page-item">
-                                        <a class="page-link" 
-                                           href="?page=<?= $totalPages ?>" 
-                                           title="Last">»</a>
-                                    </li>
-                                <?php endif; ?>
-                            </ul>
-                        </nav>
-                    </div>
-             <?php endif; ?>
-                    <div class="clearfix"></div>
+                        // Display the "First" and "Previous" buttons
+                        if ($currentPage > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" title="First">«</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $currentPage - 1 ?>" title="Previous">‹</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <!-- Display the range of page numbers -->
+                        <?php for ($i = $start; $i <= $end; $i++): ?>
+                            <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
+                                <a class="page-link" href="?page=<?= $i ?>" title="Page <?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <!-- Display the "Next" and "Last" buttons -->
+                        <?php if ($currentPage < $totalPages): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $currentPage + 1 ?>" title="Next">›</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $totalPages + 1 ?>" title="Last">»</a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
+            <div class="clearfix"></div>
         </div>
     </div>
 </section>
@@ -277,7 +353,7 @@ if (!$azResults) {
                 </div>
             </div>
         </div>
-        <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/footer.php'); ?>
+       <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/footer.php'); ?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 

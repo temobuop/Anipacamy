@@ -10,42 +10,47 @@ $uri = strtok(trim($_SERVER['REQUEST_URI'], '/'), '?');
 
 // Define routes with regex patterns and associated files
 $routes = [
+  // Main Pages
+  '/^home$/' => 'home.php',
   '/^filter$/' => 'filter.php',
-    '/^search$/' => 'search.php',
-    '/^home$/' => 'home.php',
-    '/^details$/' => 'src/pages/details.php',
-    '/^random$/' => 'src/component/random.php',
-    '/^anime$/' => 'src/pages/anime.php',
-    '/^dmca$/' => 'src/pages/extra/dmca.php',
-    '/^terms$/' => 'src/pages/extra/terms.php',
-    '/^manga$/' => 'src/pages/manga.php',
-    '/^az-list(\/[a-zA-Z0-9])?$/' => 'src/pages/az-list.php',
-    '/^pre-qtip$/' => 'src/ajax/pre-qtip.php',
-    '/^login$/' => 'src/user/login.php',
-    '/^register$/' => 'src/user/register.php',
-    '/^logout$/' => 'src/user/logout.php',
-    '/^profile$/' => 'src/user/profile.php',
-    '/^watchlist$/' => 'src/user/watchlist.php',
-    '/^watchlist\.php(?:\?.*)?$/' => 'src/user/watchlist.php',
-    '/^changepass$/' => 'src/user/changepass.php',
-    '/^continue-watching$/' => 'src/user/continue-watching.php',
-    '/^streaming$/' => 'src/pages/streaming.php',
-    '/^details\/([a-zA-Z0-9\-]+)$/' => 'src/pages/details.php',
-    '/^anime\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime.php',
-    '/^watch\/([a-zA-Z0-9\-]+)$/' => 'src/pages/watch.php',
-    '/^play\/([a-zA-Z0-9\-]+)$/' => 'src/pages/play.php',
-    '/^genre\/([a-zA-Z0-9\-]+)$/' => 'src/pages/genre.php',
+  '/^search$/' => 'search.php',
+  '/^az-list(\/[a-zA-Z0-9])?$/' => 'src/pages/az-list.php',
+  '/^streaming$/' => 'src/pages/streaming.php',
 
-    
+  // Anime Pages
+  '/^details$/' => 'src/pages/anime/details.php',
+  '/^random$/' => 'src/component/anime/random.php', 
+  '/^anime$/' => 'src/pages/anime/anime.php',
+  '/^details\/([a-zA-Z0-9\-]+)$/' => 'src/pages/details.php',
+  '/^anime\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime.php',
+  '/^watch\/([a-zA-Z0-9\-]+)$/' => 'src/pages/watch.php',
+  '/^genre\/([a-zA-Z0-9\-]+)$/' => 'src/pages/genre.php',
+
+  // User Pages
+  '/^login$/' => 'src/user/login.php',
+  '/^register$/' => 'src/user/register.php', 
+  '/^logout$/' => 'src/user/logout.php',
+  '/^profile$/' => 'src/user/profile.php',
+  '/^watchlist$/' => 'src/user/watchlist.php',
+  '/^watchlist\.php(?:\?.*)?$/' => 'src/user/watchlist.php',
+  '/^changepass$/' => 'src/user/changepass.php',
+  '/^continue-watching$/' => 'src/user/continue-watching.php',
+
+  // Extra Pages
+  '/^dmca$/' => 'src/pages/extra/dmca.php',
+  '/^terms$/' => 'src/pages/extra/terms.php',
+
     // Sitemap Routes
-    '/^sitemaps\/recentCN-sitemap\.xml$/' => 'sitemaps/recentCN-sitemap.php',
-    '/^sitemaps\/recentDUB-sitemap\.xml$/' => 'sitemaps/recentDUB-sitemap.php',
-    '/^sitemaps\/recentSUB-sitemap\.xml$/' => 'sitemaps/recentSUB-sitemap.php',
-    '/^sitemaps\/ongoing-sitemap\.xml$/' => 'sitemaps/ongoing-sitemap.php',
-    '/^sitemaps\/allanime-sitemap\.xml$/' => 'sitemaps/allanime-sitemap.php',
-    '/^sitemaps\/sitemap\.xml$/' => 'sitemaps/sitemap.php',
-    '/^sitemap\.xml$/' => 'sitemap.php',
+    '/^sitemaps\/popular\.xml$/' => 'public/sitemap/sitemappopular.xml',
+    '/^sitemaps\/movie\.xml$/' => 'public/sitemap/sitemapmovie.xml',
+    '/^sitemaps\/airing\.xml$/' => 'public/sitemap/sitemapairing.xml',
+    '/^sitemaps\/ongoing-sitemap\.xml$/' => 'public/sitemap/sitemapongoing.xml',
+    '/^sitemaps\/allanime-sitemap\.xml$/' => 'public/sitemap/sitemapallanime.xml',
+    '/^sitemaps\/sitemap\.xml$/' => 'public/sitemap/sitemap.php',
+    '/^sitemap\.xml$/' => 'public/sitemap/sitemap.php',
 ];
+
+
 
 // Route matching
 $handled = false;

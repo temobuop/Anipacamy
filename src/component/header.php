@@ -158,10 +158,10 @@
         <div class="header-group">
         <div class="anw-group">
                 <div class="zrg-list">
-                    <div class="item"><a href="<?= $discord ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-discord"></i></a></div>
-                    <div class="item"><a href="<?= $facebook ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-facebook"></i></a></div>
-                    <div class="item"><a href="<?= $twitter ?>" target="_blank" class="zr-social-button dc-btn"><i class="fab fa-twitter"></i></a></div>
-                    <div class="item"><a href="<?= $github ?>/Anipaca" target="_blank" class="zr-social-button gh-btn"><i class="fab fa-github"></i></a></div>
+                    <div class="item"><a href="<?= $discord ?>" target="_blank" class="zr-social-button dc-btn"><i class="fa-brands fa-discord"></i></a></div>
+                    <div class="item"><a href="<?= $github ?>" target="_blank" class="zr-social-button tl-btn"><i class="fa-brands fa-github"></i></i></a></div>
+                    <div class="item"><a href="<?= $telegram ?>" target="_blank" class="zr-social-button tw-btn"><i class="fa-brands fa-telegram"></i></a></div>
+                    <div class="item"><a href="<?= $instagram ?>" target="_blank" class="zr-social-button rd-btn"><i class="fa-brands fa-instagram"></i></a></div>
                 </div>
                 <div class="clearfix"></div>
             </div>

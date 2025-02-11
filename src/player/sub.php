@@ -5,6 +5,7 @@ $id = $_GET['id'];
 $server = $_GET['server'] ?? 'hd-1';
 $useProxy = $server !== 'hd-1';
 $isIframe = isset($_GET['embed']) && $_GET['embed'] === 'true';
+$autoSkip = isset($_GET['skip']) && $_GET['skip'] === 'true';
 
 $categories = ["sub", "raw"];
 $data = null;
@@ -57,15 +58,15 @@ if ($isIframe) {
     <script src="js/hls.js"></script>
     <script src="js/artplayer-plugin-chromecast.js"></script>
     <script src="js/artplayer-plugin-dash-control.js"></script>
- 
     <script src="js/artplayer-plugin-hls-control.js"></script>
     <script src="js/artplayer-plugin-chapter.js"></script>
     <link rel="stylesheet" href="css/artplayer.css">
    
     <script>
         const settings = {
-            autoSkipIntro: true,
-            autoSkipOutro: true
+            autoSkipIntro: <?= json_encode($autoSkip) ?>,
+            autoSkipOutro: <?= json_encode($autoSkip) ?>,
+            subtitleFontSize: '24px' // Default font size
         };
 
         function playM3u8(video, url, art) {
@@ -95,13 +96,13 @@ if ($isIframe) {
                 loading: '<img src="icons/loading.svg">',
                 state: '<img src="icons/state.svg">',
                 indicator: '<img width="16" height="16" src="icons/indicator.svg">',
-                setting: '<img src="icons/setting.svg">',
+                setting: '<img src="icons/setting.svg" width="23" height="23">',
                 pip: '<img src="icons/pip.svg">',
                 fullscreenOn: '<img src="icons/fs-on.svg">',
                 fullscreenOff: '<img src="icons/fs-on.svg">',
                 volume: '<img src="icons/volumee.svg">',
                 volumeClose: '<img src="icons/vl-close.svg">',
-           
+                
             },
             volume: 2,
             autoplay: true,
@@ -129,26 +130,56 @@ if ($isIframe) {
             },
             settings: [
                 {
+                    width: 200,
                     html: 'Subtitle',
-                    tooltip: 'Choose Subtitle',
+                    tooltip: 'Bilingual',
                     icon: '<img width="22" height="22" src="icons/subtitle.svg">',
                     selector: [
-                        <?php foreach ($subtitles as $subtitle): ?> {
-                                html: '<?= $subtitle['label'] ?>',
-                                url: '<?= $subtitle['file'] ?>',
-                                default: <?= $subtitle['default'] ? 'true' : 'false' ?>,
-                                escape: false,
-                                click: function() {
-                                    art.subtitle.url = '<?= $subtitle['file'] ?>';
-                                }
+                        {
+                            html: 'Display',
+                            icon: '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 256 256"><path fill="currentColor" d="M52.44 36a6 6 0 0 0-8.88 8L49 50H32a14 14 0 0 0-14 14v128a14 14 0 0 0 14 14h158.8l12.76 14a6 6 0 0 0 8.88-8.08ZM32 194a2 2 0 0 1-2-2V64a2 2 0 0 1 2-2h27.89l61.82 68H104a6 6 0 0 0 0 12h28.62l18.18 20H56a6 6 0 0 0 0 12h105.71l18.18 20Zm18-58a6 6 0 0 1 6-6h16a6 6 0 0 1 0 12H56a6 6 0 0 1-6-6m188-72v130.83a6 6 0 1 1-12 0V64a2 2 0 0 0-2-2H105.79a6 6 0 0 1 0-12H224a14 14 0 0 1 14 14m-59.48 78a6 6 0 1 1 0-12H200a6 6 0 0 1 0 12Z"/></svg>',
+                            tooltip: 'Show',
+                            switch: true,
+                            onSwitch: function (item) {
+                                item.tooltip = item.switch ? 'Hide' : 'Show';
+                                art.subtitle.show = !item.switch;
+                                return !item.switch;
                             },
+                        },
+                        <?php foreach ($subtitles as $subtitle): ?> {
+                            html: '<?= $subtitle['label'] ?>',
+                            url: '<?= $subtitle['file'] ?>',
+                            default: <?= $subtitle['default'] ? 'true' : 'false' ?>,
+                        },
                         <?php endforeach; ?>
                     ],
-                    onSelect: function(item) {
-                        art.subtitle.url = item.url;
+                    onSelect: function (item) {
+                        art.subtitle.switch(item.url, {
+                            name: item.html,
+                        });
                         return item.html;
                     },
-                }
+                },
+                {
+                    html: 'Font Size',
+                    tooltip: 'Size',
+                    icon: '<img width="22" height="22" src="icons/font-size.svg">',
+                    selector: [
+                        { html: '20%', value: '20px' },
+                        { html: '40%', value: '24px'},
+                        { html: '60%', value: '28px' },
+                        { html: '80%', value: '32px', default: true  },
+                        { html: '100%', value: '36px' },
+                    ],
+                    onSelect: function(item) {
+                        settings.subtitleFontSize = item.value;
+                        art.subtitle.style({
+                            fontSize: settings.subtitleFontSize,
+                        });
+                        return item.html;
+                    },
+                },
+                
             ],
             
             plugins: [
@@ -159,6 +190,7 @@ if ($isIframe) {
                         setting: true,
                         title: 'Quality',
                         auto: 'Auto',
+                        
                     },
                 }),
                
@@ -186,12 +218,12 @@ if ($isIframe) {
             layers: [
                 {
             name: 'poster',
-            html: `<img style="width: 105px" src="<?= $websiteUrl ?>/public/logo/logo.png">`,
+            html: `<img style="width: 35px" src="<?= $websiteUrl ?>/public/logo/plogo.png">`,
             tooltip: 'Poster Tip',
             style: {
                 position: 'absolute',
                 top: '20px',
-                right: '18px',
+                left: '18px',
             },
             click: function (...args) {
                 console.info('click', args);
@@ -206,7 +238,9 @@ if ($isIframe) {
                 type: 'srt',
                 encoding: 'utf-8',
                 escape: false,
-                
+                style: {
+                    fontSize: settings.subtitleFontSize,
+                },
             },
         });
 
@@ -236,7 +270,7 @@ if ($isIframe) {
             style: {
                 position: 'absolute',
                 border: '2px solid #fff',
-                bottom: '62px', 
+                bottom: '85px', 
                 right: '10px', 
                 background: '#00000000', 
                 color: '#fff', 
@@ -256,7 +290,7 @@ if ($isIframe) {
             style: {
                 position: 'absolute',
                 border: '1px solid #fdd253',
-                bottom: '65px', 
+                bottom: '85px', 
                 right: '10px', 
                 background: '#00000000', 
                 color: '#fdd253', 
@@ -390,6 +424,7 @@ art.on('ready', () => {
    
 });
 
+
 art.on("resize", () => {
       art.subtitle.style({
         fontSize:
@@ -397,15 +432,9 @@ art.on("resize", () => {
       });
     });
         
-        art.on('ready', () => {
-            const autoSkipEnabled = localStorage.getItem('autoSkipEnabled');
-            if (autoSkipEnabled === null) {
-                localStorage.setItem('autoSkipEnabled', 'true');
-            } else {
-                settings.autoSkipIntro = autoSkipEnabled === 'true';
-                settings.autoSkipOutro = autoSkipEnabled === 'true';
-            }
-        });
+
+
+       
     </script>
     <?php
     exit;

@@ -167,7 +167,7 @@ $latest_updates_result = $stmt->get_result();
 <body data-page="page_anime">
   <div id="sidebar_menu_bg"></div>
   <div id="wrapper" data-page="page_home">
-    <?php include 'src/component/header.php'; ?>
+    <?php include '/src/component/header.php'; ?>
     <div class="clearfix"></div>
 
     <div id="main-wrapper" class="layout-page page-az">
@@ -283,7 +283,7 @@ $latest_updates_result = $stmt->get_result();
     <div class="clearfix"></div>
   </div>
 </body>
-    <?php include 'src/component/footer.php' ?>
+    <?php include '/src/component/footer.php' ?>
   
     <div id="mask-overlay"></div>
     

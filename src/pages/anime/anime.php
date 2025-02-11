@@ -220,7 +220,7 @@ try {
 
                     <div class="clearfix"></div>
                 </div>
-                <?php include('src/component/sidenav.php'); ?>
+                <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/sidenav.php'); ?>
                 <div class="clearfix"></div>
             </div>
         </div>

@@ -1,27 +1,31 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
-
 $id = $_GET['id'];
 $server = $_GET['server'] ?? 'hd-1';
 $useProxy = $server !== 'hd-1';
 $isIframe = isset($_GET['embed']) && $_GET['embed'] === 'true';
+$autoSkip = isset($_GET['skip']) && $_GET['skip'] === 'true';
 
-$api_url = "$api/episode/sources?animeEpisodeId=$id&server=$server&category=dub";
+$categories = ["dub"];
+$data = null;
 
-
-$response = file_get_contents($api_url);
-
-if ($response === false) {
-    die("Error: Unable to fetch API response.");
+foreach ($categories as $category) {
+    $api_url = "$api/episode/sources?animeEpisodeId=$id&server=$server&category=$category";
+    $response = file_get_contents($api_url);
+    if ($response !== false) {
+        $data = json_decode($response, true);
+        if ($data && $data['success']) {
+            break; // Stop if a successful response is found
+        }
+    }
 }
-
-$data = json_decode($response, true);
 
 if (!$data || !$data['success']) {
-    die("Error: Invalid API response.");
+    die("Error: Unable to fetch episode sources.");
 }
 
+// Process $data here as needed
 
 $m3u8_url = $data['data']['sources'][0]['url'];
 $video_url = $useProxy ? $proxy . $m3u8_url : $m3u8_url;
@@ -45,11 +49,8 @@ foreach ($data['data']['tracks'] as $track) {
         ];
     }
 }
- // Start of Selection
 
-
-
- if ($isIframe) {
+if ($isIframe) {
     ?>
     <div class="artplayer-app"></div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -57,15 +58,15 @@ foreach ($data['data']['tracks'] as $track) {
     <script src="js/hls.js"></script>
     <script src="js/artplayer-plugin-chromecast.js"></script>
     <script src="js/artplayer-plugin-dash-control.js"></script>
- 
     <script src="js/artplayer-plugin-hls-control.js"></script>
     <script src="js/artplayer-plugin-chapter.js"></script>
     <link rel="stylesheet" href="css/artplayer.css">
    
     <script>
         const settings = {
-            autoSkipIntro: true,
-            autoSkipOutro: true
+            autoSkipIntro: <?= json_encode($autoSkip) ?>,
+            autoSkipOutro: <?= json_encode($autoSkip) ?>,
+            subtitleFontSize: '24px' // Default font size
         };
 
         function playM3u8(video, url, art) {
@@ -95,13 +96,13 @@ foreach ($data['data']['tracks'] as $track) {
                 loading: '<img src="icons/loading.svg">',
                 state: '<img src="icons/state.svg">',
                 indicator: '<img width="16" height="16" src="icons/indicator.svg">',
-                setting: '<img src="icons/setting.svg">',
+                setting: '<img src="icons/setting.svg" width="23" height="23">',
                 pip: '<img src="icons/pip.svg">',
                 fullscreenOn: '<img src="icons/fs-on.svg">',
                 fullscreenOff: '<img src="icons/fs-on.svg">',
                 volume: '<img src="icons/volumee.svg">',
                 volumeClose: '<img src="icons/vl-close.svg">',
-           
+                
             },
             volume: 2,
             autoplay: true,
@@ -129,25 +130,56 @@ foreach ($data['data']['tracks'] as $track) {
             },
             settings: [
                 {
+                    width: 200,
                     html: 'Subtitle',
-                    tooltip: 'Choose Subtitle',
+                    tooltip: 'Bilingual',
                     icon: '<img width="22" height="22" src="icons/subtitle.svg">',
                     selector: [
-                        <?php foreach ($subtitles as $subtitle): ?> {
-                                html: '<?= $subtitle['label'] ?>',
-                                url: '<?= $subtitle['file'] ?>',
-                                default: <?= $subtitle['default'] ? 'true' : 'false' ?>,
-                                click: function() {
-                                    art.subtitle.url = '<?= $subtitle['default'] ? 'true' : 'false' ?>';
-                                }
+                        {
+                            html: 'Display',
+                            icon: '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 256 256"><path fill="currentColor" d="M52.44 36a6 6 0 0 0-8.88 8L49 50H32a14 14 0 0 0-14 14v128a14 14 0 0 0 14 14h158.8l12.76 14a6 6 0 0 0 8.88-8.08ZM32 194a2 2 0 0 1-2-2V64a2 2 0 0 1 2-2h27.89l61.82 68H104a6 6 0 0 0 0 12h28.62l18.18 20H56a6 6 0 0 0 0 12h105.71l18.18 20Zm18-58a6 6 0 0 1 6-6h16a6 6 0 0 1 0 12H56a6 6 0 0 1-6-6m188-72v130.83a6 6 0 1 1-12 0V64a2 2 0 0 0-2-2H105.79a6 6 0 0 1 0-12H224a14 14 0 0 1 14 14m-59.48 78a6 6 0 1 1 0-12H200a6 6 0 0 1 0 12Z"/></svg>',
+                            tooltip: 'Show',
+                            switch: true,
+                            onSwitch: function (item) {
+                                item.tooltip = item.switch ? 'Hide' : 'Show';
+                                art.subtitle.show = !item.switch;
+                                return !item.switch;
                             },
+                        },
+                        <?php foreach ($subtitles as $subtitle): ?> {
+                            html: '<?= $subtitle['label'] ?>',
+                            url: '<?= $subtitle['file'] ?>',
+                            default: <?= $subtitle['default'] ? 'true' : 'false' ?>,
+                        },
                         <?php endforeach; ?>
                     ],
-                    onSelect: function(item) {
-                        art.subtitle.url = item.url;
+                    onSelect: function (item) {
+                        art.subtitle.switch(item.url, {
+                            name: item.html,
+                        });
                         return item.html;
                     },
-                }
+                },
+                {
+                    html: 'Font Size',
+                    tooltip: 'Size',
+                    icon: '<img width="22" height="22" src="icons/font-size.svg">',
+                    selector: [
+                        { html: '20%', value: '20px' },
+                        { html: '40%', value: '24px'},
+                        { html: '60%', value: '28px' },
+                        { html: '80%', value: '32px', default: true  },
+                        { html: '100%', value: '36px' },
+                    ],
+                    onSelect: function(item) {
+                        settings.subtitleFontSize = item.value;
+                        art.subtitle.style({
+                            fontSize: settings.subtitleFontSize,
+                        });
+                        return item.html;
+                    },
+                },
+                
             ],
             
             plugins: [
@@ -158,6 +190,7 @@ foreach ($data['data']['tracks'] as $track) {
                         setting: true,
                         title: 'Quality',
                         auto: 'Auto',
+                        
                     },
                 }),
                
@@ -167,9 +200,9 @@ foreach ($data['data']['tracks'] as $track) {
                             start: <?= $intro_start ?>,
                             end: <?= $intro_end ?>,
                             title: 'Intro',
-                            color: '#fdd253', 
+                            color: '#fdd253', // Changed color to match the new style
                             style: {
-                                transform: 'scaleY(0.6)',
+                                transform: 'scaleY(0.6)', // Added transform style
                             },
                         },
                         {
@@ -185,15 +218,12 @@ foreach ($data['data']['tracks'] as $track) {
             layers: [
                 {
             name: 'poster',
-            html: `<img style="width: 105px" src="<?= $websiteUrl ?>/public/logo/logo.png">`,
+            html: `<img style="width: 35px" src="<?= $websiteUrl ?>/public/logo/plogo.png">`,
             tooltip: 'Poster Tip',
             style: {
                 position: 'absolute',
-                top: '15px',
-                right: '15px',
-                borderRadius: '8px',
-                padding: '5px', 
-                
+                top: '20px',
+                left: '18px',
             },
             click: function (...args) {
                 console.info('click', args);
@@ -203,7 +233,19 @@ foreach ($data['data']['tracks'] as $track) {
             },
         },
             ],
+            subtitle: {
+                url: '<?= $subtitles[0]['file'] ?>',
+                type: 'srt',
+                encoding: 'utf-8',
+                escape: false,
+                style: {
+                    fontSize: settings.subtitleFontSize,
+                },
+            },
         });
+
+
+        
 
         const fastForwardLayer = art.layers.add({
             html: '<svg viewBox="-5 -10 75 75" xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="white"><path d="M29.92 45H25.21V26.54l-4.6 2.78v-3.92l8.81-3.6h0V45zm18.18-10c0 3.34-.61 5.9-1.83 7.67-1.21 1.77-2.94 2.66-5.19 2.66-2.23 0-3.95-.86-5.17-2.6-1.21-1.77-1.84-4.24-1.84-7.55v-4.56c0-3.34.6-5.9 1.83-7.67 1.21-1.77 2.94-2.66 5.19-2.66 2.23 0 3.95.86 5.17 2.6 1.21 1.77 1.84 4.24 1.84 7.55v4.56zm-4.71-4.9c0-1.9-.19-3.32-.57-4.25-.38-.93-.97-1.47-1.74-1.47-1.49 0-2.27 1.74-2.27 4.17v5.63c0 1.95.19 3.32.57 4.25.38.93.97 1.47 1.74 1.47 1.49 0 2.27-1.74 2.27-4.17v-5.63z"/><path d="M40.01 5.45V0l10 7.79-10 7.79V10.3H4.91v29.85H18.76v4.85H0V5.45h40.01z"/></svg>',
@@ -228,7 +270,7 @@ foreach ($data['data']['tracks'] as $track) {
             style: {
                 position: 'absolute',
                 border: '2px solid #fff',
-                bottom: '62px', 
+                bottom: '85px', 
                 right: '10px', 
                 background: '#00000000', 
                 color: '#fff', 
@@ -248,7 +290,7 @@ foreach ($data['data']['tracks'] as $track) {
             style: {
                 position: 'absolute',
                 border: '1px solid #fdd253',
-                bottom: '65px', 
+                bottom: '85px', 
                 right: '10px', 
                 background: '#00000000', 
                 color: '#fdd253', 
@@ -321,9 +363,12 @@ foreach ($data['data']['tracks'] as $track) {
 })
 
 art.on('ready', () => {
-    const defaultSubtitle = <?= json_encode($subtitles) ?>.find(s => s.default);
-    art.subtitle.url = defaultSubtitle ? defaultSubtitle.file : '';
+    const defaultSubtitle = <?= json_encode($subtitles, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>.find(s => s.default);
+    if (defaultSubtitle) {
+        art.subtitle.url = defaultSubtitle.file;
+    }
     art.subtitle.html = true;
+    art.subtitle.escape = false;
 });
         
         art.on('video:timeupdate', () => {
@@ -346,6 +391,7 @@ art.on('ready', () => {
             }
         });
 
+
        
 
       
@@ -353,6 +399,7 @@ art.on('ready', () => {
         art.on('subtitle:change', (item) => {
             console.log('Subtitle changed to:', item.html);
         });
+      
         art.on('dblclick', (event) => {
     const rect = art.template.$player.getBoundingClientRect();
     const clickX = event.clientX;
@@ -370,11 +417,13 @@ art.on('ready', () => {
 
 
         art.on('ready', () => {
-    const defaultSubtitle = <?= json_encode($subtitles) ?>.find(s => s.default);
+    const defaultSubtitle = <?= json_encode($subtitles, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>.find(s => s.default);
     art.subtitle.url = defaultSubtitle ? defaultSubtitle.file : '';
     art.subtitle.html = true; // Ensure HTML rendering is enabled
-    art.subtitle.html = true; // Ensure HTML rendering is enabled
+    art.subtitle.escape = false; // Disable escaping for subtitle rendering
+   
 });
+
 
 art.on("resize", () => {
       art.subtitle.style({
@@ -383,15 +432,9 @@ art.on("resize", () => {
       });
     });
         
-        art.on('ready', () => {
-            const autoSkipEnabled = localStorage.getItem('autoSkipEnabled');
-            if (autoSkipEnabled === null) {
-                localStorage.setItem('autoSkipEnabled', 'true');
-            } else {
-                settings.autoSkipIntro = autoSkipEnabled === 'true';
-                settings.autoSkipOutro = autoSkipEnabled === 'true';
-            }
-        });
+
+
+       
     </script>
     <?php
     exit;

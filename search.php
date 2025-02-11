@@ -121,7 +121,7 @@ if ($query) {
 <body data-page="page_anime">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-        <?php include('src/component/header.php'); ?>
+        <?php include('/src/component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper">
             <div class="container">
@@ -215,7 +215,7 @@ if ($query) {
     </section>
                     <div class="clearfix"></div>
                 </div>
-                <?php include('src/component/sidenav.php'); ?>
+                <?php include('/src/component/sidenav.php'); ?>
                 <div class="clearfix"></div>
             </div>
         </div>
