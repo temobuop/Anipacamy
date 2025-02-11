@@ -122,36 +122,37 @@ To get a website running up follow these simple example steps.
 
 3.  **Set up the database**:
    ```bash
-<?php
-// Database connection
+<?php 
+
 $conn = new mysqli("HOSTNAME", "USERNAME", "PASSWORD", "DATABASE");
 
 if ($conn->connect_error) {
     error_log("Database connection failed: " . $conn->connect_error);
-    die("Connection failed: " . $conn->connect_error);
+    
 }
 
-// Website settings
 $websiteTitle = "AniPaca";
 $websiteUrl = "//{$_SERVER['SERVER_NAME']}";
 $websiteLogo = $websiteUrl . "/public/logo/logo.png";
 $contactEmail = "@gmail.com";
 
-$version = "0.1";
+$version = "2";
 
-// Social links
-$discord = "https://discord.gg/aVvqx77RGs";
+$discord = "https://dcd.gg/anipaca";
 $github = "https://github.com/PacaHat";
-$twitter = "https://x.com/PacaHat";
+$telegram = "https://t.me/anipaca";
+$instagram = "https://www.instagram.com/pxr15_";
 
-// API endpoints
-$api = "your-hosted-api.com/api/v2/hianime"; // Use this in src/component/qtip.php
-$zpi = "your-hosted-api.com/api"; // Anime API
-$proxy = "your-hosted-proxy.com/cors?url="; // CORS Proxy
+// all the api you need
 
-// Banner image
+$api = "https://your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api Also use this in src/component/qtip.php
+$zpi = "https://your-hosted-api.com/api"; //https://github.com/itzzzme/anime-api
+$proxy = "https://your-hosted-proxy.com/cors?url="; //https://github.com/shashstormer/m3u8_proxy-cors
+
+
 $banner = $websiteUrl . "/public/images/banner.png";
-?>
+
+    
  ```
 
 
