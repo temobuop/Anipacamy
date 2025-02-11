@@ -286,7 +286,9 @@ $data = $data['data'];
                                     <?php } ?>
                                 </div>
                                 <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?= $websiteUrl ?>/public/images/no_poster.jpg" alt="<?=$anime['name']?>">
-                                <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['name']?>"></a>
+                                <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['name']?>">
+                                    <i class="fas fa-play"></i>
+                                </a>
                             </div>
                             <div class="film-detail">
                                 <h3 class="film-name"><a href="/details/<?=$anime['id']?>" title="<?=$anime['name']?>"><?=$anime['name']?></a></h3>

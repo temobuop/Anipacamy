@@ -121,7 +121,7 @@ if ($query) {
 <body data-page="page_anime">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-        <?php include('/src/component/header.php'); ?>
+        <?php include('src/component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper">
             <div class="container">
@@ -162,8 +162,10 @@ if ($query) {
                                             </div>
                                         <?php } ?>
                                     </div>
-                                    <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$anime['poster']?>" alt="<?=$anime['name']?>">
-                                    <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['name']?>"></a>
+                                    <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$websiteUrl?>/public/images/no_poster.jpg" alt="<?=$anime['name']?>">
+                                    <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['name']?>">
+                                        <i class="fas fa-play"></i>
+                                    </a>
                                 </div>
                                 <div class="film-detail">
                                     <h3 class="film-name">
@@ -215,7 +217,7 @@ if ($query) {
     </section>
                     <div class="clearfix"></div>
                 </div>
-                <?php include('/src/component/sidenav.php'); ?>
+                <?php include('src/component/anime/sidenav.php'); ?>
                 <div class="clearfix"></div>
             </div>
         </div>

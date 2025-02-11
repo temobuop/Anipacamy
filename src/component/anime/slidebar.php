@@ -16,7 +16,7 @@
                                 <div class="sc-detail">
                                     <div class="scd-item"><i class="fas fa-play-circle mr-1"></i>&nbsp;<?= htmlspecialchars($anime['otherInfo'][0]) ?></div>
                                     <div class="scd-item"><i class="fas fa-clock mr-1"></i>&nbsp;<?= htmlspecialchars($anime['otherInfo'][1]) ?></div>
-                                    <div class="scd-item m-hide"><i class="fas fa-calendar mr-1"></i>&nbsp;<?= htmlspecialchars($anime['otherInfo'][2]) ?></div>
+                                    <div class="scd-item m-hide"><i class="fa-solid fa-calendar-days mr-1"></i>&nbsp;<?= htmlspecialchars($anime['otherInfo'][2]) ?></div>
                                     <div class="scd-item mr-1"><span class="quality">&nbsp;<?= htmlspecialchars($anime['otherInfo'][3]) ?></span> </div>
                                      <div class="scd-item">
                                         <div class="tick">
@@ -24,7 +24,7 @@
                                           <?php if (!empty($anime['episodes']['dub'])): ?>
                                               <div class="tick-item tick-dub"><i class="fas fa-microphone mr-1"></i> <?= htmlspecialchars($anime['episodes']['dub']) ?></div>
                                           <?php endif; ?>
-                                          <div class="tick-item tick-eps"><?= htmlspecialchars($anime['episodes']['sub']) ?></div>
+                                          
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>

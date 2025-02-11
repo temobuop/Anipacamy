@@ -218,7 +218,7 @@ if ($isIframe) {
             layers: [
                 {
             name: 'poster',
-            html: `<img style="width: 35px" src="<?= $websiteUrl ?>/public/logo/plogo.png">`,
+            html: `<img style="width: 35px" src="https://anipaca.fun/public/logo/plogo.png">`,
             tooltip: 'Poster Tip',
             style: {
                 position: 'absolute',

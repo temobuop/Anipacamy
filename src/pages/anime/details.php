@@ -194,7 +194,7 @@ $watchlistLabels = [
 <body data-page="movie_info">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-        <?php include('/src/component/header.php'); ?>
+        <?php include('src/component/header.php'); ?>
         <div class="clearfix"></div>
         <div id="main-wrapper" date-page="movie_info" data-id="<?= htmlspecialchars($animeId) ?>">
             <div id="ani_detail">
@@ -518,7 +518,7 @@ $watchlistLabels = [
                 <div class="clearfix"></div>
             </div>
             <div class="lazy-component">
-                <?php include('/src/component/sidenav.php'); ?>
+                <?php include('src/component/anime/sidenav.php'); ?>
             </div>
             <div class="clearfix"></div>
         </div>

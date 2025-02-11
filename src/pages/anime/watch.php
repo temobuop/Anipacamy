@@ -192,7 +192,7 @@ $totalVotes = $like_count + $dislike_count;
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=67521dcc10699f0019237fbb&product=inline-share-buttons&source=platform" async="async"></script>
 
 
-    <script type="text/javascript" src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/watch.js"></script>
+    <script type="text/javascript" src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/play.js"></script>
 
 </head>
 
@@ -245,14 +245,14 @@ $totalVotes = $like_count + $dislike_count;
                                                 </div>
                                             </div>
                                             <div class="pc-item pc-toggle pc-autonext">
-                                                <div class="toggle-basic quick-settings off" data-option="auto_next">
+                                                <div class="toggle-basic quick-settings on" data-option="auto_next">
                                                     <span class="tb-name">Auto Next</span>
                                                     <span class="tb-result"></span>
                                                 </div>
                                             </div>
-                                            <div class="pc-item pc-toggle pc-autoskipintro">
-                                                 <div class="toggle-basic quick-settings on" data-option="auto_skip_intro" onclick="alert('Please check video player settings to change auto skip options')">
-                                                    <span class="tb-name">Auto Skip Intro</span>
+                                            <div class="pc-item pc-toggle pc-autoskip">
+                                                <div class="toggle-basic quick-settings on" data-option="auto_skip">
+                                                    <span class="tb-name">Auto Skip</span>
                                                     <span class="tb-result"></span>
                                                 </div>
                                             </div>
@@ -307,6 +307,64 @@ $totalVotes = $like_count + $dislike_count;
                                         </div>
                                     </div>
                                 </div>
+                                <div class="schedule-alert" id="schedule-alert" style="display: none;">
+                                <div class="alert small">
+                                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span></button>
+                                <span class="icon-16 mr-1">🚀</span> Estimated the next episode will come at
+                                <span data-value="" id="schedule-date">Loading...</span>
+                                <span id="countdown"></span> <!-- Countdown will appear here -->
+                            </div>
+                            </div>
+
+                            <script>
+                                const animeId = <?= json_encode($animeData['id']) ?>; // Assuming $animeId is available
+                                fetch(`<?= $zpi ?>/schedule/${animeId}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            const scheduleDate = new Date(data.results.nextEpisodeSchedule);
+                                            scheduleDate.setHours(scheduleDate.getHours() + 6); // Add 6 hours delay
+                                            document.getElementById('schedule-date').textContent = scheduleDate.toLocaleString();
+                                            document.getElementById('schedule-date').setAttribute('data-value', scheduleDate.toISOString());
+                                            // Show the schedule alert
+                                            document.getElementById('schedule-alert').style.display = 'block';
+                                            // Start the countdown
+                                            startCountdown(scheduleDate);
+                                        } else {
+                                            document.getElementById('schedule-date').textContent = 'No schedule available. Check back later!';
+                                            document.getElementById('schedule-date').style.color = 'orange'; // Highlight the message
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error fetching schedule:', error);
+                                        document.getElementById('schedule-date').textContent =
+                                            'Unable to load schedule. Please try again later.';
+                                        document.getElementById('schedule-date').style.color = 'red'; // Highlight the error message
+                                    });
+
+                                function startCountdown(targetDate) {
+                                    const countdownElement = document.getElementById('countdown');
+
+                                    function updateCountdown() {
+                                        const now = new Date();
+                                        const timeDifference = targetDate - now;
+                                        if (timeDifference > 0) {
+                                            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                                            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                                            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+                                            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                                        } else {
+                                            countdownElement.textContent = 'The episode is available!';
+                                            clearInterval(interval);
+                                        }
+                                    }
+                                    // Update the countdown every second
+                                    const interval = setInterval(updateCountdown, 1000);
+                                    updateCountdown(); // Initial call to set the countdown immediately
+                                }
+                            </script>
+
                                 <?php if (!empty($animeData['season'])): ?>
                                 <div class="other-season">
                                     <div class="inner">
@@ -419,12 +477,7 @@ $totalVotes = $like_count + $dislike_count;
                                                     <i class="fas fa-microphone mr-1"></i>
                                                     <?= htmlspecialchars($animeData['dubEp']) ?>
                                                 </div>
-                                                <div class="tick-item tick-eps"><?= htmlspecialchars($totalEpisodes) ?></div>
-                                                <span class="dot"></span>
-                                                <span class="item"><?= htmlspecialchars($animeData['showType']) ?></span>
-                                                <span class="dot"></span>
-                                                <span class="item"><?= htmlspecialchars($animeData['duration']) ?></span>
-                                                <span class="dot"></span>
+                                                
                                                 <div class="tac tick-item tick-eps">
                                                 <?php
                                                 $query = mysqli_query($conn, "SELECT totalview FROM `pageview` WHERE pageID = '$pageID'");
@@ -575,10 +628,7 @@ $totalVotes = $like_count + $dislike_count;
 
                     <section class="w-full flex items-center justify-center">
                         <section class="block_area block_area_category">
-                            <div class="text-center">
-                                <img src="<?= htmlspecialchars($websiteUrl) ?>/public/images/construction.gif" alt="under construction image" class="img-fluid">
-                                <h1 class="text-center mt-3" style="font-size: calc(1.5rem + 1vw);">This part is currently under construction! ??</h1>
-                            </div>
+                            
                         </section>
                     </section>
 
@@ -631,7 +681,7 @@ $totalVotes = $like_count + $dislike_count;
 
 
         </div>
-        <?php include('src/component/sidenav.php'); ?>
+        <?php include('src/component/anime/sidenav.php'); ?>
         <div class="clearfix"></div>
     </div>
     </div>
@@ -654,98 +704,109 @@ $totalVotes = $like_count + $dislike_count;
     
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-    const iframe = document.getElementById("iframe-embed");
-    let currentServerType = 'sub';
-    let currentEpisodeId = '<?= htmlspecialchars($streaming) ?>';
-    let animeId = '<?= htmlspecialchars($animeId) ?>';
-    let autoNextEnabled = false; // Initialize auto-next feature as disabled
+        const iframe = document.getElementById("iframe-embed");
+        let currentServerType = 'sub';
+        let currentEpisodeId = '<?= htmlspecialchars($streaming) ?>';
+        let animeId = '<?= htmlspecialchars($animeId) ?>';
+        let autoNextEnabled = true;
+        let autoSkipEnabled = true; // Initialize auto-next feature as disabled
 
-    // Function to toggle auto-next feature
-    function toggleAutoNext() {
-        autoNextEnabled = !autoNextEnabled;
-        const toggleResult = document.querySelector(".pc-autonext .tb-result");
-        toggleResult.textContent = autoNextEnabled ? "" : "";
-        console.log(`Auto-next is now ${autoNextEnabled ? "disabled" : "enabled"}.`);
-    }
-
-    // Attach event listener to the auto-next toggle element
-    document.querySelector(".pc-autonext").addEventListener("click", toggleAutoNext);
-
-    // Function to handle auto-next feature
-    function handleAutoNext() {
-        const videoPlayer = iframe.contentWindow.document.querySelector('video');
-        if (videoPlayer) {
-            videoPlayer.addEventListener('ended', function() {
-                if (autoNextEnabled) {
-                    nextEpisode();
-                }
-            });
+        // Function to toggle auto-next feature
+        function toggleAutoNext() {
+            autoNextEnabled = !autoNextEnabled;
+            const toggleResult = document.querySelector(".pc-autonext .tb-result");
+            toggleResult.textContent = autoNextEnabled ? "" : ""; // Update text based on state
+            console.log(`Auto-next is now ${autoNextEnabled ? "enabled" : "disabled"}.`);
         }
+
+         // Function to toggle auto-skip feature
+    function toggleAutoSkip() {
+        autoSkipEnabled = !autoSkipEnabled;
+        const toggleResult = document.querySelector(".pc-autoskip .tb-result");
+        toggleResult.textContent = autoSkipEnabled ? "" : "";
+        console.log(`Auto-skip is now ${autoSkipEnabled ? "enabled" : "disabled"}.`);
     }
 
-   
+        // Attach event listener to the auto-next toggle element
+        document.querySelector(".pc-autonext").addEventListener("click", toggleAutoNext);
+        document.querySelector(".pc-autoskip").addEventListener("click", toggleAutoSkip);
 
-    function updateWatchedEpisodeUI(episodeNumber) {
-        const episodeItem = document.querySelector(`.ssl-item[data-number="${episodeNumber}"]`);
-        if (episodeItem && !episodeItem.classList.contains('watched')) {
-            episodeItem.classList.add('watched');
-        }
-    }
-
-    async function markEpisodeAsWatched(anilistId, episodeNumber) {
-        console.log('Marking episode as watched:', episodeNumber);
-        try {
-            updateWatchedEpisodeUI(episodeNumber);
-        } catch (error) {
-            console.error('Error marking episode as watched:', error);
-        }
-    }
-
-    async function updateWatchHistory(episodeData) {
-        try {
-            const response = await fetch('/src/ajax/wh-up.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    movieId: '<?= htmlspecialchars($animeId) ?>',
-                    animeName: '<?= htmlspecialchars($animeData['title']) ?>',
-                    poster: '<?= htmlspecialchars($animeData['poster']) ?>',
-                    subCount: <?= htmlspecialchars($animeData['subEp']) ?>,
-                    dubCount: <?= htmlspecialchars($animeData['dubEp']) ?>,
-                    anilistId: '<?= htmlspecialchars($animeData['anilistId'] ?? '') ?>',
-                    episodeNumber: episodeData.episodeNumber
-                })
-            });
-            
-            const data = await response.json();
-            if (data.success) {
-                markEpisodeAsWatched(data.anilistId, episodeData.episodeNumber);
-            } else {
-                throw new Error(data.message);
+        // Function to handle auto-next feature
+        function handleAutoNext() {
+            const videoPlayer = iframe.contentWindow.document.querySelector('video');
+            if (videoPlayer) {
+                videoPlayer.addEventListener('ended', function() {
+                    if (autoNextEnabled) {
+                        nextEpisode(); // Call nextEpisode if autoNext is enabled
+                    }
+                });
             }
-        } catch (error) {
-            console.error('Error updating watch history:', error);
-            markEpisodeAsWatched(null, episodeData.episodeNumber);
         }
-    }
 
-    async function fetchServers(episodeId) {
-        try {
-            const response = await fetch(`/src/ajax/server.php?episodeId=${episodeId}`);
-            if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.json();
-            console.log('Fetched servers:', data);
-            return data;
-        } catch (error) {
-            console.error('Error fetching servers:', error);
-            return null;
+        // Ensure this line is present to initialize the auto-next feature
+        iframe.addEventListener('load', handleAutoNext);
+
+        function updateWatchedEpisodeUI(episodeNumber) {
+            const episodeItem = document.querySelector(`.ssl-item[data-number="${episodeNumber}"]`);
+            if (episodeItem && !episodeItem.classList.contains('watched')) {
+                episodeItem.classList.add('watched');
+            }
         }
-    }
 
-    async function updateServerList(episodeId) {
-        const servers = await fetchServers(episodeId);
+        async function markEpisodeAsWatched(anilistId, episodeNumber) {
+            console.log('Marking episode as watched:', episodeNumber);
+            try {
+                updateWatchedEpisodeUI(episodeNumber);
+            } catch (error) {
+                console.error('Error marking episode as watched:', error);
+            }
+        }
+
+        async function updateWatchHistory(episodeData) {
+            try {
+                const response = await fetch('/src/ajax/wh-up.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        movieId: '<?= htmlspecialchars($animeId) ?>',
+                        animeName: '<?= htmlspecialchars($animeData['title']) ?>',
+                        poster: '<?= htmlspecialchars($animeData['poster']) ?>',
+                        subCount: <?= htmlspecialchars($animeData['subEp']) ?>,
+                        dubCount: <?= htmlspecialchars($animeData['dubEp']) ?>,
+                        anilistId: '<?= htmlspecialchars($animeData['anilistId'] ?? '') ?>',
+                        episodeNumber: episodeData.episodeNumber
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    markEpisodeAsWatched(data.anilistId, episodeData.episodeNumber);
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error updating watch history:', error);
+                markEpisodeAsWatched(null, episodeData.episodeNumber);
+            }
+        }
+
+        async function fetchServers(episodeId) {
+            try {
+                const response = await fetch(`/src/ajax/server.php?episodeId=${episodeId}`);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                console.log('Fetched servers:', data);
+                return data;
+            } catch (error) {
+                console.error('Error fetching servers:', error);
+                return null;
+            }
+        }
+
+        async function updateServerList(episodeId) {
+            const servers = await fetchServers(episodeId);
         if (!servers) return;
         const subServerList = document.querySelector('.ps_-block-sub .ps__-list');
         if (servers.sub && servers.sub.length > 0) {
@@ -797,23 +858,37 @@ $totalVotes = $like_count + $dislike_count;
                 const serverType = this.getAttribute("data-server-type");
                 let serverName = this.getAttribute("data-server-name");
                 const episodeId = this.getAttribute("data-episode-id");
+                const urlParams = new URLSearchParams(window.location.search);
+                const episodeNumber = urlParams.get('ep');
 
                 // Check if the server name is "streamsb" or "streamtape" and adjust the serverName
                 if ((serverName === "streamsb" && serverId === "5") || (serverName === "streamtape" && serverId === "3")) {
                     serverName = "hd-2";
                 }
 
-                serverButtons.forEach(btn => btn.classList.remove("active"));
-                this.classList.add("active");
-                currentServerType = serverType;
-                const playerUrl = `<?= $websiteUrl ?>/src/watcher/${serverType}.php?id=${currentEpisodeId}&server=${serverName}&embed=true`;
+                // Add skip parameter if auto-skip is enabled
+                const skipParam = autoSkipEnabled ? "&skip=true" : "&skip=false";
+                const playerUrl = `<?= $websiteUrl ?>/src/player/${serverType}.php?id=${currentEpisodeId}&server=${serverName}&embed=true&ep=${episodeNumber}${skipParam}`;
                 console.log('Setting player URL:', playerUrl);
                 iframe.src = playerUrl;
+                const pcAutoskipButton = document.querySelector(".pc-autoskip");
+                if (pcAutoskipButton) {
+                    pcAutoskipButton.removeEventListener("click", reloadPlayer); // Remove any existing event listener
+                    pcAutoskipButton.addEventListener("click", reloadPlayer);
+                }
+
+                function reloadPlayer() {
+                    const skipParam = autoSkipEnabled ? "&skip=true" : "&skip=false";
+                    const playerUrl = `<?= $websiteUrl ?>/src/player/${currentServerType}.php?id=${currentEpisodeId}&server=${serverName}&embed=true&ep=${episodeNumber}${skipParam}`;
+                    console.log('Reloading player URL:', playerUrl);
+                    iframe.src = playerUrl;
+                }
                 localStorage.setItem("selectedServerType", serverType);
                 localStorage.setItem("selectedServerId", serverId);
             });
         });
     }
+
 
     function selectEpisode(episodeNumber) {
         console.log('Selecting episode:', episodeNumber);

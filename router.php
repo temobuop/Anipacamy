@@ -2,8 +2,8 @@
 // Include the global configuration file
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
-//ini_set('display_errors', 1);
-//error_reporting(E_ALL);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 // Get the URI without query strings
 $uri = strtok(trim($_SERVER['REQUEST_URI'], '/'), '?');
@@ -21,10 +21,10 @@ $routes = [
   '/^details$/' => 'src/pages/anime/details.php',
   '/^random$/' => 'src/component/anime/random.php', 
   '/^anime$/' => 'src/pages/anime/anime.php',
-  '/^details\/([a-zA-Z0-9\-]+)$/' => 'src/pages/details.php',
-  '/^anime\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime.php',
-  '/^watch\/([a-zA-Z0-9\-]+)$/' => 'src/pages/watch.php',
-  '/^genre\/([a-zA-Z0-9\-]+)$/' => 'src/pages/genre.php',
+  '/^details\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/details.php',
+  '/^anime\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/anime.php',
+  '/^watch\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/watch.php',
+  '/^genre\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/genre.php',
 
   // User Pages
   '/^login$/' => 'src/user/login.php',

@@ -29,7 +29,7 @@
         <li class="nav-item"><a class="nav-link" href="/anime/ova" title="OVAs">OVAs</a></li>
         <li class="nav-item"><a class="nav-link" href="/anime/ona" title="ONAs">ONAs</a></li>
         <li class="nav-item"><a class="nav-link" href="/anime/special" title="Specials">Specials</a></li>
-        <li class="nav-item"><a class="nav-link" href="https://anipaca-app.netlify.app" title="Events"><?= $websiteTitle ?> App</a></li>
+       <!-- <li class="nav-item"><a class="nav-link" href="https://anipaca-app.netlify.app" title="Events"><?= $websiteTitle ?> App</a></li> -->
         
        
         <li class="nav-item">
@@ -169,15 +169,20 @@
         <div class="header-setting">
             <div class="hs-toggles">
                 
-                <a href="<?= $websiteUrl ?>/anime/most-popular" class="hst-item" data-toggle="tooltip"
+            <a href="<?= $websiteUrl ?>/anime/most-popular" class="hst-item" data-toggle="tooltip"
                     data-original-title="Popular Anime List">
-                    <div class="hst-icon"><i class="fas fa-star"></i></div>
+                    <div class="hst-icon"><i class="fa-solid fa-fire"></i></div>
                     <div class="name"><span>Popular</span></div>
                 </a>
                 <a href="<?= $websiteUrl ?>/anime/movie" class="hst-item" data-toggle="tooltip"
                     data-original-title="Anime Movies">
-                    <div class="hst-icon"><i class="fas fa-film"></i></div>
+                    <div class="hst-icon"><i class="fa-solid fa-clapperboard"></i></div>
                     <div class="name"><span>Movie</span></div>
+                </a>
+                <a href="<?= $websiteUrl ?>/anime/completed" class="hst-item" data-toggle="tooltip"
+                    data-original-title="Anime Movies">
+                    <div class="hst-icon"><i class="fa-solid fa-hourglass-end"></i></div>
+                    <div class="name"><span>Completed</span></div>
                 </a>
                 <a href="<?= $websiteUrl ?>/random" class="hst-item" data-toggle="tooltip"
                     data-original-title="Select Random Anime">
@@ -189,7 +194,7 @@
         </div>
         <div id="pick_menu">
             <div class="pick_menu-ul">
-                <ul class="ulclear">
+            <ul class="ulclear">
                     <li class="pmu-item pmu-item-home">
                         <a class="pmu-item-icon" href="/" title="Home">
                             <img src="/public/images/pick-home.svg" data-toggle="tooltip" data-placement="right" title=""
