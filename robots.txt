@@ -1,3 +1,2 @@
 User-agent: *
 Allow: /
-Sitemap: https://animesy4k.top/sitemap.xml
