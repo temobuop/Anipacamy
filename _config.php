@@ -14,10 +14,9 @@ $contactEmail = "@gmail.com";
 
 $version = "0.1";
 
-$discord = "https://discord.gg/aVvqx77RGs";
+$discord = "https://dcd.gg/anipaca";
 $github = "https://github.com/PacaHat";
 $twitter = "https://x.com/PacaHat";
-$telegram = "https://t.me/PacaHat";
 
 // all the api you need
 
