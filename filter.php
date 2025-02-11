@@ -160,11 +160,11 @@ if ($query) {
                             <div class="flw-item">
                                 <div class="film-poster">
                                     <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$anime['poster']?>" alt="<?=$anime['name']?>">
-                                    <a class="film-poster-ahref" href="/play/episodes/<?=$anime['id']?>?ep=<?=$anime['episodes'][0]['id']?>" title="<?=$anime['name']?>"></a>
+                                    <a class="film-poster-ahref" href="/watch/episodes/<?=$anime['id']?>?ep=<?=$anime['episodes'][0]['id']?>" title="<?=$anime['name']?>"></a>
                                 </div>
                                 <div class="film-detail">
                                     <h3 class="film-name">
-                                        <a href="/play/episodes/<?=$anime['id']?>?ep=<?=$anime['episodes'][0]['id']?>" title="<?=$anime['name']?>"><?=$anime['name']?></a>
+                                        <a href="/watch/episodes/<?=$anime['id']?>?ep=<?=$anime['episodes'][0]['id']?>" title="<?=$anime['name']?>"><?=$anime['name']?></a>
                                     </h3>
                                     <div class="fd-infor">
                                         <span class="fdi-item"><?=$anime['type']?></span>

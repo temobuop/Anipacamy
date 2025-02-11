@@ -236,7 +236,7 @@ $watchlistLabels = [
                                     </div>
                                 </div>
                                 <div class="film-buttons">
-                                    <a href="/play/<?= htmlspecialchars($animeData['id']) ?>?ep=1" class="btn btn-radius btn-primary btn-play"><i class="fas fa-play mr-2"></i>Watch now</a>
+                                    <a href="/watch/<?= htmlspecialchars($animeData['id']) ?>?ep=1" class="btn btn-radius btn-primary btn-play"><i class="fas fa-play mr-2"></i>Watch now</a>
                                     <div class="dr-fav dropdown" id="watch-list-content">
                                         <button type="button" class="btn btn-radius btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-anime-id="<?= htmlspecialchars($animeId) ?>">
                                             <?php if (!$isLoggedIn): ?>

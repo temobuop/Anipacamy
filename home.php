@@ -212,14 +212,14 @@ $data = $data['data'];
                                                              src="<?= $websiteUrl ?>/public/images/no_poster.jpg"
                                                              alt="<?php echo htmlspecialchars($anime['anime_name']); ?>">
                                                         <a class="film-poster-ahref" 
-                                                           href="/play/<?php echo htmlspecialchars($anime['anime_id']); ?>?ep=<?php echo htmlspecialchars($anime['episode_number']); ?>"
+                                                           href="/watch/<?php echo htmlspecialchars($anime['anime_id']); ?>?ep=<?php echo htmlspecialchars($anime['episode_number']); ?>"
                                                            title="<?php echo htmlspecialchars($anime['anime_name']); ?>">
                                                            <i class="fas fa-play"></i>
                                                         </a>
                                                     </div>
                                                     <div class="film-detail">
                                                         <h3 class="film-name">
-                                                            <a href="/play/<?php echo htmlspecialchars($anime['anime_id']); ?>?ep=<?php echo htmlspecialchars($anime['episode_number']); ?>"
+                                                            <a href="/watch/<?php echo htmlspecialchars($anime['anime_id']); ?>?ep=<?php echo htmlspecialchars($anime['episode_number']); ?>"
                                                                title="<?php echo htmlspecialchars($anime['anime_name']); ?>">
                                                                 <?php echo htmlspecialchars($anime['anime_name']); ?>
                                                             </a>

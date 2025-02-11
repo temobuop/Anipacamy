@@ -225,7 +225,7 @@ $latest_updates_result = $stmt->get_result();
                          src="<?php echo htmlspecialchars($anime['poster'] ?? '/path/to/default-image.jpg'); ?>"
                          alt="<?php echo htmlspecialchars($anime['anime_name'] ?? 'Unknown Title'); ?>">
                     <a class="film-poster-ahref" 
-                       href="<?php echo $websiteUrl; ?>/play/<?php echo htmlspecialchars($anime['anime_id'] ?? ''); ?>?ep=<?php echo htmlspecialchars($anime['episode_number'] ?? '1'); ?>"
+                       href="<?php echo $websiteUrl; ?>/watch/<?php echo htmlspecialchars($anime['anime_id'] ?? ''); ?>?ep=<?php echo htmlspecialchars($anime['episode_number'] ?? '1'); ?>"
                        title="<?php echo htmlspecialchars($anime['anime_name'] ?? 'Unknown Title'); ?>">
                        <i class="fas fa-play"></i>
                     </a>

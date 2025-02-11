@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 
 $urlPath = $_SERVER['REQUEST_URI'];
 
-$streaming = ltrim($urlPath, '/play/');
+$streaming = ltrim($urlPath, '/watch/');
 
 $parts = explode('?', $streaming);
 $animeId = $parts[0];
@@ -192,7 +192,7 @@ $totalVotes = $like_count + $dislike_count;
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=67521dcc10699f0019237fbb&product=inline-share-buttons&source=platform" async="async"></script>
 
 
-    <script type="text/javascript" src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/play.js"></script>
+    <script type="text/javascript" src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/watch.js"></script>
 
 </head>
 
@@ -806,7 +806,7 @@ $totalVotes = $like_count + $dislike_count;
                 serverButtons.forEach(btn => btn.classList.remove("active"));
                 this.classList.add("active");
                 currentServerType = serverType;
-                const playerUrl = `<?= $websiteUrl ?>/src/player/${serverType}.php?id=${currentEpisodeId}&server=${serverName}&embed=true`;
+                const playerUrl = `<?= $websiteUrl ?>/src/watcher/${serverType}.php?id=${currentEpisodeId}&server=${serverName}&embed=true`;
                 console.log('Setting player URL:', playerUrl);
                 iframe.src = playerUrl;
                 localStorage.setItem("selectedServerType", serverType);
@@ -847,7 +847,7 @@ $totalVotes = $like_count + $dislike_count;
             episodeItems.forEach(ep => ep.classList.remove("active"));
             this.classList.add("active");
             
-            const newUrl = `/play/${animeId}?ep=${episodeNumber}`;
+            const newUrl = `/watch/${animeId}?ep=${episodeNumber}`;
             history.pushState({}, '', newUrl);
             
             const serverNotice = document.querySelector(".server-notice strong");
