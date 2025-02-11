@@ -1,4 +1,4 @@
-<p align="center">
+ <p align="center">
   <a href="https://github.com/PacaHat/Anipaca">
     <img 
       src="https://raw.githubusercontent.com/PacaHat/Anipaca/refs/heads/main/public/logo/Untitled255_20241231223556.png" 
@@ -7,9 +7,10 @@
       height="275"
       decoding="async"
       fetchpriority="high"
-    />
+    /> 
   </a>
-</p>
+</p> 
+
 
 # <p align="center"> <img src="public/logo/logo.png?v=0.1" alt="Logo" width="50%" height="50%"></p>
 
