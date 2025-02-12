@@ -2,7 +2,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/src/ajax/cm-up.php');
 
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -10,9 +9,7 @@ if (isset($commentData)) {
     error_log('Comment Data Received: ' . print_r($commentData, true));
 }
 
-
 error_log("POST data received: " . print_r($_POST, true));
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json');
@@ -57,13 +54,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
             error_log('Adding comment with data: ' . print_r($_POST, true));
             
-       
-            $stmt = $conn->prepare("SELECT username, image, avatar_url FROM users WHERE id = ?");
+            $stmt = $conn->prepare("SELECT username, image FROM users WHERE id = ?");
+            if (!$stmt) {
+                error_log("MySQL Prepare Error: " . $conn->error);
+                echo json_encode(['success' => false, 'message' => 'Failed to prepare statement: ' . $conn->error]);
+                exit;
+            }
             $stmt->bind_param("i", $_COOKIE['userID']);
             $stmt->execute();
             $user = $stmt->get_result()->fetch_assoc();
    
-            $avatar_url = !empty($user['image']) ? $user['image'] : (!empty($user['avatar_url']) ? $user['avatar_url'] : '');
+            $avatar_url = !empty($user['image']) ? $user['image'] : '';
             
             $commentSystem = new CommentSystem(
                 $conn, 
@@ -95,7 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
 $user_id = isset($_COOKIE['userID']) ? $_COOKIE['userID'] : null;
 $username = '';
-$avatar_url = '';
 
 if ($user_id) {
     $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
@@ -103,22 +103,10 @@ if ($user_id) {
     $stmt->execute();
     $user = $stmt->get_result()->fetch_assoc();
     $username = $user['username'] ?? '';
-    $avatar_url = !empty($user['image']) ? $user['image'] : (!empty($user['avatar_url']) ? $user['avatar_url'] : '');
 }
 ?>
 
 <style>
-.reply-btn {
-    display: inline-block;
-    margin-top: 5px;
-    font-size: 12px;
-    color: #fff;
-    background-color: #6c757d;
-    border: 1px solid #6c757d;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-}
 </style>
 
 <section class="block_area block_area-comment" id="comment-block">
@@ -128,7 +116,6 @@ if ($user_id) {
     <div class="block_area-header block_area-header-tabs">
         <div class="float-left bah-heading mr-4">
             <h2 class="cat-heading">Comments</h2>
-
         </div>
         <div class="clearfix"></div>
     </div>
@@ -165,7 +152,7 @@ if ($user_id) {
             <div class="comment-input">
                 <?php if ($user_id): ?>
                     <div class="user-avatar">
-                        <img class="user-avatar-img" src="<?= htmlspecialchars($avatar_url) ?>" alt="<?= htmlspecialchars($username) ?>">
+                        <img class="user-avatar-img" src="<?= htmlspecialchars($user['image']) ?>" alt="<?= htmlspecialchars($username) ?>">
                     </div>
                     <div class="ci-form">
                         <div class="user-name">
@@ -182,18 +169,10 @@ if ($user_id) {
                             <input type="hidden" name="action" value="add">
                             <input type="hidden" name="episode_id" value="<?= htmlspecialchars($commentData['episode_id']) ?>" data-current-episode>
                             <input type="hidden" name="anime_id" value="<?= htmlspecialchars($commentData['anime_id']) ?>" data-current-anime>
-                            <textarea class="form-control form-control-textarea comment-subject emo-on cm-input-base" 
+                            <textarea class="form-control form-control-textarea comment-subject cm-input-base" 
                                     id="df-cm-content" 
                                     name="content" 
                                     placeholder="Leave a comment..."></textarea>
-                            <div class="ci-emo">
-                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="cb-icon">
-                                    <i class="fas fa-laugh"></i>
-                                </div>
-                                <div class="dropdown-menu dropdown-menu-model dropdown-menu-normal dr-bottom-right dropdown-menu-emo">
-                                    <emoji-picker data-input=".cm-input-base"></emoji-picker>
-                                </div>
-                            </div>
                             
                             <div class="ci-buttons" id="df-cm-buttons">
                                 <div class="ci-b-right">
@@ -216,7 +195,6 @@ if ($user_id) {
 
             <div class="list-comment">
                 <div class="cw_list" id="comments-list">
-                    
                     <div class="comment">
                         <div class="comment-avatar">
                             <img class="comment-avatar-img" src="user_avatar_url" alt="username">
@@ -229,12 +207,6 @@ if ($user_id) {
                             <div class="comment-content">
                                 This is a sample comment.
                             </div>
-                            <div class="comment-actions">
-                                <button class="btn btn-sm btn-secondary reply-btn" data-comment-id="1">Reply</button>
-                            </div>
-                        </div>
-                        <div class="replies">
-                            
                         </div>
                     </div>
                 </div>
@@ -243,63 +215,6 @@ if ($user_id) {
     </div>
 </section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const commentsList = document.getElementById('comments-list');
-    commentsList.addEventListener('click', function (event) {
-        if (event.target.classList.contains('reply-btn')) {
-            const commentId = event.target.dataset.commentId;
-            const parentComment = event.target.closest('.comment');
-            let replyBox = parentComment.querySelector('.reply-box');
-
-            if (replyBox) return;
-
-            replyBox = document.createElement('div');
-            replyBox.classList.add('reply-box');
-            replyBox.innerHTML = `
-                <textarea class="form-control form-control-textarea reply-input" 
-                          placeholder="Write a reply..."></textarea>
-                <div class="reply-actions">
-                    <button class="btn btn-sm btn-primary post-reply" data-parent-id="${commentId}">Post Reply</button>
-                    <button class="btn btn-sm btn-secondary cancel-reply">Cancel</button>
-                </div>
-            `;
-
-            parentComment.querySelector('.replies').appendChild(replyBox);
-
-            replyBox.querySelector('.cancel-reply').addEventListener('click', () => {
-                replyBox.remove();
-            });
-
-            replyBox.querySelector('.post-reply').addEventListener('click', function () {
-                const replyContent = replyBox.querySelector('.reply-input').value.trim();
-
-                if (!replyContent) {
-                    alert('Reply cannot be empty.');
-                    return;
-                }
-
-                const reply = document.createElement('div');
-                reply.classList.add('comment');
-                reply.innerHTML = `
-                    <div class="comment-avatar">
-                        <img src="reply_avatar_url" alt="reply_username">
-                    </div>
-                    <div class="comment-body">
-                        <div class="comment-info">
-                            <span class="comment-user">Reply Username</span>
-                            <span class="comment-time">Just now</span>
-                        </div>
-                        <div class="comment-content">${replyContent}</div>
-                    </div>
-                `;
-                parentComment.querySelector('.replies').appendChild(reply);
-                replyBox.remove(); 
-            });
-        }
-    });
-});
-</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let currentEpisode = '1';
@@ -329,7 +244,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             
             if (result.success) {
-
                 document.getElementById('comment-count').textContent = result.commentCount;
 
                 const commentsList = document.getElementById('comments-list');

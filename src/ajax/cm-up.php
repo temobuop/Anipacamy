@@ -87,6 +87,11 @@ class CommentSystem {
                 VALUES (?, ?, ?, ?, ?, ?, NOW())
             ");
             
+            if (!$stmt) {
+                error_log("MySQL Prepare Error: " . $this->conn->error);
+                return ['success' => false, 'message' => 'Failed to prepare statement'];
+            }
+            
             $stmt->bind_param("sssisi", 
                 $content, 
                 $username, 

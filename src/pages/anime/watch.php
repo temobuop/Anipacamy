@@ -594,31 +594,27 @@ $totalVotes = $like_count + $dislike_count;
 
                     <section class="block_area block_area-comment" id="comment-block">
                         <?php 
-                        // Get the anime ID directly from the URL path
                         $animeId = trim(explode('?', $streaming)[0]); 
-                        
-                        // Get episode ID from query parameters
                         $episodeId = isset($_GET['ep']) ? $_GET['ep'] : '1';
-                        
-                        // Get user data from session/cookie
                         $user_id = $_COOKIE['userID'] ?? null;
                         $user = null;
                         
                         if ($user_id) {
-                            $stmt = $conn->prepare("SELECT username, image, avatar_url FROM users WHERE id = ?");
+                            $stmt = $conn->prepare("SELECT username, image FROM users WHERE id = ?");
+                            if ($stmt === false) {
+                                die("Database prepare failed: " . mysqli_error($conn));
+                            }
                             $stmt->bind_param("i", $user_id);
                             $stmt->execute();
                             $user = $stmt->get_result()->fetch_assoc();
                         }
-                        
-                        // Create comment data array
                         $commentData = [
                             'episode_id' => $episodeId,
                             'anime_id' => $animeId,
                             'user_profile' => [
                                 'user_id' => $user_id,
                                 'username' => $user['username'] ?? '',
-                                'avatar_url' => !empty($user['image']) ? $user['image'] : ($user['avatar_url'] ?? ''),
+                                'avatar_url' => !empty($user['image']) ? $user['image'] : '',
                             ]
                         ];
                         
