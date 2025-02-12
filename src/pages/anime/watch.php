@@ -854,6 +854,12 @@ $totalVotes = $like_count + $dislike_count;
         const serverButtons = document.querySelectorAll(".btn-server");
         serverButtons.forEach(button => {
             button.addEventListener("click", function() {
+                // Remove 'active' class from all server buttons
+                serverButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add 'active' class to the clicked button
+                this.classList.add('active');
+
                 const serverId = this.getAttribute("data-server-id");
                 const serverType = this.getAttribute("data-server-type");
                 let serverName = this.getAttribute("data-server-name");
