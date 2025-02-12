@@ -1,6 +1,6 @@
 {
-    "short_name": "<?=$websiteTitle?>",
-    "name": "<?=$websiteTitle?>",
+    "short_name": "AniPca",
+    "name": "AniPaca",
     "description": "<?=$websiteDescription?>",
     "icons": [
         {
