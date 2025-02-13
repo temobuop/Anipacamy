@@ -394,6 +394,7 @@ $data = $data['data'];
                             </div>
                         </div>
                     </section>
+                    <?php include('./src/component/anime/schedule.php'); ?>
                     
                     <section class="block_area block_area_category lazy-component" data-component="category">
                         <div class="block_area-header">
@@ -407,6 +408,7 @@ $data = $data['data'];
                             </div>
                             <div class="clearfix"></div>
                         </div>
+                     
 
                         <div class="tab-content">
                             <div class="block_area-content block_area-list film_list film_list-grid film_list-wfeature ">
@@ -486,17 +488,18 @@ $data = $data['data'];
 
 
 
-<?php include('./src/component/anime/schedule.php'); ?>
 
 
+</div>
                 
                 <div class="lazy-component" data-component="sidenav">
                     <?php include('./src/component/anime/sidenav.php'); ?>
                 </div>
                 <div class="clearfix"></div>
-                                </div>
+                               
             </div>
         </div>
+        <div class="clearfix"></div>
         <?php include('./src/component/footer.php'); ?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

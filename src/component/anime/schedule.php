@@ -10,22 +10,6 @@
                 <span id="clock"></span>
             </span>
         </div>
-        <script>
-            function updateTime() {
-                const now = new Date();
-                const timezoneOffset = -now.getTimezoneOffset() / 60;
-                const timezone = `GMT${timezoneOffset >= 0 ? '+' : ''}${timezoneOffset}:00`;
-                const currentDate = now.toLocaleDateString();
-                const currentTime = now.toLocaleTimeString();
-
-                document.getElementById('timezone').textContent = `(${timezone})`;
-                document.getElementById('current-date').textContent = currentDate;
-                document.getElementById('clock').textContent = currentTime;
-            }
-
-            setInterval(updateTime, 1000);
-            updateTime();
-        </script>
         <div class="clearfix"></div>
     </div>
     <div class="block_area-content">
@@ -52,7 +36,6 @@
 </div>
 <script>
 const API_BASE_URL = '<?=$zpi?>';
-const AJAX_BASE_URL = '/ajax/schedule.php';
 
 function generateDates() {
     const dates = [];
@@ -131,44 +114,16 @@ async function fetchSchedule(date) {
     }
 }
 
-
-const scheduleSw = new Swiper('.schedule-full .table_schedule-date .swiper-container', {
-    slidesPerView: 7,
-    spaceBetween: 10,
-    navigation: {
-        nextEl: '.schedule-full .tsn-next',
-        prevEl: '.schedule-full .tsn-prev',
-    },
-    breakpoints: {
-        320: { slidesPerView: 3, spaceBetween: 10 },
-        360: { slidesPerView: 3, spaceBetween: 10 },
-        480: { slidesPerView: 3, spaceBetween: 10 },
-        640: { slidesPerView: 4, spaceBetween: 10 },
-        768: { slidesPerView: 5, spaceBetween: 10 },
-        1024: { slidesPerView: 7, spaceBetween: 13 },
-    },
-});
-
 function updateTime() {
     const now = new Date();
     
-    // Time
-    let hour = now.getHours();
-    let am_pm = "AM";
-    
-    if (hour > 12) {
-        hour -= 12;
-        am_pm = "PM";
-    }
-    if (hour === 0) {
-        hour = 12;
-        am_pm = "AM";
-    }
-    
-    hour = hour.toString().padStart(2, '0');
-    const min = now.getMinutes().toString().padStart(2, '0');
-    const sec = now.getSeconds().toString().padStart(2, '0');
-    const currentTime = `${hour}:${min}:${sec} ${am_pm}`;
+    // Format the time in locale-specific format
+    const currentTime = now.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    });
     
     // Date and Timezone
     const timezoneOffset = -now.getTimezoneOffset() / 60;
@@ -180,7 +135,7 @@ function updateTime() {
     document.getElementById('timezone').textContent = `(${timezone})`;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const dates = generateDates();
     renderDates(dates);
     
@@ -188,6 +143,24 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(updateTime, 1000);
     updateTime();
     
+    // Initialize Swiper after dates are rendered
+    const scheduleSw = new Swiper('.schedule-full .table_schedule-date .swiper-container', {
+        slidesPerView: 7,
+        spaceBetween: 10,
+        navigation: {
+            nextEl: '.schedule-full .tsn-next',
+            prevEl: '.schedule-full .tsn-prev',
+        },
+        breakpoints: {
+            320: { slidesPerView: 3, spaceBetween: 10 },
+            360: { slidesPerView: 3, spaceBetween: 10 },
+            480: { slidesPerView: 3, spaceBetween: 10 },
+            640: { slidesPerView: 4, spaceBetween: 10 },
+            768: { slidesPerView: 5, spaceBetween: 10 },
+            1024: { slidesPerView: 7, spaceBetween: 13 },
+        },
+    });
+
     // Schedule more button
     document.getElementById('scl-more')?.addEventListener('click', function() {
         this.parentElement.querySelector('.limit-8')?.classList.toggle('active');
