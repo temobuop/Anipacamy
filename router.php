@@ -25,6 +25,7 @@ $routes = [
   '/^anime\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/anime.php',
   '/^watch\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/watch.php',
   '/^genre\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/genre.php',
+  '/^producer\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/producer.php',
 
   // User Pages
   '/^login$/' => 'src/user/login.php',
@@ -35,6 +36,7 @@ $routes = [
   '/^watchlist\.php(?:\?.*)?$/' => 'src/user/watchlist.php',
   '/^changepass$/' => 'src/user/changepass.php',
   '/^continue-watching$/' => 'src/user/continue-watching.php',
+
 
   // Extra Pages
   '/^dmca$/' => 'src/pages/extra/dmca.php',
