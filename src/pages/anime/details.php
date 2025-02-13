@@ -224,8 +224,8 @@ $watchlistLabels = [
                                 <div id="mal-sync"></div>
                                 <div class="film-stats">
                                     <div class="tick">
-                                        <div class="tick-item tick-pg">PG-13</div>
-                                        <div class="tick-item tick-quality">HD</div>
+                                    <div class="tick-item tick-pg"><?= htmlspecialchars($animeData['rating']) ?></div>
+                                    <div class="tick-item tick-quality"><?= htmlspecialchars($animeData['quality']) ?></div>
                                         <div class="tick-item tick-sub"><i class="fas fa-closed-captioning mr-1"></i><?= htmlspecialchars($animeData['subEp']) ?></div>
                                         <div class="tick-item tick-dub"><i class="fas fa-microphone mr-1"></i><?= htmlspecialchars($animeData['dubEp']) ?></div>
                                         <span class="dot"></span>
