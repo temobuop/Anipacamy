@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body data-page="page_register">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-    <?php include '/src/component/header.php'; ?>
+    <?php include 'src/component/header.php'; ?>
         <div class="clearfix"></div>
         <div id="main-wrapper" class="layout-page layout-page-404">
             <div class="container">
