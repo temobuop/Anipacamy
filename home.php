@@ -486,7 +486,7 @@ $data = $data['data'];
 
 
 
-<?php include('./src/ajax/schedule.php'); ?>
+<?php include('./src/component/anime/schedule.php'); ?>
 
 
                 
