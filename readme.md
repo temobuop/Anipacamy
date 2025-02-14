@@ -160,7 +160,7 @@ $banner = $websiteUrl . "/public/images/banner.png";
 ## Roadmap
 
 - [x] Add Comment section
-- [ ] Add Admin panel for better management
+- [ ] Improve Comment section
 - [x] Add PHP routing system to avoid htaccess error
 - [ ] Add Multiple video sources
 - [ ] Anime download
