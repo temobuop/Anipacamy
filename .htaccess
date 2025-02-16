@@ -7,3 +7,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 
 # This will redirect all requests to router.php
 RewriteRule ^(.+)$ router.php [L]
+
+<IfModule mod_rewrite.c>
+    RewriteRule ^(.+)/$ http://%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>

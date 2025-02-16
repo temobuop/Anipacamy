@@ -38,7 +38,7 @@ if ($data['success']) {
                     <li class="nav-item"> <a class="nav-link" href="../genre/josei" title="Josei">Josei</a></li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/kids" title="Kids">Kids</a></li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/magic" title="Magic">Magic</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="../genre/martial+arts" title="Martial Arts">Martial Arts</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../genre/martial-arts" title="Martial Arts">Martial Arts</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/mecha" title="Mecha">Mecha</a></li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/military" title="Military">Military</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/music" title="Music">Music</a></li>
@@ -52,13 +52,13 @@ if ($data['success']) {
                     <li class="nav-item"> <a class="nav-link" href="../genre/sci-fi" title="Sci Fi">Sci Fi</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/seinen" title="Seinen">Seinen</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/shoujo" title="Shoujo">Shoujo</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="../genre/shoujo+ai" title="Shoujo Ai">Shoujo Ai</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../genre/shoujo-ai" title="Shoujo Ai">Shoujo Ai</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/shounen" title="Shounen">Shounen</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="../genre/shounen+Ai" title="Shounen Ai">Shounen Ai</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="../genre/slice+of+life" title="Slice of Life">Slice of Life</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../genre/shounen-Ai" title="Shounen Ai">Shounen Ai</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../genre/slice-of-life" title="Slice of Life">Slice of Life</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/space" title="Space">Space</a></li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/sports" title="Sports">Sports</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="../genre/super+power" title="Super Power">Super Power</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="../genre/super-power" title="Super Power">Super Power</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/supernatural" title="Supernatural">Supernatural</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/thriller" title="Thriller">Thriller</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="../genre/vampire" title="Vampire">Vampire</a> </li>
