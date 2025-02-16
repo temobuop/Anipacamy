@@ -263,12 +263,97 @@ $totalVotes = $like_count + $dislike_count;
                                                 <div class="pc-item pc-control block-next" style="display:block;">
                                                     <a id="btn-next-main" class="btn btn-sm btn-next" href="javascript:;" onclick="nextEpisode()">Next<i class="fas fa-forward ml-2"></i></a>
                                                 </div>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
+                                                <div class="pc-item pc-fav" id="watch-list-content">
+                                                    <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-sm dropdown-toggle">
+                                                        <i class="fas fa-plus mr-2"></i>Add to List
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-model dropdown-menu-normal" aria-labelledby="ssc-list">
+                                                        <a class="wl-item dropdown-item" data-type="1" data-movieid="<?= htmlspecialchars($animeData['id']); ?>" data-page="watch" href="javascript:;">Watching</a>
+                                                        <a class="wl-item dropdown-item" data-type="2" data-movieid="<?= htmlspecialchars($animeData['id']); ?>" data-page="watch" href="javascript:;">On-Hold</a>
+                                                        <a class="wl-item dropdown-item" data-type="3" data-movieid="<?= htmlspecialchars($animeData['id']); ?>" data-page="watch" href="javascript:;">Plan to watch</a>
+                                                        <a class="wl-item dropdown-item" data-type="4" data-movieid="<?= htmlspecialchars($animeData['id']); ?>" data-page="watch" href="javascript:;">Dropped</a>
+                                                        <a class="wl-item dropdown-item" data-type="5" data-movieid="<?= htmlspecialchars($animeData['id']); ?>" data-page="watch" href="javascript:;">Completed</a>
+                                                    </div>
+                                                    <script>
+                                                document.addEventListener("DOMContentLoaded", function() {
+                                                    const dropdownToggle = document.querySelector('#watch-list-content .dropdown-toggle');
+                                                    const dropdownMenu = document.querySelector('#watch-list-content .dropdown-menu');
+                                                    if (dropdownToggle) {
+                                                        dropdownToggle.addEventListener('click', function(e) {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            if (dropdownMenu) {
+                                                                dropdownMenu.classList.toggle('show');
+                                                            }
+                                                        });
+                                                    }
+                                                    const watchlistItems = document.querySelectorAll('.wl-item');
+                                                    watchlistItems.forEach(item => {
+                                                        item.addEventListener('click', function(event) {
+                                                            event.preventDefault();
+                                                            event.stopPropagation();
+                                                            
+                                                            console.log('Watchlist item clicked');
+                                                            
+                                                            const type = this.getAttribute('data-type');
+                                                            const movieId = this.getAttribute('data-movieid');
+                                                            const animeName = document.querySelector('.film-name')?.textContent?.trim() || '';
+                                                            const poster = '<?= htmlspecialchars($animeData['poster']) ?>';
+                                                            const subCount = <?= htmlspecialchars($animeData['subEp'] ?? 0) ?>;
+                                                            const dubCount = <?= htmlspecialchars($animeData['dubEp'] ?? 0) ?>;
+                                                            const animeType = '<?= htmlspecialchars($animeData['showType']) ?>';
+                                                            const anilistId = '<?= htmlspecialchars($animeData['anilistId'] ?? '') ?>';
 
-                                  
-                                 
+                                                            const data = {
+                                                                type: type,
+                                                                movieId: movieId,
+                                                                animeName: animeName,
+                                                                poster: poster,
+                                                                subCount: subCount,
+                                                                dubCount: dubCount,
+                                                                animeType: animeType,
+                                                                anilistId: anilistId
+                                                            };
+                                                            console.log('Sending data:', data); 
+                                                            fetch('/src/ajax/wl-up.php', {
+                                                                method: 'POST',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                },
+                                                                body: JSON.stringify(data)
+                                                            })
+                                                            .then(response => response.json())
+                                                            .then(result => {
+                                                                if (result.success) {
+                                                                
+                                                                    dropdownToggle.innerHTML = `<i class="fas fa-check mr-2"></i>${this.textContent}`;
+                                                                    alert(result.message);
+                                                                } else {
+                                                                    alert('Error: ' + result.message);
+                                                                }
+                                                            
+                                                                dropdownMenu.classList.remove('show');
+                                                            })
+                                                            .catch(error => {
+                                                                console.error('Error uploading to watchlist:', error);
+                                                                alert('An error occurred while updating the watchlist.');
+                                                            });
+                                                        });
+                                                    });
+                                                    document.addEventListener('click', function(e) {
+                                                        if (!e.target.closest('#watch-list-content')) {
+                                                            if (dropdownMenu) {
+                                                                dropdownMenu.classList.remove('show');
+                                                            }
+                                                        }
+                                                    });
+                                                });
+                                                </script>
+                                                </div>
+                                            </div>
+                                          
+                                            <div class="clearfix"></div>
+                                        </div>           
                                 </div>
                                 <div class="player-servers">
                                     <div id="servers-content">
