@@ -228,7 +228,7 @@ if ($query) {
                 <div class="clearfix"></div>
             </div>
         </div>
-        <?php include('/src/component/footer.php'); ?>
+        <?php include('src/component/footer.php'); ?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
