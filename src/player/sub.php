@@ -196,6 +196,7 @@ if ($isIframe) {
                
                 artplayerPluginChapter({
                     chapters: [
+                        <?php if ($intro_start > 0 && $intro_end > 0): ?>
                         {
                             start: <?= $intro_start ?>,
                             end: <?= $intro_end ?>,
@@ -205,13 +206,24 @@ if ($isIframe) {
                                 transform: 'scaleY(0.6)', // Added transform style
                             },
                         },
+                        <?php endif; ?>
+                        <?php if ($outro_start > 0 && $outro_end > 0): ?>
                         {
                             start: <?= $outro_start ?>,
                             end: <?= $outro_end ?>,
                             title: 'Outro',
                             color: 'red',
                         },
+                        <?php endif; ?>
                     ],
+                }),
+
+                artplayerPluginChromecast({
+                    media: {
+                        type: 'application/x-mpegURL',
+                        title: 'HLS Stream',
+                        src: '<?= $proxy . $m3u8_url ?>'
+                    }
                 }),
                
             ],
