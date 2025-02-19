@@ -93,16 +93,19 @@ if ($isIframe) {
                 m3u8: playM3u8,
             },
             icons: {
+                play: '<img width="22" height="22" src="icons/play.svg">', 
+                pause: '<img width="22" height="22" src="icons/pause.svg">',
                 loading: '<img src="icons/loading.svg">',
-                state: '<img src="icons/state.svg">',
+                state: '<img  src="icons/play.svg">',
                 indicator: '<img width="16" height="16" src="icons/indicator.svg">',
-                setting: '<img src="icons/setting.svg" width="23" height="23">',
-                pip: '<img src="icons/pip.svg">',
-                fullscreenOn: '<img src="icons/fs-on.svg">',
-                fullscreenOff: '<img src="icons/fs-on.svg">',
-                volume: '<img src="icons/volumee.svg">',
-                volumeClose: '<img src="icons/vl-close.svg">',
-                
+                setting: '<img src="icons/settings.svg" width="22" height="22" style="animation: rotate 1s infinite linear;">',
+                screenshot: '<img width="22" height="22" src="icons/screenshot.svg">', 
+                pip: '<img width="22" height="22" src="icons/pip.svg">',
+                fullscreenOn: '<img width="22" height="22" src="icons/fullscreen.svg">',
+                fullscreenOff: '<img width="22" height="22" src="icons/fullscreen-off.svg">',
+                volume: '<img width="22" height="22" src="icons/volume.svg">',
+                volumeClose: '<img width="22" height="22" src="icons/volume-off.svg">',
+                quality: '<img width="22" height="22" src="icons/quality.svg">',
             },
             volume: 2,
             autoplay: true,
@@ -188,6 +191,7 @@ if ($isIframe) {
                     quality: {
                         control: false,
                         setting: true,
+                        icon: '<img width="22" height="22" src="icons/quality.svg">',
                         title: 'Quality',
                         auto: 'Auto',
                         
@@ -222,6 +226,7 @@ if ($isIframe) {
                     media: {
                         type: 'application/x-mpegURL',
                         title: 'HLS Stream',
+                        
                         src: '<?= $proxy . $m3u8_url ?>'
                     }
                 }),
@@ -260,7 +265,7 @@ if ($isIframe) {
         
 
         const fastForwardLayer = art.layers.add({
-            html: '<svg viewBox="-5 -10 75 75" xmlns="http://www.w3.org/2000/svg" width="44" height="44" fill="white"><path d="M29.92 45H25.21V26.54l-4.6 2.78v-3.92l8.81-3.6h0V45zm18.18-10c0 3.34-.61 5.9-1.83 7.67-1.21 1.77-2.94 2.66-5.19 2.66-2.23 0-3.95-.86-5.17-2.6-1.21-1.77-1.84-4.24-1.84-7.55v-4.56c0-3.34.6-5.9 1.83-7.67 1.21-1.77 2.94-2.66 5.19-2.66 2.23 0 3.95.86 5.17 2.6 1.21 1.77 1.84 4.24 1.84 7.55v4.56zm-4.71-4.9c0-1.9-.19-3.32-.57-4.25-.38-.93-.97-1.47-1.74-1.47-1.49 0-2.27 1.74-2.27 4.17v5.63c0 1.95.19 3.32.57 4.25.38.93.97 1.47 1.74 1.47 1.49 0 2.27-1.74 2.27-4.17v-5.63z"/><path d="M40.01 5.45V0l10 7.79-10 7.79V10.3H4.91v29.85H18.76v4.85H0V5.45h40.01z"/></svg>',
+            html: '<img width="22" height="22" src="icons/forward.svg">',
             style: {
                 position: 'absolute', 
                 top: '49%', 
@@ -339,7 +344,7 @@ if ($isIframe) {
             name: 'fast-forward',
             index: 10,
             position: 'right', 
-            html: '<svg viewBox="-5 -10 75 75" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white"><path d="M29.92 45H25.21V26.54l-4.6 2.78v-3.92l8.81-3.6h0V45zm18.18-10c0 3.34-.61 5.9-1.83 7.67-1.21 1.77-2.94 2.66-5.19 2.66-2.23 0-3.95-.86-5.17-2.6-1.21-1.77-1.84-4.24-1.84-7.55v-4.56c0-3.34.6-5.9 1.83-7.67 1.21-1.77 2.94-2.66 5.19-2.66 2.23 0 3.95.86 5.17 2.6 1.21 1.77 1.84 4.24 1.84 7.55v4.56zm-4.71-4.9c0-1.9-.19-3.32-.57-4.25-.38-.93-.97-1.47-1.74-1.47-1.49 0-2.27 1.74-2.27 4.17v5.63c0 1.95.19 3.32.57 4.25.38.93.97 1.47 1.74 1.47 1.49 0 2.27-1.74 2.27-4.17v-5.63z"/><path d="M40.01 5.45V0l10 7.79-10 7.79V10.3H4.91v29.85H18.76v4.85H0V5.45h40.01z"/></svg>', 
+            html: '<img width="22" height="22" src="icons/forward.svg">', 
             tooltip: 'Fast Forward 10 seconds',
             style: {
                 color: 'red',
@@ -356,7 +361,7 @@ if ($isIframe) {
             name: 'rewind',
               index: 10,
                position: 'right',
-              html: '<svg viewBox="-5 -10 75 75" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white"><path d="M11.9199 45H7.20508V26.5391L2.60645 28.3154V24.3975L11.4219 20.7949H11.9199V45ZM30.1013 35.0059C30.1013 38.3483 29.4926 40.9049 28.2751 42.6758C27.0687 44.4466 25.3422 45.332 23.0954 45.332C20.8708 45.332 19.1498 44.4743 17.9323 42.7588C16.726 41.0322 16.1006 38.5641 16.0564 35.3545V30.7891C16.0564 27.4577 16.6596 24.9121 17.8659 23.1523C19.0723 21.3815 20.8044 20.4961 23.0622 20.4961C25.32 20.4961 27.0521 21.3704 28.2585 23.1191C29.4649 24.8678 30.0792 27.3636 30.1013 30.6064V35.0059ZM25.3864 30.1084C25.3864 28.2048 25.1983 26.777 24.822 25.8252C24.4457 24.8734 23.8591 24.3975 23.0622 24.3975C21.5681 24.3975 20.7933 26.1406 20.738 29.627V35.6533C20.738 37.6012 20.9262 39.0511 21.3025 40.0029C21.6898 40.9548 22.2875 41.4307 23.0954 41.4307C23.8591 41.4307 24.4236 40.988 24.7888 40.1025C25.1651 39.2061 25.3643 37.8392 25.3864 36.002V30.1084Z" fill="white"/><path d="M11.9894 5.45398V0L2 7.79529L11.9894 15.5914V10.3033H47.0886V40.1506H33.2442V45H52V5.45398H11.9894Z" fill="white"/></svg>',
+              html: '<img width="22" height="22" src="icons/rewind.svg">',
               tooltip: 'Rewind 10 seconds',
               style: {
                   color: 'red',
