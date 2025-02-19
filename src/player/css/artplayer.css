@@ -114,7 +114,7 @@ display: block;
 }
 
 .art-setting-item[data-name="hls-quality"] .art-setting-item-left-icon {
-  background: url('icons/quality.svg') no-repeat center center !important; /* Add HD icon for quality selection */
+  background: url('./icons/quality.svg') no-repeat center center !important; /* Add HD icon for quality selection */
   background-size: contain !important; 
   width: 22px !important;
   height: 22px !important;

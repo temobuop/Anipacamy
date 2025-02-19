@@ -105,7 +105,7 @@ if ($isIframe) {
                 fullscreenOff: '<img width="22" height="22" src="icons/fullscreen-off.svg">',
                 volume: '<img width="22" height="22" src="icons/volume.svg">',
                 volumeClose: '<img width="22" height="22" src="icons/volume-off.svg">',
-                quality: '<img width="22" height="22" src="icons/quality.svg">',
+                
             },
             volume: 2,
             autoplay: true,
