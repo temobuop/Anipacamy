@@ -1519,7 +1519,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .modal-backdrop.show {
-    background: #111;
+    background: #11111156;
     opacity: .9
 }
 

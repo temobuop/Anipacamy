@@ -55,6 +55,10 @@ $watchlistLabels = [
 ];
 
 
+$characterApiUrl = "$zpi/character/list/$animeId";
+$characterData = file_get_contents($characterApiUrl);
+$characterDataJson = json_encode($characterData, JSON_PRETTY_PRINT);
+
 ?>
 
 
@@ -64,45 +68,46 @@ $watchlistLabels = [
 
 <head>
  
-    <title>Details of <?= htmlspecialchars($animeData['title'] ?? $animeData['jname']) ?> - <?= htmlspecialchars($websiteTitle) ?></title>
+<title>Details Of <?= htmlspecialchars($animeData['title'] ?? $animeData['jname']) ?> - <?= htmlspecialchars($websiteTitle) ?></title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="title" content="Watch <?= htmlspecialchars($animeData['title'] ?? $animeData['jname']) ?> - <?= htmlspecialchars($websiteTitle) ?>" />
-    <meta name="description" content="<?= htmlspecialchars(substr($animeData['overview'], 0, 150)) ?>.... Read More On <?= htmlspecialchars($websiteTitle) ?>" />
-    
-    <meta name="charset" content="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
-    <meta name="robots" content="index, follow" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta http-equiv="Content-Language" content="en" />
-    <meta property="og:title" content="Watch <?= htmlspecialchars($animeData['title'] ?? $animeData['jname']) ?> - <?= htmlspecialchars($websiteTitle) ?>">
-    <meta property="og:description" content="<?= htmlspecialchars(substr($animeData['overview'], 0, 150)) ?>.... Read More On <?= htmlspecialchars($websiteTitle) ?>.">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="<?= htmlspecialchars($websiteTitle) ?>">
-    <meta property="og:url" content="<?= htmlspecialchars($websiteUrl) ?>/anime/<?= htmlspecialchars($animeId) ?>">
-    <meta itemprop="image" content="<?= htmlspecialchars($animeData['poster']) ?>">
-    <meta property="og:image" content="<?= htmlspecialchars($animeData['poster']) ?>">
-    <meta property="og:image:secure_url" content="<?= htmlspecialchars($animeData['poster']) ?>">
-    <meta property="og:image:width" content="650">
-    <meta property="og:image:height" content="350">
-    <meta property="twitter:title" content="Watch <?= htmlspecialchars($animeData['title'] ?? $animeData['jname']) ?> - <?= htmlspecialchars($websiteTitle) ?>">
-    <meta property="twitter:description" content="<?= htmlspecialchars(substr($animeData['overview'], 0, 150)) ?>.... Read More On <?= htmlspecialchars($websiteTitle) ?>.">
-    <meta property="twitter:url" content="<?= htmlspecialchars($websiteUrl) ?>/anime/<?= htmlspecialchars($animeId) ?>">
-    <meta property="twitter:card" content="summary">
-    <meta name="apple-mobile-web-app-status-bar" content="#202125">
-    <meta name="theme-color" content="#202125">
-    <link rel="apple-touch-icon" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon.png?v=<?= htmlspecialchars($version) ?>" />
-    <link rel="shortcut icon" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon.png?v=<?= htmlspecialchars($version) ?>" type="image/x-icon" />
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon-16x16.png">
-    <link rel="mask-icon" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="icon" sizes="192x192" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/touch-icon-192x192.png?v=<?= htmlspecialchars($version) ?>">
-    <!-- <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/styl.css?v=<?= htmlspecialchars($version) ?>"> -->
-    <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/min.css?v=<?= htmlspecialchars($version) ?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/styles.min.css?v=<?= htmlspecialchars($version) ?>">
-    
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="title" content="Watch <?= htmlspecialchars($animeData['title'] ?? $animeData['jname']) ?> - <?= htmlspecialchars($websiteTitle) ?>" />
+<meta name="description" content="<?= htmlspecialchars(substr($animeData['overview'], 0, 150)) ?>.... Read More On <?= htmlspecialchars($websiteTitle) ?>" />
+
+<meta name="charset" content="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+<meta name="robots" content="index, follow" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Content-Language" content="en" />
+<meta property="og:title" content="Details Of <?= htmlspecialchars($animeData['title'] ?? $animeData['jname']) ?> - <?= htmlspecialchars($websiteTitle) ?>">
+<meta property="og:description" content="<?= htmlspecialchars(substr($animeData['overview'], 0, 150)) ?>.... Read More On <?= htmlspecialchars($websiteTitle) ?>.">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<?= htmlspecialchars($websiteTitle) ?>">
+<meta property="og:url" content="<?= htmlspecialchars($websiteUrl) ?>/anime/<?= htmlspecialchars($animeId) ?>">
+<meta itemprop="image" content="<?= htmlspecialchars($animeData['poster']) ?>">
+<meta property="og:image" content="<?= htmlspecialchars($animeData['poster']) ?>">
+<meta property="og:image:secure_url" content="<?= htmlspecialchars($animeData['poster']) ?>">
+<meta property="og:image:width" content="650">
+<meta property="og:image:height" content="350">
+<meta property="twitter:title" content="Details Of <?= htmlspecialchars($animeData['title'] ?? $animeData['jname']) ?> - <?= htmlspecialchars($websiteTitle) ?>">
+<meta property="twitter:description" content="<?= htmlspecialchars(substr($animeData['overview'], 0, 150)) ?>.... Read More On <?= htmlspecialchars($websiteTitle) ?>.">
+<meta property="twitter:url" content="<?= htmlspecialchars($websiteUrl) ?>/anime/<?= htmlspecialchars($animeId) ?>">
+<meta property="twitter:card" content="summary">
+<meta name="apple-mobile-web-app-status-bar" content="#202125">
+<meta name="theme-color" content="#202125">
+<link rel="apple-touch-icon" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon.png?v=<?= htmlspecialchars($version) ?>" />
+<link rel="shortcut icon" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon.png?v=<?= htmlspecialchars($version) ?>" type="image/x-icon" />
+<link rel="apple-touch-icon" sizes="180x180" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon-16x16.png">
+<link rel="mask-icon" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="icon" sizes="192x192" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/touch-icon-192x192.png?v=<?= htmlspecialchars($version) ?>">
+<!-- <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/styl.css?v=<?= htmlspecialchars($version) ?>"> -->
+<link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/min.css?v=<?= htmlspecialchars($version) ?>">
+<link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/styles.min.css?v=<?= htmlspecialchars($version) ?>">
+
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize lazy loading for images
@@ -391,8 +396,8 @@ $watchlistLabels = [
                             <h2 class="cat-heading">Characters &amp; Voice Actors</h2>
                         </div>
                         <div class="float-right viewmore">
-                            <a class="btn" data-toggle="modal" data-target="#modalcharacters">View more<i class="fas fa-angle-right ml-2"></i></a>
-                        </div>
+                            <a class="btn" data-toggle="modal" data-target="#modalVoiceActors">View more<i class="fas fa-angle-right ml-2"></i></a>
+                        </div>                        
                         <div class="clearfix"></div>
                     </div>
                     <div class="block-actors-content">
@@ -400,21 +405,23 @@ $watchlistLabels = [
                             <?php foreach ($animeData['actors'] as $entry): ?>
                                 <div class="bac-item">
                                     <div class="per-info ltr">
-                                        <a href="/character/<?= htmlspecialchars(strtolower(str_replace(" ", "-", $entry['character']['name']))) ?>" class="pi-avatar">
+                                        <a href="/character/<?= htmlspecialchars($entry['character']['id']) ?>" class="pi-avatar" rel="noopener noreferrer">
                                             <img data-src="<?= htmlspecialchars($entry['character']['poster']) ?>" alt="<?= htmlspecialchars($entry['character']['name']) ?>" class="lazyloaded" src="<?= htmlspecialchars($entry['character']['poster']) ?>"></a>
                                         <div class="pi-detail">
-                                            <h4 class="pi-name"><a href="/character/<?= htmlspecialchars(strtolower(str_replace(" ", "-", $entry['character']['name']))) ?>"><?= htmlspecialchars($entry['character']['name']) ?></a></h4>
-                                            <span class="pi-cast">Main</span>
+                                            <h4 class="pi-name"><a href="/character/<?= htmlspecialchars($entry['character']['id']) ?>" rel="noopener noreferrer"><?= htmlspecialchars($entry['character']['name']) ?></a></h4>
+                                            <span class="pi-cast"><?= htmlspecialchars($entry['character']['cast']) ?></span>
                                         </div>
-                                    </div>
+                                    </div> 
+                                    <?php if (!empty($entry['voiceActor']) && !empty($entry['voiceActor']['id'])): ?>
                                     <div class="per-info rtl">
-                                        <a href="/people/<?= htmlspecialchars(strtolower(str_replace(" ", "-", $entry['voiceActor']['name']))) ?>" class="pi-avatar">
-                                            <img data-src="<?= htmlspecialchars($entry['voiceActor']['poster']) ?>" class="lazyloaded" alt="<?= htmlspecialchars($entry['voiceActor']['name']) ?>" src="<?= htmlspecialchars($entry['voiceActor']['poster']) ?>"></a>
+                                        <a href="/actors/<?= htmlspecialchars($entry['voiceActor']['id']) ?>" class="pi-avatar" rel="noopener noreferrer">
+                                            <img data-src="<?= htmlspecialchars($entry['voiceActor']['poster'] ?? 'public/images/df-avatar.svg') ?>" class="lazyloaded" alt="<?= htmlspecialchars($entry['voiceActor']['name'] ?? 'Default Avatar') ?>" src="<?= htmlspecialchars($entry['voiceActor']['poster'] ?? 'public/images/df-avatar.svg') ?>"></a>
                                         <div class="pi-detail">
-                                            <h4 class="pi-name"><a href="/people/<?= htmlspecialchars(strtolower(str_replace(" ", "-", $entry['voiceActor']['name']))) ?>"><?= htmlspecialchars($entry['voiceActor']['name']) ?></a></h4>
-                                            <span class="pi-cast">Japanese</span>
+                                            <h4 class="pi-name"><a href="/actors/<?= htmlspecialchars($entry['voiceActor']['id']) ?>" rel="noopener noreferrer"><?= htmlspecialchars($entry['voiceActor']['name'] ?? 'Unknown') ?></a></h4>
+                                            <span class="pi-cast"><?= htmlspecialchars($entry['voiceActor']['cast'] ?? 'N/A') ?></span>
                                         </div>
                                     </div>
+                                    <?php endif; ?>
                                     <div class="clearfix"></div>
                                 </div>
                             <?php endforeach; ?>
@@ -422,7 +429,7 @@ $watchlistLabels = [
                         <div class="clearfix"></div>
                     </div>
                 </section>
-                <?php endif; ?>
+                <?php endif; ?> 
 
                 <!-- Promotion Videos -->
                 <?php if (!empty($animeData['trailers'])): ?>
@@ -654,6 +661,155 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+</script>
+<!-- Characters & Voice Actors Modal -->
+<div class="modal fade premodal premodal-characters" id="modalVoiceActors" tabindex="-1" role="dialog" aria-labelledby="modalVoiceActorsTitle" aria-hidden="true"  style="background-color: transparent;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style=" z-index: 2;">
+            <div class="modal-header">
+                <h5 class="modal-title text-left" id="modalVoiceActorsTitle">Characters & Voice Actors</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-characters">
+                    <div id="characters-content">
+                        <div class="bac-list-wrap mb-3" id="character-list">
+                            <!-- Characters will be populated here -->
+                        </div>
+                        <div class="loading-relative" style="display: none;">
+                            <div class="loading">
+                                <div class="span1"></div>
+                                <div class="span2"></div>
+                                <div class="span3"></div>
+                            </div>
+                        </div>
+                        <div class="pre-pagination">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination mb-0">
+                                    <!-- Pagination will be populated here -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const characterData = <?= $characterData ?>;
+    const ITEMS_PER_PAGE = 6;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('[data-target="#modalVoiceActors"]').addEventListener('click', function() {
+            displayCharacters(1);
+        });
+    });
+
+    function displayCharacters(page) {
+        const loadingElement = document.querySelector('.loading-relative');
+        const characterList = document.getElementById('character-list');
+        
+        try {
+            loadingElement.style.display = 'block';
+            characterList.innerHTML = '';
+
+            if (characterData && characterData.success && characterData.results.data) {
+                const characters = characterData.results.data;
+                const totalPages = Math.ceil(characters.length / ITEMS_PER_PAGE);
+                const startIndex = (page - 1) * ITEMS_PER_PAGE;
+                const endIndex = startIndex + ITEMS_PER_PAGE;
+                const pageCharacters = characters.slice(startIndex, endIndex);
+
+                pageCharacters.forEach(item => {
+                    const characterItem = document.createElement('div');
+                    characterItem.className = 'bac-item';
+
+                    // Create character info
+                    const characterHtml = `
+                        <div class="per-info ltr">
+                            <a href="/character/${item.character.id}" class="pi-avatar">
+                                <img class="lazyload" src="${item.character.poster}" alt="${item.character.name}">
+                            </a>
+                            <div class="pi-detail">
+                                <h4 class="pi-name">
+                                    <a href="/character/${item.character.id}">${item.character.name}</a>
+                                </h4>
+                                <span class="pi-cast">${item.character.cast}</span>
+                            </div>
+                        </div>
+                    `;
+
+                    // Create voice actors info with tooltip
+                    const voiceActorsHtml = `
+                        <div class="per-info per-info-xx">
+                            <div class="pix-list">
+                                ${item.voiceActors.map(actor => `
+                                    <a href="/actors/${actor.id}" data-toggle="tooltip" title="${actor.name}" class="pi-avatar">
+                                        <img class="lazyload" src="${actor.poster}" alt="${actor.name}">
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    `;
+
+                    characterItem.innerHTML = characterHtml + voiceActorsHtml;
+                    characterList.appendChild(characterItem);
+                });
+
+                // Update pagination
+                updatePagination(page, totalPages);
+                
+                // Initialize tooltips
+                $('[data-toggle="tooltip"]').tooltip();
+
+            } else {
+                console.error('Invalid character data structure');
+            }
+        } catch (error) {
+            console.error('Error displaying characters:', error);
+        } finally {
+            loadingElement.style.display = 'none';
+        }
+    }
+
+    function updatePagination(currentPage, totalPages) {
+        const paginationElement = document.querySelector('.pagination');
+        let paginationHtml = '';
+
+        // Previous button
+        if (currentPage > 1) {
+            paginationHtml += `
+                <li class="page-item">
+                    <a href="javascript:;" class="page-link" onclick="displayCharacters(${currentPage - 1})">‹</a>
+                </li>
+            `;
+        }
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            paginationHtml += `
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a href="javascript:;" class="page-link" onclick="displayCharacters(${i})">${i}</a>
+                </li>
+            `;
+        }
+
+        // Next button
+        if (currentPage < totalPages) {
+            paginationHtml += `
+                <li class="page-item">
+                    <a href="javascript:;" class="page-link" onclick="displayCharacters(${currentPage + 1})">›</a>
+                </li>
+            `;
+        }
+
+        paginationElement.innerHTML = paginationHtml;
+    }
 </script>
 
 </body>

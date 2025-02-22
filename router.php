@@ -25,7 +25,9 @@ $routes = [
   '/^anime\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/anime.php',
   '/^watch\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/watch.php',
   '/^genre\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/genre.php',
-  '/^producer\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/producer.php',
+  '/^producer\/([a-zA-Z0-9\-\.]+)\/?$/' => 'src/pages/anime/producer.php',
+  '/^actors\/([a-zA-Z0-9\-]+)$/' => 'src/pages/anime/actors.php',
+  '/^character\/([a-zA-Z0-9\-]+)\/?$/' => 'src/pages/anime/character.php',
 
   // User Pages
   '/^login$/' => 'src/user/login.php',
