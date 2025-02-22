@@ -266,7 +266,7 @@ if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheDuration
                                     <div class="voice-actors">
                                         <?php foreach ($voiceActors as $actor): ?>
                                             <div class="per-info">
-                                                <a href="/people/<?= htmlspecialchars($actor['id']) ?>" class="pi-avatar">
+                                                <a href="/actors/<?= htmlspecialchars($actor['id']) ?>" class="pi-avatar">
                                                     <img src="<?= htmlspecialchars($actor['profile']) ?>" alt="<?= htmlspecialchars($actor['name']) ?>">
                                                 </a>
                                                 <div class="pi-detail">
