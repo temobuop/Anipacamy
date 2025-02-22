@@ -102,7 +102,7 @@ To get a website running up follow these simple example steps.
 | API Name     | Deploy Link                                                                                              | Example API Link                                     |
 |--------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | Hianime API  | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ghoshRitesh12/aniwatch-api)  | `GET https://hianime-psi.vercel.app/`        |
-| Zenime API   | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/itzzzme/anime-api)          | `GET https://zen-api-brown.vercel.app/`         |
+| Zenime API   | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/zen-api)          | `GET https://zen-api-brown.vercel.app/`         |
 | M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshashstormer%2Fm3u8_proxy-cors&project-name=m3u8-proxy-cors&repository-name=m3u8-proxy-cors) | `GET https://proxy-pink-three.vercel.app/`     |
 
 
@@ -146,7 +146,7 @@ $instagram = "https://www.instagram.com/pxr15_";
 // all the api you need
 
 $api = "https://your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api Also use this in src/component/qtip.php
-$zpi = "https://your-hosted-api.com/api"; //https://github.com/itzzzme/anime-api
+$zpi = "https://your-hosted-api.com/api"; //https://github.com/PacaHat/zen-api
 $proxy = "https://your-hosted-proxy.com/cors?url="; //https://github.com/shashstormer/m3u8_proxy-cors
 
 
