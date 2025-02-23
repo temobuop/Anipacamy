@@ -530,7 +530,7 @@ $characterDataJson = json_encode($characterData, JSON_PRETTY_PRINT);
             <div class="clearfix"></div>
         </div>
     </div>
-    <?php include('/src/component/footer.php'); ?>
+    <?php include('src/component/footer.php'); ?>
     <div id="mask-overlay"></div>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
