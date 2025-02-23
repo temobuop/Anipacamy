@@ -36,11 +36,11 @@
                                                     <!-- Sub and Dub Counts -->
                                                     <div class="tick ltr" style="position: absolute; bottom: 10px; left: 10px;">
                                                         <div class="tick-item tick-sub amp-algn" style="text-align: left;">
-                                                            <i class="fas fa-closed-captioning"></i> &nbsp; <?= $anime['tvInfo']['sub'] ?>
+                                                            <i class="fas fa-closed-captioning"></i> &nbsp; <?= isset($anime['tvInfo']['sub']) ? htmlspecialchars($anime['tvInfo']['sub']) : '' ?>
                                                         </div>
                                                         <?php if(!empty($anime['tvInfo']['dub'])): ?>
                                                         <div class="tick-item tick-dub amp-algn" style="text-align: left;">
-                                                            <i class="fas fa-microphone"></i> &nbsp; <?= $anime['tvInfo']['dub'] ?>
+                                                            <i class="fas fa-microphone"></i> &nbsp; <?= isset($anime['tvInfo']['dub']) ? htmlspecialchars($anime['tvInfo']['dub']) : '' ?>
                                                         </div>
                                                         <?php endif; ?>
                                                     </div>
