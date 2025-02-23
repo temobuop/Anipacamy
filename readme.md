@@ -173,11 +173,6 @@ $banner = $websiteUrl . "/public/images/banner.png";
 
 <!-- CONTRIBUTING -->
 
-### Top contributors:
-<a href="https://github.com/PacaHat/Anipaca/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=PacaHat/Anipaca" alt="Contributors" />
-</a>
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
