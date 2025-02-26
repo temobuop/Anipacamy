@@ -164,6 +164,7 @@ $banner = $websiteUrl . "/public/images/banner.png";
 - [x] Add PHP routing system to avoid htaccess error
 - [ ] Add Multiple video sources
 - [ ] Anime download
+- [ ] Admin pannel to manage and monitor site
 - [ ] **Need more features? Create a request on our Discord server!** [Join here](https://discord.gg/aVvqx77RGs)
 
 
