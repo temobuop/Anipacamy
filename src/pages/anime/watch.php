@@ -852,7 +852,7 @@ $totalVotes = $like_count + $dislike_count;
                     },
                     body: JSON.stringify({
                         movieId: '<?= htmlspecialchars($animeId) ?>',
-                        animeName: '<?= json_encode($animeData['title']) ?>',
+                        animeName: '<?= htmlspecialchars(str_replace("'", "\'", $animeData['title'])) ?>',
                         poster: '<?= htmlspecialchars($animeData['poster']) ?>',
                         subCount: <?= htmlspecialchars($animeData['subEp']) ?>,
                         dubCount: <?= htmlspecialchars($animeData['dubEp']) ?>,
