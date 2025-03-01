@@ -114,7 +114,7 @@ Thank you for being part of Anipaca and PacaLabs!
 
 ---
 
-**Last Updated:** [Insert Date]  
+**Last Updated:** 01/03/2025  
 **Maintained by:** PacaLabs Moderation Team  
 
 For questions or clarifications, contact us at **info@pacalabs.top**.
