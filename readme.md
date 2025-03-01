@@ -91,7 +91,7 @@
 
 
 ## Contributing
-Thank you for considering contributing to the AniPaca! The contribution guide can be found in the [Contribution guide.](https://github.com/PacaHat/Anipaca/contribution/GUIDE.MD).
+Thank you for considering contributing to the AniPaca! The contribution guide can be found in the [Contribution guide.](https://github.com/PacaHat/Anipaca/blob/main/contribution/GUIDE.md).
 
 <!-- GETTING STARTED -->
 ## Getting Started
