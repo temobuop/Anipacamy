@@ -41,7 +41,7 @@
 
                                             <?php if(isset($anime['episodes']['dub'])): ?>
                                             <div class="tick-item tick-dub">
-                                                <i class="fas fa-closed-captioning mr-1"></i><?php echo $anime['episodes']['dub']; ?>
+                                                <i class="fas fa-microphone mr-1"></i><?php echo $anime['episodes']['dub']; ?>
                                             </div>
                                             <?php endif; ?>
 
@@ -103,7 +103,7 @@
 
                                             <?php if(isset($anime['episodes']['dub'])): ?>
                                             <div class="tick-item tick-dub">
-                                                <i class="fas fa-closed-captioning mr-1"></i><?php echo htmlspecialchars($anime['episodes']['dub']); ?>
+                                                <i class="fas fa-microphone mr-1"></i><?php echo htmlspecialchars($anime['episodes']['dub']); ?>
                                             </div>
                                             <?php endif; ?>
 
@@ -165,7 +165,7 @@
 
                                             <?php if(isset($anime['episodes']['dub'])): ?>
                                             <div class="tick-item tick-dub">
-                                                <i class="fas fa-closed-captioning mr-1"></i><?php echo htmlspecialchars($anime['episodes']['dub']); ?>
+                                                <i class="fas fa-microphone mr-1"></i><?php echo htmlspecialchars($anime['episodes']['dub']); ?>
                                             </div>
                                             <?php endif; ?>
 
@@ -229,7 +229,7 @@
 
                                             <?php if(isset($anime['episodes']['dub'])): ?>
                                             <div class="tick-item tick-dub">
-                                                <i class="fas fa-closed-captioning mr-1"></i><?php echo htmlspecialchars($anime['episodes']['dub']); ?>
+                                                <i class="fas fa-microphone mr-1"></i><?php echo htmlspecialchars($anime['episodes']['dub']); ?>
                                             </div>
                                             <?php endif; ?>
 
