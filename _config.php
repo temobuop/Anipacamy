@@ -8,7 +8,7 @@ if ($conn->connect_error) {
 }
 
 $websiteTitle = "AniPaca";
-$websiteUrl = "//{$_SERVER['SERVER_NAME']}";
+$websiteUrl = "https://anipaca.pacalabs.top";
 $websiteLogo = $websiteUrl . "/public/logo/logo.png";
 $contactEmail = "@gmail.com";
 
