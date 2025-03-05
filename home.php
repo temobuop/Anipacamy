@@ -133,10 +133,25 @@ $data = $data['data'];
     <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
 
-
+<style>
+    #preloder{
+      background: #000 url(/src/player/icons/loading.svg) no-repeat center center;
+      height: 100vh;
+      width: 100%;
+      position: fixed;
+      z-index: 100;
+      background-size: 15%;
+    }
+  </style>
 </head>
-
 <body data-page="page_home">
+<div id="preloder"></div>
+  <script>
+    var loder = document.getElementById('preloder');
+    window.addEventListener('load', function(){
+      loder.style.display = 'none';
+    })
+  </script>
 
 <div id="sidebar_menu_bg" class=""></div>
         <?php include('./src/component/header.php'); ?>
