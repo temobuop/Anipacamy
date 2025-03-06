@@ -141,7 +141,7 @@ if ($query) {
 
         <div class="tab-content">
 
-<?php include('/src/component/filter.php'); ?>
+<?php include(__DIR__ . '/src/component/filter.php'); ?>
 
 <section class="w-full flex items-center justify-center">
 <section class="block_area block_area_category">

@@ -135,8 +135,9 @@ $data = $data['data'];
 
 
 </head>
-
 <body data-page="page_home">
+<div id="preloder"></div>
+ 
 
 <div id="sidebar_menu_bg" class=""></div>
         <?php include('./src/component/header.php'); ?>

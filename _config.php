@@ -8,7 +8,7 @@ if ($conn->connect_error) {
 }
 
 $websiteTitle = "AniPaca";
-$websiteUrl = "//{$_SERVER['SERVER_NAME']}";
+$websiteUrl = "https://anipaca.pacalabs.top";
 $websiteLogo = $websiteUrl . "/public/logo/logo.png";
 $contactEmail = "@gmail.com";
 
@@ -21,10 +21,13 @@ $instagram = "https://www.instagram.com/pxr15_";
 
 // all the api you need
 
-$api = "https://your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api Also use this in src/component/qtip.php
+$api = "https://your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api
 $zpi = "https://your-hosted-api.com/api"; //https://github.com/PacaHat/zen-api
 $proxy = "https://your-hosted-proxy.com/cors?url="; //https://github.com/shashstormer/m3u8_proxy-cors
 
+// Google reCAPTCHA keys
+$google_recap_site_key = 'add-site-captcha-keys-here-stoopid-lol';  // https://developers.google.com/recaptcha
+$google_recap_secret_key = 'you-know-what-goes-here?-your-secret-key';  // https://developers.google.com/recaptcha
 
 $banner = $websiteUrl . "/public/images/banner.png";
 
