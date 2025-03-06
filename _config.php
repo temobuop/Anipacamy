@@ -25,6 +25,9 @@ $api = "https://your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshR
 $zpi = "https://your-hosted-api.com/api"; //https://github.com/PacaHat/zen-api
 $proxy = "https://your-hosted-proxy.com/cors?url="; //https://github.com/shashstormer/m3u8_proxy-cors
 
+// Google reCAPTCHA keys
+$google_recap_site_key = 'add-site-captcha-keys-here-stoopid-lol';  // https://developers.google.com/recaptcha
+$google_recap_secret_key = 'you-know-what-goes-here?-your-secret-key';  // https://developers.google.com/recaptcha
 
 $banner = $websiteUrl . "/public/images/banner.png";
 
