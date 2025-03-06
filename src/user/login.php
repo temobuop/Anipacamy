@@ -1,6 +1,6 @@
 <?php 
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php'); // Make sure config.php is included
 session_start();
 
 if(isset($_COOKIE['userID'])){
@@ -8,45 +8,62 @@ if(isset($_COOKIE['userID'])){
   exit();
 }
 
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-if(isset($_POST['submit']) || isset($_POST['anilist_login'])){
-   $login = mysqli_real_escape_string($conn, $_POST['login']);
-   $password = $_POST['password'];
-   $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
-   $stmt->bind_param("ss", $_POST['login'], $_POST['login']);
-   $stmt->execute();
-   $result = $stmt->get_result();
-   
-   if($result->num_rows > 0){
-      $row = $result->fetch_assoc();
-      if(password_verify($_POST['password'], $row['password'])) {
-          $_SESSION['userID'] = $row['id'];
-          setcookie('userID', $row['id'], time() + 60*60*24*30*12, '/');
-          
-          if(isset($_GET['animeId'])){
-              $animeId = $_GET['animeId'];
-              header('location:../anime/'.$animeId);
-              exit();
-          } elseif(isset($_GET['redirect'])) {
-              $redirectUrl = $_GET['redirect'];
-              header('location:'.$redirectUrl);
-              exit();
-          } else {
-              header('location:../../home');
-              exit();
-          }
-      } else {
-          $message[] = 'Incorrect password!';
-      }
-   } else {
-      $message[] = 'User not found!';
-   }
+// Include reCAPTCHA secret key from your _config.php...Dont Be Dumb Now LMAO
+$secretKey = $google_recap_secret_key;  // Your secret key from Google reCAPTCHA
+
+if (isset($_POST['submit']) || isset($_POST['anilist_login'])) {
+    // Get the reCAPTCHA response
+    $recaptchaResponse = $_POST['g-recaptcha-response'];
+
+    // Psssst!! Verify reCAPTCHA
+    $recaptchaVerifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+    $recaptchaVerifyResponse = file_get_contents(
+        $recaptchaVerifyUrl . '?secret=' . $secretKey . '&response=' . $recaptchaResponse
+    );
+    $recaptchaVerifyResult = json_decode($recaptchaVerifyResponse);
+
+    if ($recaptchaVerifyResult->success) {
+        // Proceed with your login logic :-P
+
+        $login = mysqli_real_escape_string($conn, $_POST['login']);
+        $password = $_POST['password'];
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
+        $stmt->bind_param("ss", $_POST['login'], $_POST['login']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if (password_verify($_POST['password'], $row['password'])) {
+                $_SESSION['userID'] = $row['id'];
+                setcookie('userID', $row['id'], time() + 60 * 60 * 24 * 30 * 12, '/');
+                
+                if (isset($_GET['animeId'])) {
+                    $animeId = $_GET['animeId'];
+                    header('location:../anime/' . $animeId);
+                    exit();
+                } elseif (isset($_GET['redirect'])) {
+                    $redirectUrl = $_GET['redirect'];
+                    header('location:' . $redirectUrl);
+                    exit();
+                } else {
+                    header('location:../../home');
+                    exit();
+                }
+            } else {
+                $message[] = 'Incorrect password!';
+            }
+        } else {
+            $message[] = 'User not found!';
+        }
+    } else {
+        $message[] = 'reCAPTCHA verification failed!';
+    }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -125,6 +142,9 @@ cssFiles.forEach(file => {
 <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
 <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
   <scripts></scripts>
+  
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <body data-page="page_login">
@@ -146,14 +166,22 @@ cssFiles.forEach(file => {
                             placeholder="user69 or name@email.com" required="">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="prelabel" for="password">Password</label>
-                    <div class="col-sm-6" style="float:none;margin:auto;">
-                        <input type="password" class="form-control" name="password" placeholder="Password"
-                            required="">
-                    </div>
-                </div>
-                <div class="mt-4">&nbsp;</div>
+<div class="form-group">
+    <label class="prelabel" for="password">Password</label>
+    <div class="col-sm-6" style="float:none;margin:auto;">
+        <input type="password" class="form-control" name="password" placeholder="Password" required="">
+    </div>
+</div>
+
+<!-- Add reCAPTCHA v2 here -->
+<div class="form-group">
+    <div class="col-sm-6" style="float:none;margin:auto;">
+        <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
+    </div>
+</div>
+
+<div class="mt-4">&nbsp;</div>
+
                 <div class="form-group login-btn mb-0">
                     <div class="col-sm-6" style="float:none;margin:auto;">
                         <button id="btn-login" name="submit" class="btn btn-primary btn-block">Login with Email</button>
@@ -203,8 +231,6 @@ cssFiles.forEach(file => {
   document.getElementById('email-login-form').addEventListener('submit', function(e) {
      
   });
-
-
   </script>
 </body>
 
