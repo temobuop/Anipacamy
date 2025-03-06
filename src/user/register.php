@@ -55,76 +55,81 @@ $filteredImages = array_filter($avatarFiles, function($image) use ($validImageEx
     $fileExtension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
     return in_array($fileExtension, $validImageExtensions);
 });
-
-// Randomly select a valid image
 $randomImage = $filteredImages[array_rand($filteredImages)];
+$secretKey = $google_recap_secret_key;  
+$is_verified = false; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Capture and sanitize input
-    $username = isset($_POST['name']) ? trim($_POST['name']) : null;
-    $email = isset($_POST['email']) ? trim($_POST['email']) : null;
-    $password = isset($_POST['password']) ? trim($_POST['password']) : null;
-    $cpassword = isset($_POST['cpassword']) ? trim($_POST['cpassword']) : null;
-    $image = $randomImage;
+    $recaptchaResponse = $_POST['g-recaptcha-response'];
 
-    // Validate inputs
-    if (empty($username)) {
-        $message[] = "Username cannot be empty.";
-    }
+    $recaptchaVerifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
+    $recaptchaVerifyResponse = file_get_contents(
+        $recaptchaVerifyUrl . '?secret=' . $secretKey . '&response=' . $recaptchaResponse
+    );
+    $recaptchaVerifyResult = json_decode($recaptchaVerifyResponse);
+    $is_verified = $recaptchaVerifyResult->success;
 
-    if (empty($email)) {
-        $message[] = "Email cannot be empty.";
-    }
-
-    if (empty($password)) {
-        $message[] = "Password cannot be empty.";
-    }
-
-    if ($password !== $cpassword) {
-        $message[] = "Passwords do not match!";
-    }
-
-    // If no validation errors, proceed with registration
-    if (!isset($message)) {
-        // Hash password
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-        // Check if email already exists
-        $check_stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-        $check_stmt->bind_param("s", $email);
-        $check_stmt->execute();
-        $result = $check_stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $message[] = "User already exists!";
-        } else {
-            // Get the next available ID
-            $next_id_query = "SELECT MAX(id) as max_id FROM users";
-            $next_id_result = $conn->query($next_id_query);
-            $next_id_row = $next_id_result->fetch_assoc();
-            $next_id = ($next_id_row['max_id'] ?? 0) + 1;
-
-            // Insert user into database with the next available ID
-            $insert_stmt = $conn->prepare("INSERT INTO users (id, username, email, password, image, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
-            $insert_stmt->bind_param("issss", $next_id, $username, $email, $hashed_password, $image);
-
-            try {
-                if ($insert_stmt->execute()) {
-                    $_SESSION['userID'] = $next_id;
-                    setcookie('userID', $next_id, time() + 60 * 60 * 24 * 30 * 12, '/');
-                    $message[] = "Registration successful!";
-                    header('location:/login');
-                    exit();
-                } else {
-                    $message[] = "Registration failed: " . $insert_stmt->error;
-                }
-            } catch (mysqli_sql_exception $e) {
-                $message[] = "Error: " . $e->getMessage();
-            }
-
-            $insert_stmt->close();
+    if ($is_verified) {
+        $username = isset($_POST['name']) ? trim($_POST['name']) : null;
+        $email = isset($_POST['email']) ? trim($_POST['email']) : null;
+        $password = isset($_POST['password']) ? trim($_POST['password']) : null;
+        $cpassword = isset($_POST['cpassword']) ? trim($_POST['cpassword']) : null;
+        $image = $randomImage;
+        if (empty($username)) {
+            $message[] = "Username cannot be empty.";
         }
-        $check_stmt->close();
+
+        if (empty($email)) {
+            $message[] = "Email cannot be empty.";
+        }
+
+        if (empty($password)) {
+            $message[] = "Password cannot be empty.";
+        }
+
+        if ($password !== $cpassword) {
+            $message[] = "Passwords do not match!";
+        }
+
+        if (!isset($message)) {
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+            $check_stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+            $check_stmt->bind_param("s", $email);
+            $check_stmt->execute();
+            $result = $check_stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $message[] = "User already exists!";
+            } else {
+                $next_id_query = "SELECT MAX(id) as max_id FROM users";
+                $next_id_result = $conn->query($next_id_query);
+                $next_id_row = $next_id_result->fetch_assoc();
+                $next_id = ($next_id_row['max_id'] ?? 0) + 1;
+
+                $insert_stmt = $conn->prepare("INSERT INTO users (id, username, email, password, image, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+                $insert_stmt->bind_param("issss", $next_id, $username, $email, $hashed_password, $image);
+
+                try {
+                    if ($insert_stmt->execute()) {
+                        $_SESSION['userID'] = $next_id;
+                        setcookie('userID', $next_id, time() + 60 * 60 * 24 * 30 * 12, '/');
+                        $message[] = "Registration successful!";
+                        header('location:/login');
+                        exit();
+                    } else {
+                        $message[] = "Registration failed: " . $insert_stmt->error;
+                    }
+                } catch (mysqli_sql_exception $e) {
+                    $message[] = "Error: " . $e->getMessage();
+                }
+
+                $insert_stmt->close();
+            }
+            $check_stmt->close();
+        }
+    } else {
+        $message[] = 'reCAPTCHA verification failed! Please complete the verification to register.'; 
     }
 }
 ?>
@@ -234,90 +239,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         placeholder="name@email.com" required="">
                                 </div>
                             </div>
-                            <form method="POST" action="" class="form-horizontal">
-                                <!-- Username Field -->
-                                <div class="form-group">
-                                    <label class="prelabel" for="name">Username</label>
-                                    <div class="col-sm-6" style="float:none;margin:auto;">
-                                        <input type="text" class="form-control" name="name" placeholder="Username" required="">
-                                    </div>
+                            <div class="form-group">
+                                <label class="prelabel" for="password">Password</label>
+                                <div class="col-sm-6" style="float:none;margin:auto;">
+                                    <input type="password" class="form-control" name="password" placeholder="Password" required="">
                                 </div>
-                            
-                                <!-- Email Field -->
-                                <div class="form-group">
-                                    <label class="prelabel" for="email">Email</label>
-                                    <div class="col-sm-6" style="float:none;margin:auto;">
-                                        <input type="email" class="form-control" name="email" placeholder="Email Address" required="">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="prelabel" for="cpassword">Confirm Password</label>
+                                <div class="col-sm-6" style="float:none;margin:auto;">
+                                    <input type="password" class="form-control" name="cpassword" placeholder="Confirm Password" required="">
                                 </div>
-                            
-                                <!-- Password Field -->
-                                <div class="form-group">
-                                    <label class="prelabel" for="password">Password</label>
-                                    <div class="col-sm-6" style="float:none;margin:auto;">
-                                        <input type="password" class="form-control" name="password" placeholder="Password" required="">
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-6" style="float:none;margin:auto;">
+                                    <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
                                 </div>
-                            
-                                <!-- Confirm Password Field -->
-                                <div class="form-group">
-                                    <label class="prelabel" for="cpassword">Confirm Password</label>
-                                    <div class="col-sm-6" style="float:none;margin:auto;">
-                                        <input type="password" class="form-control" name="cpassword" placeholder="Confirm Password" required="">
-                                    </div>
+                            </div>
+                            <div class="mt-4">&nbsp;</div>
+                            <div class="form-group login-btn mb-0">
+                                <div class="col-sm-6" style="float:none;margin:auto;">
+                                    <button id="btn-register" name="submit" class="btn btn-primary btn-block">Register</button>
                                 </div>
-                            
-                                <!-- reCAPTCHA Field -->
-                                <div class="form-group">
-    <div class="col-sm-6" style="float:none;margin:auto;">
-        <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
-        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" required>
-        <div id="recaptcha-error" style="color: red; display: none;">Please complete the reCAPTCHA.</div>
-    </div>
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const recaptcha = document.querySelector('.g-recaptcha');
-        const hiddenInput = document.getElementById('g-recaptcha-response');
-        const recaptchaError = document.getElementById('recaptcha-error');
-        const form = recaptcha.closest('form'); // Find the parent form.
-
-        if (recaptcha) {
-            recaptcha.addEventListener('callback', function(response) {
-                hiddenInput.value = response;
-                recaptchaError.style.display = 'none'; // Hide error on success
-            });
-
-            recaptcha.addEventListener('expired-callback', function() {
-                hiddenInput.value = '';
-            });
-
-            recaptcha.addEventListener('error-callback', function() {
-                hiddenInput.value = '';
-            });
-
-            if (form) {
-                form.addEventListener('submit', function(event) {
-                    if (!hiddenInput.value) {
-                        event.preventDefault(); // Prevent form submission
-                        recaptchaError.style.display = 'block'; // Show error message
-                    }
-                });
-            }
-        }
-    });
-</script>
-                            
-                                <div class="mt-4">&nbsp;</div>
-                            
-                                <!-- Register Button -->
-                                <div class="form-group login-btn mb-0">
-                                    <div class="col-sm-6" style="float:none;margin:auto;">
-                                        <button id="btn-register" name="submit" class="btn btn-primary btn-block">Register</button>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
+                           
+                        </form>
 
                                             </div>
                     <div class="c4-small">You already have an account? <a href="<?=$websiteUrl?>/login"
@@ -343,16 +289,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js?v=<?=$version?>"></script>
         <script type="text/javascript" src="<?=$websiteUrl?>/src/assets/js/function.js?v=<?=$version?>"></script>
 
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js?v=<?=$version?>"></script>
-        <?php
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <?php
       if(isset($message)){
-         foreach($message as $message){
-            echo '<script type="text/javascript">swal({title: "Error!",text: "'.$message.'",icon: "warning",button: "Close",})</script>;';
+         foreach($message as $msg){
+            echo '<script>Swal.fire({
+               
+                text: "' . htmlspecialchars($msg) . '",
+                timer: 3000,
+                showConfirmButton: false,
+                customClass: {
+                    popup: "fixed-notification"
+                }
+            });</script>';
          }
       }
-      ?>
-       
-        <div style="display:none;">
+    ?>
+    <style>
+        .fixed-notification {
+            background-color: rgba(255, 0, 0, 0.9); /* Red background */
+            color: white;
+            padding: 6px 12px; /* Adjusted padding for smaller text */
+            border-radius: 14px;
+            margin-bottom: 10px;
+            position: fixed; 
+            top: 50%;
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+            width: 90%; 
+            max-width: 300px; 
+            text-align: center; 
+            font-size: 12px; 
+            box-sizing: border-box; 
+            font-weight: 600;
+        }
+        .fixed-notification p {
+            margin: 0; 
+        }
+    </style>
         </div>
     </div>
 </body>
