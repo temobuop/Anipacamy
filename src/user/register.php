@@ -1,7 +1,5 @@
 <?php 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
-
-// Start session
+require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php'); // Ensure the config file is included
 session_start();
 
 error_reporting(E_ALL);
@@ -61,7 +59,6 @@ $filteredImages = array_filter($avatarFiles, function($image) use ($validImageEx
 // Randomly select a valid image
 $randomImage = $filteredImages[array_rand($filteredImages)];
 
-// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Capture and sanitize input
     $username = isset($_POST['name']) ? trim($_POST['name']) : null;
@@ -113,6 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             try {
                 if ($insert_stmt->execute()) {
+                    $_SESSION['userID'] = $next_id;
+                    setcookie('userID', $next_id, time() + 60 * 60 * 24 * 30 * 12, '/');
                     $message[] = "Registration successful!";
                     header('location:/login');
                     exit();
@@ -129,6 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -205,6 +205,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
     <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
+  
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </head>
 <body data-page="page_register">
@@ -232,31 +234,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         placeholder="name@email.com" required="">
                                 </div>
                             </div>
+                            <form method="POST" action="" class="form-horizontal">
+                                <!-- Username Field -->
+                                <div class="form-group">
+                                    <label class="prelabel" for="name">Username</label>
+                                    <div class="col-sm-6" style="float:none;margin:auto;">
+                                        <input type="text" class="form-control" name="name" placeholder="Username" required="">
+                                    </div>
+                                </div>
                             
+                                <!-- Email Field -->
+                                <div class="form-group">
+                                    <label class="prelabel" for="email">Email</label>
+                                    <div class="col-sm-6" style="float:none;margin:auto;">
+                                        <input type="email" class="form-control" name="email" placeholder="Email Address" required="">
+                                    </div>
+                                </div>
                             
-                            <div class="form-group">
-                                <label class="prelabel" for="password">Password</label>
-                                <div class="col-sm-6" style="float:none;margin:auto;">
-                                    <input type="password" class="form-control" name="password"
-                                        placeholder="Password" required="">
+                                <!-- Password Field -->
+                                <div class="form-group">
+                                    <label class="prelabel" for="password">Password</label>
+                                    <div class="col-sm-6" style="float:none;margin:auto;">
+                                        <input type="password" class="form-control" name="password" placeholder="Password" required="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="prelabel" for="password">Confirm Password</label>
-                                <div class="col-sm-6" style="float:none;margin:auto;">
-                                    <input type="password" class="form-control" name="cpassword"
-                                        placeholder="Password" required="">
+                            
+                                <!-- Confirm Password Field -->
+                                <div class="form-group">
+                                    <label class="prelabel" for="cpassword">Confirm Password</label>
+                                    <div class="col-sm-6" style="float:none;margin:auto;">
+                                        <input type="password" class="form-control" name="cpassword" placeholder="Confirm Password" required="">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="mt-4">&nbsp;</div>
-                            <div class="form-group login-btn mb-0">
-                                <div class="col-sm-6" style="float:none;margin:auto;">
-                                    <button id="btn-login" name="submit"
-                                        class="btn btn-primary btn-block">Register</button>
+                            
+                                <!-- reCAPTCHA Field -->
+                                <div class="form-group">
+                                    <div class="col-sm-6" style="float:none;margin:auto;">
+                                        <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
+                            
+                                <div class="mt-4">&nbsp;</div>
+                            
+                                <!-- Register Button -->
+                                <div class="form-group login-btn mb-0">
+                                    <div class="col-sm-6" style="float:none;margin:auto;">
+                                        <button id="btn-register" name="submit" class="btn btn-primary btn-block">Register</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                                            </div>
                     <div class="c4-small">You already have an account? <a href="<?=$websiteUrl?>/login"
                             class="link-highlight register-tab-link" title="Login">Login</a></div>
                     <div class="c4-button">
