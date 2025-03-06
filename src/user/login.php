@@ -11,22 +11,23 @@ if(isset($_COOKIE['userID'])){
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$secretKey = $google_recap_secret_key;  
-
-$is_verified = false; 
+// Include reCAPTCHA secret key from your _config.php...Dont Be Dumb Now LMAO
+$secretKey = $google_recap_secret_key;  // Your secret key from Google reCAPTCHA
 
 if (isset($_POST['submit']) || isset($_POST['anilist_login'])) {
+    // Get the reCAPTCHA response
     $recaptchaResponse = $_POST['g-recaptcha-response'];
 
-    // Verify reCAPTCHA
+    // Psssst!! Verify reCAPTCHA
     $recaptchaVerifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
     $recaptchaVerifyResponse = file_get_contents(
         $recaptchaVerifyUrl . '?secret=' . $secretKey . '&response=' . $recaptchaResponse
     );
     $recaptchaVerifyResult = json_decode($recaptchaVerifyResponse);
-    $is_verified = $recaptchaVerifyResult->success; 
 
-    if ($is_verified) {
+    if ($recaptchaVerifyResult->success) {
+        // Proceed with your login logic :-P
+
         $login = mysqli_real_escape_string($conn, $_POST['login']);
         $password = $_POST['password'];
         $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
@@ -59,10 +60,9 @@ if (isset($_POST['submit']) || isset($_POST['anilist_login'])) {
             $message[] = 'User not found!';
         }
     } else {
-        $message[] = 'reCAPTCHA verification failed! Please complete the verification to log in.'; 
+        $message[] = 'reCAPTCHA verification failed!';
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -99,14 +99,14 @@ if (isset($_POST['submit']) || isset($_POST['anilist_login'])) {
 <meta name="apple-mobile-web-app-status-bar" content="#202125">
 <meta name="theme-color" content="#202125">
 <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/styles.min.css?v=<?= $version ?>">
-<link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/min.css?v=<?= $version ?>">
-<link rel="apple-touch-icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" />
-<link rel="shortcut icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" type="image/x-icon" />
-<link rel="apple-touch-icon" sizes="180x180" href="<?= $websiteUrl ?>/public/logo/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="<?= $websiteUrl ?>/public/logo/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="<?= $websiteUrl ?>/public/logo/favicon-16x16.png">
-<link rel="mask-icon" href="<?= $websiteUrl ?>/public/logo/safari-pinned-tab.svg" color="#5bbad5">
-<link rel="icon" sizes="192x192" href="<?= $websiteUrl ?>/public/logo/touch-icon-192x192.png?v=<?= $version ?>">
+<link rel="stylesheet" href="<?= $websiteUrl ?>/files/css/min.css?v=<?= $version ?>">
+<link rel="apple-touch-icon" href="<?= $websiteUrl ?>/favicon.png?v=<?= $version ?>" />
+<link rel="shortcut icon" href="<?= $websiteUrl ?>/favicon.png?v=<?= $version ?>" type="image/x-icon" />
+<link rel="apple-touch-icon" sizes="180x180" href="<?= $websiteUrl ?>/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= $websiteUrl ?>/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="<?= $websiteUrl ?>/favicon-16x16.png">
+<link rel="mask-icon" href="<?= $websiteUrl ?>/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="icon" sizes="192x192" href="<?= $websiteUrl ?>/files/images/touch-icon-192x192.png?v=<?= $version ?>">
 <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/new.css?v=<?= $version ?>">
  
 <script>
@@ -166,21 +166,21 @@ cssFiles.forEach(file => {
                             placeholder="user69 or name@email.com" required="">
                     </div>
                 </div>
-                    <div class="form-group">
-                        <label class="prelabel" for="password">Password</label>
-                        <div class="col-sm-6" style="float:none;margin:auto;">
-                            <input type="password" class="form-control" name="password" placeholder="Password" required="">
-                        </div>
-                    </div>
+<div class="form-group">
+    <label class="prelabel" for="password">Password</label>
+    <div class="col-sm-6" style="float:none;margin:auto;">
+        <input type="password" class="form-control" name="password" placeholder="Password" required="">
+    </div>
+</div>
 
-                    <!-- Add reCAPTCHA v2 here -->
-                    <div class="form-group">
-                        <div class="col-sm-6" style="float:none;margin:auto;">
-                            <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
-                        </div>
-                    </div>
+<!-- Add reCAPTCHA v2 here -->
+<div class="form-group">
+    <div class="col-sm-6" style="float:none;margin:auto;">
+        <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
+    </div>
+</div>
 
-                    <div class="mt-4">&nbsp;</div>
+<div class="mt-4">&nbsp;</div>
 
                 <div class="form-group login-btn mb-0">
                     <div class="col-sm-6" style="float:none;margin:auto;">
@@ -216,50 +216,20 @@ cssFiles.forEach(file => {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <?php
       if(isset($message)){
-         foreach($message as $msg){
-            echo '<script>Swal.fire({
-               
-                text: "' . htmlspecialchars($msg) . '",
-                timer: 3000,
-                showConfirmButton: false,
-                customClass: {
-                    popup: "fixed-notification"
-                }
-            });</script>';
+         foreach($message as $message){
+            echo '<script type="text/javascript">swal({title: "Error!",text: "Incorrect Email or Password!",icon: "warning",button: "Close",})</script>;';
          }
       }
-    ?>
-    <style>
-        .fixed-notification {
-            background-color: rgba(255, 0, 0, 0.9); /* Red background */
-            color: white;
-            padding: 6px 12px; /* Adjusted padding for smaller text */
-            border-radius: 14px;
-            margin-bottom: 10px;
-            position: fixed; 
-            top: 50%;
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-            width: 90%; 
-            max-width: 300px; 
-            text-align: center; 
-            font-size: 12px; 
-            box-sizing: border-box; 
-            font-weight: 600;
-        }
-        .fixed-notification p {
-            margin: 0; 
-        }
-    </style>
+      ?>
+    <div style="display:none;">
+    </div>
+  </div>
 
   <script>
   document.getElementById('email-login-form').addEventListener('submit', function(e) {
-      // You can add additional client-side validation here if needed
+     
   });
   </script>
 </body>
