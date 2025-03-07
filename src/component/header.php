@@ -68,7 +68,7 @@
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/magic"
                             title="Magic">Magic</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/martial+arts"
+                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/martial-arts"
                             title="Martial Arts">Martial Arts</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/mecha"
                             title="Mecha">Mecha</a></li>
@@ -96,19 +96,19 @@
                             title="Seinen">Seinen</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/shoujo"
                             title="Shoujo">Shoujo</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/shoujo+ai"
+                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/shoujo-ai"
                             title="Shoujo Ai">Shoujo Ai</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/shounen"
                             title="Shounen">Shounen</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/shounen+Ai"
+                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/shounen-Ai"
                             title="Shounen Ai">Shounen Ai</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/slice+of+life"
+                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/slice-of-life"
                             title="Slice of Life">Slice of Life</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/space"
                             title="Space">Space</a></li>
                     <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/sports"
                             title="Sports">Sports</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/super+power"
+                    <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/super-power"
                             title="Super Power">Super Power</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="<?= $websiteUrl ?>/genre/supernatural"
                             title="Supernatural">Supernatural</a> </li>
