@@ -1,5 +1,4 @@
 <?php 
-
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php'); // Make sure config.php is included
 session_start();
 
@@ -9,11 +8,12 @@ if(isset($_COOKIE['userID'])){
 }
 
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
 $secretKey = $google_recap_secret_key;  
 
 $is_verified = false; 
+$error_message = ''; // Variable to store error message
 
 if (isset($_POST['submit']) || isset($_POST['anilist_login'])) {
     $recaptchaResponse = $_POST['g-recaptcha-response'];
@@ -59,7 +59,7 @@ if (isset($_POST['submit']) || isset($_POST['anilist_login'])) {
             $message[] = 'User not found!';
         }
     } else {
-        $message[] = 'reCAPTCHA verification failed! Please complete the verification to log in.'; 
+        $error_message = 'reCAPTCHA verification failed! Please complete the verification to log in.'; // Set error message
     }
 }
 
@@ -163,24 +163,31 @@ cssFiles.forEach(file => {
                     <label class="prelabel" for="email">Username Or Email address</label>
                     <div class="col-sm-6" style="float:none;margin:auto;">
                         <input type="text" class="form-control" name="login"
-                            placeholder="user69 or name@email.com" required="">
+                            placeholder="user69 or name@email.com" required=""/>
                     </div>
                 </div>
-                    <div class="form-group">
-                        <label class="prelabel" for="password">Password</label>
-                        <div class="col-sm-6" style="float:none;margin:auto;">
-                            <input type="password" class="form-control" name="password" placeholder="Password" required="">
-                        </div>
+                <div class="form-group">
+                    <label class="prelabel" for="password">Password</label>
+                    <div class="col-sm-6" style="float:none;margin:auto;">
+                        <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
                     </div>
+                </div>
 
-                    <!-- Add reCAPTCHA v2 here -->
-                    <div class="form-group">
-                        <div class="col-sm-6" style="float:none;margin:auto;">
-                            <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
-                        </div>
+                <!-- Add reCAPTCHA v2 here -->
+                <div class="form-group">
+                    <div class="col-sm-6" style="float:none;margin:auto;">
+                        <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
                     </div>
+                </div>
 
-                    <div class="mt-4">&nbsp;</div>
+                <!-- Error message below reCAPTCHA -->
+                <?php if($error_message): ?>
+                    <div class="form-group text-danger" style="text-align: center;">
+                        <?= htmlspecialchars($error_message) ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="mt-4">&nbsp;</div>
 
                 <div class="form-group login-btn mb-0">
                     <div class="col-sm-6" style="float:none;margin:auto;">
@@ -192,8 +199,7 @@ cssFiles.forEach(file => {
           <div class="c4-small">Don't have an account? <a href="<?=$websiteUrl?>/register" class="link-highlight register-tab-link"
               title="Register">Register</a></div>
           <div class="c4-button">
-            <a href="/" class="btn btn-radius btn-focus"><i class="fa fa-chevron-circle-left mr-2"></i>Back to
-              <?=$websiteTitle?></a>
+            <a href="/" class="btn btn-radius btn-focus"><i class="fa fa-chevron-circle-left mr-2"></i>Back to <?=$websiteTitle?></a>
           </div>
         </div>
         <div class="clearfix"></div>
