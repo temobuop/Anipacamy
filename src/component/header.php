@@ -136,11 +136,11 @@
             <img src="<?= $websiteLogo ?>" width="100%" height="auto" alt="<?= $websiteTitle ?>">
             <div class="clearfix"></div>
         </a>
-        <div id="search">
+        <div id="search" class="">
             <div class="search-content">
                 <form action="/search" autocomplete="off">
                     <a href="/filter" class="filter-icon">Filter</a>
-                    <input type="text" class="form-control search-input" name="keyword" placeholder="Search anime..." required>
+                    <input type="text" class="form-control search-input" name="keyword" placeholder="Search anime..." required="">
                     <button type="submit" class="search-icon"><i class="fas fa-search"></i></button>
                 </form>
                 <div class="nav search-result-pop" id="search-suggest" style="display: none;">

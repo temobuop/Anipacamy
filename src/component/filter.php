@@ -1,7 +1,5 @@
-<div id="main-wrapper" class="layout-page">
-        <div class="container">
-            <div id="main-content">
-                <section class="block_area block_area_category">
+
+             
                     <div id="filter-block">
     <button id="toggle-filter" class="btn btn-radius btn-sm btn-secondary"><i
                 class="fas fa-plus-circle mr-2"></i>Advanced search
@@ -1297,3 +1295,43 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('filter-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        const params = new URLSearchParams();
+
+        // Loop through form data and append only selected values
+        for (const [key, value] of formData.entries()) {
+            if (value) {
+                params.append(key, value);
+            }
+        }
+
+        // Show loading state
+        document.querySelector('.film_list-wrap').innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div><div class="mt-2">Loading...</div></div>';
+
+        // Make AJAX request
+        fetch(`/filter?${params.toString()}`)
+            .then(response => response.text())
+            .then(html => {
+                // Create temporary element to parse HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Extract and update relevant sections
+                const newResults = doc.querySelector('.film_list-wrap').innerHTML;
+                document.querySelector('.film_list-wrap').innerHTML = newResults;
+                
+                const newCount = doc.querySelector('.bah-result').innerHTML;
+                document.querySelector('.bah-result').innerHTML = newCount;
+
+                // Update URL without page reload
+                window.history.pushState({}, '', `/filter?${params.toString()}`);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.querySelector('.film_list-wrap').innerHTML = '<p>An error occurred while loading results.</p>';
+            });
+    });
+</script>
