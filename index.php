@@ -373,6 +373,18 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
         document.getElementById('search-form').submit();
     });
 </script>
+ <script>
+        $(document).ready(function () {
+            $("#xheader_browser").click(function (e) {
+                $("#xheader_menu, #xheader_browser").toggleClass("active");
+            });
+            $('.btn-search').click(function () {
+                if ($('.search-input').val().trim() !== "") {
+                    $('#search-form').submit();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
