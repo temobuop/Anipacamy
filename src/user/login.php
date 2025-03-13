@@ -8,23 +8,37 @@ if(isset($_COOKIE['userID'])){
 }
 
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
-$secretKey = $google_recap_secret_key;  
+// Use Cloudflare Turn on Horny stile not so secret key ;-P
+$secretKey = $cloudflare_turnstile_secret_key;  
 
 $is_verified = false; 
 $error_message = ''; // Variable to store error message
 
 if (isset($_POST['submit']) || isset($_POST['anilist_login'])) {
-    $recaptchaResponse = $_POST['g-recaptcha-response'];
+    $turnstileResponse = $_POST['cf-turnstile-response']; // Cloudflare Turn on stile response
 
-    // Verify reCAPTCHA
-    $recaptchaVerifyUrl = 'https://www.google.com/recaptcha/api/siteverify';
-    $recaptchaVerifyResponse = file_get_contents(
-        $recaptchaVerifyUrl . '?secret=' . $secretKey . '&response=' . $recaptchaResponse
-    );
-    $recaptchaVerifyResult = json_decode($recaptchaVerifyResponse);
-    $is_verified = $recaptchaVerifyResult->success; 
+    // Verify Cloudflare Turnstile
+    $turnstileVerifyUrl = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+    $postData = http_build_query([
+        'secret' => $secretKey,
+        'response' => $turnstileResponse,
+        'remoteip' => $_SERVER['REMOTE_ADDR']
+    ]);
+
+    $options = [
+        'http' => [
+            'method' => 'POST',
+            'header' => 'Content-Type: application/x-www-form-urlencoded',
+            'content' => $postData
+        ]
+    ];
+
+    $context = stream_context_create($options);
+    $turnstileVerifyResponse = file_get_contents($turnstileVerifyUrl, false, $context);
+    $turnstileVerifyResult = json_decode($turnstileVerifyResponse);
+    $is_verified = $turnstileVerifyResult->success;
 
     if ($is_verified) {
         $login = mysqli_real_escape_string($conn, $_POST['login']);
@@ -59,7 +73,7 @@ if (isset($_POST['submit']) || isset($_POST['anilist_login'])) {
             $message[] = 'User not found!';
         }
     } else {
-        $error_message = 'reCAPTCHA verification failed! Please complete the verification to log in.'; // Set error message
+        $error_message = 'OI U a Bot Puta!??? Nah Bwoi Complete The Challenge LMAO!'; // Set error messugeeeeeee
     }
 }
 
@@ -143,7 +157,8 @@ cssFiles.forEach(file => {
 <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
   <scripts></scripts>
   
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- Cloudflare Turn on stile script -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 </head>
 
@@ -157,45 +172,45 @@ cssFiles.forEach(file => {
         <div class="container-404 text-center">
           <div class="c4-medium">Login Your Account</div>
           <div class="c4-big-img">
-            <!-- Regular Email Login Form -->
-            <form class="preform" method="post" action="" id="email-login-form">
-                <div class="form-group">
-                    <label class="prelabel" for="email">Username Or Email address</label>
-                    <div class="col-sm-6" style="float:none;margin:auto;">
-                        <input type="text" class="form-control" name="login"
-                            placeholder="user69 or name@email.com" required=""/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="prelabel" for="password">Password</label>
-                    <div class="col-sm-6" style="float:none;margin:auto;">
-                        <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
-                    </div>
-                </div>
+<!-- Regular Email Login Form Yuhhhh -->
+<form class="preform" method="post" action="" id="email-login-form">
+    <div class="form-group">
+        <label class="prelabel" for="email">Username Or Email address</label>
+        <div class="col-sm-6" style="float:none;margin:auto;">
+            <input type="text" class="form-control" name="login" placeholder="user69 or name@email.com" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="prelabel" for="password">Password</label>
+        <div class="col-sm-6" style="float:none;margin:auto;">
+            <input type="password" class="form-control" name="password" placeholder="Password" required />
+        </div>
+    </div>
 
-                <!-- Add reCAPTCHA v2 here -->
-                <div class="form-group">
-                    <div class="col-sm-6" style="float:none;margin:auto;">
-                        <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
-                    </div>
-                </div>
+    <!-- Cloudflare Turnstile widget Starts Here Bwoooooaaahhh Hehehe :-P -->
+    <div class="form-group">
+        <div class="col-sm-6" style="float:none;margin:auto;">
+            <div class="cf-turnstile" data-sitekey="<?= $cloudflare_turnstile_site_key ?>"></div>
+        </div>
+    </div>
 
-                <!-- Error message below reCAPTCHA -->
-                <?php if($error_message): ?>
-                    <div class="form-group text-danger" style="text-align: center;">
-                        <?= htmlspecialchars($error_message) ?>
-                    </div>
-                <?php endif; ?>
+    <!-- Error message below Turnstile Yk Yk-->
+    <?php if ($error_message) : ?>
+        <div class="form-group text-danger" style="text-align: center;">
+            <?= htmlspecialchars($error_message) ?>
+        </div>
+    <?php endif; ?>
 
-                <div class="mt-4">&nbsp;</div>
+    <div class="mt-4">&nbsp;</div>
 
-                <div class="form-group login-btn mb-0">
-                    <div class="col-sm-6" style="float:none;margin:auto;">
-                        <button id="btn-login" name="submit" class="btn btn-primary btn-block">Login with Email</button>
-                    </div>
-                </div>
-            </form>
+    <div class="form-group login-btn mb-0">
+        <div class="col-sm-6" style="float:none;margin:auto;">
+            <button id="btn-login" name="submit" class="btn btn-primary btn-block">Login with Email</button>
+        </div>
+    </div>
+</form>
           </div>
+     <!-- Yk Whats Here ;-0-->
           <div class="c4-small">Don't have an account? <a href="<?=$websiteUrl?>/register" class="link-highlight register-tab-link"
               title="Register">Register</a></div>
           <div class="c4-button">
@@ -240,9 +255,9 @@ cssFiles.forEach(file => {
     ?>
     <style>
         .fixed-notification {
-            background-color: rgba(255, 0, 0, 0.9); /* Red background */
+            background-color: rgba(255, 0, 0, 0.9); /* Red background or whatever */
             color: white;
-            padding: 6px 12px; /* Adjusted padding for smaller text */
+            padding: 6px 12px; /* Adjusted padding for smaller teeeeeext */
             border-radius: 14px;
             margin-bottom: 10px;
             position: fixed; 
@@ -265,7 +280,43 @@ cssFiles.forEach(file => {
 
   <script>
   document.getElementById('email-login-form').addEventListener('submit', function(e) {
-      // You can add additional client-side validation here if needed
+      // Added additional client-side validation :-P
+      document.getElementById('email-login-form').addEventListener('submit', function(e) {
+    const loginInput = document.querySelector('input[name="login"]');
+    const passwordInput = document.querySelector('input[name="password"]');
+    const turnstileResponse = document.querySelector('[name="cf-turnstile-response"]');
+
+    // Clear previous error messages ig hehe
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+    // Validate username/email Bwoahh
+    if (!loginInput.value.trim()) {
+        e.preventDefault();
+        showError(loginInput, 'Username or email is required.');
+        return;
+    }
+
+    // Validate a$$word
+    if (!passwordInput.value.trim()) {
+        e.preventDefault();
+        showError(passwordInput, 'Password is required.');
+        return;
+    }
+
+    // Validate Cloudflare Turn on stile
+    if (!turnstileResponse || !turnstileResponse.value) {
+        e.preventDefault();
+        showError(document.querySelector('.cf-turnstile'), 'Please complete the Cloudflare verification.');
+        return;
+    }
+});
+
+function showError(inputElement, message) {
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message text-danger mt-2';
+    errorElement.innerText = message;
+    inputElement.parentElement.appendChild(errorElement);
+}
   });
   </script>
 </body>
