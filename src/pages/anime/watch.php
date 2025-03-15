@@ -235,7 +235,7 @@ $totalVotes = $like_count + $dislike_count;
                                     </div>
                                     <div class="player-controls">
                                             <div class="pc-item pc-resize">
-                                                <a href="javascript:;" id="media-resize" class="btn btn-sm"><i class="fas fa-expand mr-1"></i>Expand</a>
+                                                <a href="javascript:;" id="media-resize" class="btn btn-sm" onclick="toggleTheaterMode()"><i class="fas fa-expand mr-1"></i>Expand</a>
                                             </div>
                                             
                                             <div class="pc-item pc-toggle pc-autoplay">
@@ -1169,6 +1169,38 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 });
 </script>
+
+<script>
+function toggleTheaterMode() {
+    const playerFrame = document.documentElement; 
+    if (!document.fullscreenElement) {
+        playerFrame.requestFullscreen().catch(err => {
+            console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+document.addEventListener('click', function() {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
+});
+
+const mediaResizeButton = document.querySelector('#media-resize');
+const expandIcon = mediaResizeButton.querySelector('i');
+
+mediaResizeButton.addEventListener('click', function() {
+    if (document.fullscreenElement) {
+        expandIcon.classList.remove('fa-compress');
+        expandIcon.classList.add('fa-expand'); 
+    } else {
+        expandIcon.classList.remove('fa-expand');
+        expandIcon.classList.add('fa-compress'); 
+    }
+});
+</script>
+
 
     </div>
 </body>
