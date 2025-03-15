@@ -84,12 +84,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message[] = "Passwords do not match!";
     }
 
+    // Verify Cloudflare Turn on stile ;-P
+    $turnstileResponse = $_POST['cf-turnstile-response'];
+    $secretKey = $cloudflare_turnstile_secret_key;
+
+    $turnstileVerifyUrl = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+    $postData = http_build_query([
+        'secret' => $secretKey,
+        'response' => $turnstileResponse,
+        'remoteip' => $_SERVER['REMOTE_ADDR']
+    ]);
+
+    $options = [
+        'http' => [
+            'method' => 'POST',
+            'header' => 'Content-Type: application/x-www-form-urlencoded',
+            'content' => $postData
+        ]
+    ];
+
+    $context = stream_context_create($options);
+    $turnstileVerifyResponse = file_get_contents($turnstileVerifyUrl, false, $context);
+    $turnstileVerifyResult = json_decode($turnstileVerifyResponse);
+    $is_verified = $turnstileVerifyResult->success;
+
+    if (!$is_verified) {
+        $message[] = "Cloudflare verification failed! Please complete the challenge.";
+    }
+
     // If no validation errors, proceed with registration
     if (!isset($message)) {
         // Hash password
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-        // Check if email already exists
+        // Check if email already exists ykkkkk
         $check_stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
         $check_stmt->bind_param("s", $email);
         $check_stmt->execute();
@@ -98,13 +126,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows > 0) {
             $message[] = "User already exists!";
         } else {
-            // Get the next available ID
+            // Get the next available ID Yerrr
             $next_id_query = "SELECT MAX(id) as max_id FROM users";
             $next_id_result = $conn->query($next_id_query);
             $next_id_row = $next_id_result->fetch_assoc();
             $next_id = ($next_id_row['max_id'] ?? 0) + 1;
 
-            // Insert user into database with the next available ID
+            // Penetrate, I Mean Insert user into database with the next available ID
             $insert_stmt = $conn->prepare("INSERT INTO users (id, username, email, password, image, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
             $insert_stmt->bind_param("issss", $next_id, $username, $email, $hashed_password, $image);
 
@@ -129,28 +157,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Register - <?=$websiteTitle?></title>
-  
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="title"
-        content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads" />
-    <meta name="description"
-        content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads. You can watch anime online free in HD without Ads. Best place for free find and one-click anime." />
-    <meta name="keywords"
-        content="<?= $websiteTitle ?>, watch anime online, free anime, anime stream, anime hd, english sub, kissanime, gogoanime, animeultima, 9anime, 123animes, vidstreaming, gogo-stream, animekisa, zoro.to, gogoanime.run, animefrenzy, animekisa" />
+    <meta name="title" content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads" />
+    <meta name="description" content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads. You can watch anime online free in HD without Ads. Best place for free find and one-click anime." />
+    <meta name="keywords" content="<?= $websiteTitle ?>, watch anime online, free anime, anime stream, anime hd, english sub, kissanime, gogoanime, animeultima, 9anime, 123animes, vidstreaming, gogo-stream, animekisa, zoro.to, gogoanime.run, animefrenzy, animekisa" />
     <meta name="charset" content="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
     <meta name="robots" content="index, follow" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta http-equiv="Content-Language" content="en" />
-    <meta property="og:title"
-        content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads">
-    <meta property="og:description"
-        content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads. You can watch anime online free in HD without Ads. Best place for free find and one-click anime.">
+    <meta property="og:title" content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads">
+    <meta property="og:description" content="<?= $websiteTitle ?> #1 Watch High Quality Anime Online Without Ads. You can watch anime online free in HD without Ads. Best place for free find and one-click anime.">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="<?= $websiteTitle ?>">
@@ -191,13 +212,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 
     <noscript>
-        <link rel="stylesheet" type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
-        <link rel="stylesheet" type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
     </noscript>
 
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -206,8 +224,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
     <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
   
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
+    <!-- Cloudflare Turn on horny stile strip i mean script -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body data-page="page_register">
     <div id="sidebar_menu_bg"></div>
@@ -220,60 +238,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="c4-medium">Register Your Account</div>
                     <div class="c4-big-img">
                         <form class="preform" method="post" action="" enctype="multipart/form-data">
-                        <div class="form-group">
+                            <div class="form-group">
                                 <label class="prelabel" for="re-username">Username</label>
                                 <div class="col-sm-6" style="float:none;margin:auto;">
-                                    <input type="text" class="form-control" name="name" placeholder="Username"
-                                     required="">
+                                    <input type="text" class="form-control" name="name" placeholder="Username" required="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="prelabel" for="email">Email address</label>
                                 <div class="col-sm-6" style="float:none;margin:auto;">
-                                    <input type="email" class="form-control" name="email"
-                                        placeholder="name@email.com" required="">
+                                    <input type="email" class="form-control" name="email" placeholder="name@email.com" required="">
                                 </div>
                             </div>
-
-                            <!-- Password Field -->
                             <div class="form-group">
                                 <label class="prelabel" for="password">Password</label>
                                 <div class="col-sm-6" style="float:none;margin:auto;">
                                     <input type="password" class="form-control" name="password" placeholder="Password" required="">
                                 </div>
                             </div>
-                        
-                            <!-- Confirm Password Field -->
                             <div class="form-group">
                                 <label class="prelabel" for="cpassword">Confirm Password</label>
                                 <div class="col-sm-6" style="float:none;margin:auto;">
                                     <input type="password" class="form-control" name="cpassword" placeholder="Confirm Password" required="">
                                 </div>
                             </div>
-                        
-                            <!-- reCAPTCHA Field -->
+                            <!-- Cloudflare Turn on stile widget -->
                             <div class="form-group">
                                 <div class="col-sm-6" style="float:none;margin:auto;">
-                                    <div class="g-recaptcha" data-sitekey="<?= $google_recap_site_key ?>"></div>
+                                    <div class="cf-turnstile" data-sitekey="<?= $cloudflare_turnstile_site_key ?>"></div>
                                 </div>
                             </div>
-                        
                             <div class="mt-4">&nbsp;</div>
-                        
-                            <!-- Register Button -->
                             <div class="form-group login-btn mb-0">
                                 <div class="col-sm-6" style="float:none;margin:auto;">
                                     <button id="btn-register" name="submit" class="btn btn-primary btn-block">Register</button>
                                 </div>
                             </div>
                         </form>
-
-                                            </div>
-                    <div class="c4-small">You already have an account? <a href="<?=$websiteUrl?>/login"
-                            class="link-highlight register-tab-link" title="Login">Login</a></div>
+                    </div>
+                    <div class="c4-small">You already have an account? <a href="<?=$websiteUrl?>/login" class="link-highlight register-tab-link" title="Login">Login</a></div>
                     <div class="c4-button">
-                        <a href="<?=$websiteUrl?>" class="btn btn-radius btn-focus"><i class="fa fa-chevron-circle-left mr-2"></i>Back
-                            to <?=$websiteTitle?></a>
+                        <a href="<?=$websiteUrl?>" class="btn btn-radius btn-focus"><i class="fa fa-chevron-circle-left mr-2"></i>Back to <?=$websiteTitle?></a>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -282,7 +287,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php include('src/component/footer.php')?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js?v=<?=$version?>"></script>
-        
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js?v=<?=$version?>"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
         <script type="text/javascript" src="<?=$websiteUrl?>/src/assets/js/app.js?v=<?=$version?>"></script>
@@ -294,15 +298,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js?v=<?=$version?>"></script>
         <?php
-      if(isset($message)){
-         foreach($message as $message){
-            echo '<script type="text/javascript">swal({title: "Error!",text: "'.$message.'",icon: "warning",button: "Close",})</script>;';
-         }
-      }
-      ?>
-       
-        <div style="display:none;">
-        </div>
+        if(isset($message)){
+            foreach($message as $message){
+                echo '<script type="text/javascript">swal({title: "Error!",text: "'.$message.'",icon: "warning",button: "Close",})</script>;';
+            }
+        }
+        ?>
     </div>
 </body>
 </html>
