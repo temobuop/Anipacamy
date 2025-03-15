@@ -28,7 +28,9 @@ if (!$data || !$data['success']) {
 // Process $data here as needed
 
 $m3u8_url = $data['data']['sources'][0]['url'];
-$video_url = $useProxy ? $proxy . $m3u8_url : $m3u8_url;
+$video_url = $server === 'hd-1' 
+    ? "{$proxy}{$m3u8_url}&headers=%7B%22Referer%22%3A%22https%3A%2F%2Fmegacloud.club%2F%22%7D" 
+    : ($useProxy ? $proxy . $m3u8_url : $m3u8_url);
 $intro_start = $data['data']['intro']['start'];
 $intro_end = $data['data']['intro']['end'];
 $outro_start = $data['data']['outro']['start'];
@@ -251,7 +253,7 @@ if ($isIframe) {
         },
             ],
             subtitle: {
-                url: '<?= $subtitles[0]['file'] ?>',
+                url: '<?= isset($subtitles[0]) ? $subtitles[0]['file'] : '' ?>',
                 type: 'srt',
                 encoding: 'utf-8',
                 escape: false,
