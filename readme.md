@@ -106,7 +106,7 @@ To get a website running up follow these simple example steps.
 |--------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | Hianime API  | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ghoshRitesh12/aniwatch-api)  | `GET https://hianime-psi.vercel.app/`        |
 | Zenime API   | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/zen-api)          | `GET https://zen-api-brown.vercel.app/`         |
-| M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fshashstormer%2Fm3u8_proxy-cors&project-name=m3u8-proxy-cors&repository-name=m3u8-proxy-cors) | `GET https://proxy-pink-three.vercel.app/`     |
+| M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/m3u8-proxy) | `GET https://m3u8proxy-main.vercel.app/`     |
 
 
 
@@ -150,7 +150,7 @@ $instagram = "https://www.instagram.com/pxr15_";
 
 $api = "https://your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api
 $zpi = "https://your-hosted-api.com/api"; //https://github.com/PacaHat/zen-api
-$proxy = "https://your-hosted-proxy.com/cors?url="; //https://github.com/shashstormer/m3u8_proxy-cors
+$proxy = "https://your-hosted-proxy.com/cors?url="; //https://github.com/PacaHat/m3u8-proxy
 
 // Cloudflare Turnstile credentials // Use Links Below 
 $cloudflare_turnstile_site_key = 'your_cloudflare_site_key'; // https://www.cloudflare.com/application-services/products/turnstile/
