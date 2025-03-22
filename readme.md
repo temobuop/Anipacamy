@@ -106,7 +106,7 @@ To get a website running up follow these simple example steps.
 |--------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | Hianime API  | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ghoshRitesh12/aniwatch-api)  | `GET https://hianime-psi.vercel.app/`        |
 | Zenime API   | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/zen-api)          | `GET https://zen-api-brown.vercel.app/`         |
-| M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/itzzzme/m3u8proxy) | `GET https://m3u8proxy.vercel.app/`     |
+| M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/MetaHat/m3u8-streaming-proxy) | `GET https://m3u8proxy.vercel.app/api/v1/streamingProxy?url=`     |
 
 
 
