@@ -1,22 +1,19 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
-
 $id = $_GET['id'];
 $server = $_GET['server'] ?? 'hd-1';
 $useProxy = $server !== 'hd-1';
 $isIframe = isset($_GET['embed']) && $_GET['embed'] === 'true';
 $autoSkip = isset($_GET['skip']) && $_GET['skip'] === 'true';
-
 $categories = ["dub"];
 $data = null;
-
 foreach ($categories as $category) {
     $api_url = "$api/episode/sources?animeEpisodeId=$id&server=$server&category=$category";
     $response = file_get_contents($api_url);
     if ($response !== false) {
         $data = json_decode($response, true);
         if ($data && $data['success']) {
-            break; // Stop if a successful response is found
+            break; 
         }
     }
 }
@@ -25,7 +22,6 @@ if (!$data || !$data['success']) {
     die("Error: Unable to fetch episode sources.");
 }
 
-// Process $data here as needed
 
 $m3u8_url = $data['data']['sources'][0]['url'];
 $video_url = $server === 'hd-1' 
@@ -237,7 +233,7 @@ if ($isIframe) {
             layers: [
                 {
             name: 'poster',
-            html: `<img style="width: 35px" src="https://anipaca.fun/public/logo/plogo.png">`,
+            html: `<img style="width: 35px" src="https://anipaca.fun/public/logo/plogo.php">`,
             tooltip: 'Poster Tip',
             style: {
                 position: 'absolute',
