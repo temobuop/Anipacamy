@@ -5,7 +5,7 @@
         <div class="header-setting">
             <div class="hs-toggles">
                
-                <a href="<?= $websiteUrl ?>/popular" class="hst-item" data-toggle="tooltip"
+                <a href="<?= $websiteUrl ?>/anime/most-popular" class="hst-item" data-toggle="tooltip"
                     data-original-title="Popular Anime List">
                     <div class="hst-icon"><i class="fas fa-star"></i></div>
                     <div class="name"><span>Popular</span></div>
@@ -214,7 +214,7 @@
                         </a>
                     </li>
                     <li class="pmu-item pmu-item-popular">
-                        <a class="pmu-item-icon" href="/popular" title="Most Popular">
+                        <a class="pmu-item-icon" href="/anime/most-popular" title="Most Popular">
                             <img src="/public/images/pick-popular.svg" data-toggle="tooltip" data-placement="right"
                                 title="" data-original-title="Most Popular">
                         </a>
