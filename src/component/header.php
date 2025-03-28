@@ -129,6 +129,86 @@
     </ul>
     <div class="clearfix"></div>
 </div>
+
+<style>
+    .sidebar_menu-sub {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.sidebar_menu-sub.show {
+    max-height: 1000px;
+}
+
+.nav-more {
+    cursor: pointer;
+}
+
+.nav-more:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+    const genreToggle = document.querySelector('.nav-item .nav-link[title="Genre"]');
+    const genreSubmenu = document.getElementById('sidebar_subs_genre');
+    
+    if (genreToggle && genreSubmenu) {
+        genreToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            genreSubmenu.classList.toggle('show');
+            
+            const icon = this.querySelector('i.fa');
+            if (genreSubmenu.classList.contains('show')) {
+                icon.classList.remove('fa-angle-down');
+                icon.classList.add('fa-angle-up');
+            } else {
+                icon.classList.remove('fa-angle-up');
+                icon.classList.add('fa-angle-down');
+            }
+        });
+    }
+    
+    const moreButton = document.querySelector('.nav-more .nav-link');
+    if (moreButton) {
+        moreButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const genreItems = document.querySelectorAll('#sidebar_subs_genre .nav-item:not(.nav-more)');
+            let hiddenItemsShown = false;
+            
+            genreItems.forEach(item => {
+                if (item.style.display === 'none') {
+                    hiddenItemsShown = true;
+                }
+            });
+            
+
+            genreItems.forEach((item, index) => {
+                if (index >= 10) {
+                    if (hiddenItemsShown) {
+                        item.style.display = 'none';
+                        moreButton.innerHTML = '<i class="fas fa-plus mr-2"></i>More';
+                    } else {
+                        item.style.display = 'block';
+                        moreButton.innerHTML = '<i class="fas fa-minus mr-2"></i>Less';
+                    }
+                }
+            });
+        });
+        
+        const genreItems = document.querySelectorAll('#sidebar_subs_genre .nav-item:not(.nav-more)');
+        genreItems.forEach((item, index) => {
+            if (index >= 10) {
+                item.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+                    
 <div id="header" class="header-home ">
     <div class="container">
         <div id="mobile_menu"><i class="fa fa-bars"></i></div>
