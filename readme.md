@@ -153,9 +153,7 @@ $proxy = $websiteUrl . "/src/ajax/proxy.php?url=";
 //If you want faster loading speed
 //$proxy = "https://your-hosted-proxy.com/api/v1/streamingProxy?url="; //https://github.com/MetaHat/m3u8-streaming-proxy
 
-// Cloudflare Turnstile credentials // Use Links Below 
-$cloudflare_turnstile_site_key = 'your_cloudflare_site_key'; // https://www.cloudflare.com/application-services/products/turnstile/
-$cloudflare_turnstile_secret_key = 'your_cloudflare_secret_key'; // https://www.cloudflare.com/application-services/products/turnstile/
+
 
 $banner = $websiteUrl . "/public/images/banner.png";
 
