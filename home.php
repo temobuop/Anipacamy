@@ -2,53 +2,17 @@
 session_start();
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 define('BASE_API_URL', $zpi);
 $endpoint = '';
 $apiUrl = BASE_API_URL . $endpoint;
-$cacheFile = '/cache/home/home.json';
-$cacheTime = 7200;
+$response = file_get_contents($apiUrl);
+$data = json_decode($response, true);
 
-function getFromCache($file) {
-    if (file_exists($file)) {
-        return json_decode(file_get_contents($file), true);
-    }
-    return false;
+if (!$data || !$data['success']) {
+    echo "Muhehehe! API request failed and no cache available.";
+    exit;
 }
-function writeToCache($file, $data) {
-    $dir = dirname($file);
-    if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
-    }
-    file_put_contents($file, json_encode($data));
-}
-
-$cachedData = getFromCache($cacheFile);
-
-if ($cachedData && (time() - filemtime($cacheFile)) < $cacheTime) {
-    $data = $cachedData;
-    $data['_cached'] = true;
-} else {
-    $response = file_get_contents($apiUrl);
-    $data = json_decode($response, true);
-
-    if (!$data || !$data['success']) {
-        if ($cachedData) {
-            $data = $cachedData;
-            $data['_stale'] = true;
-        } else {
-            echo "Muhehehe! API request failed and no cache available.";
-            exit;
-        }
-    } else {
-        $data = $data['results'];
-        writeToCache($cacheFile, $data);
-    }
-}
-
+$data = $data['results'];
 ?>
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
