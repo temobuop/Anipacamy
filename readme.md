@@ -104,8 +104,7 @@ To get a website running up follow these simple example steps.
 
 | API Name     | Deploy Link                                                                                              | Example API Link                                     |
 |--------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
-| Hianime API  | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ghoshRitesh12/aniwatch-api)  | `GET https://hianime-psi.vercel.app/`        |
-| Zenime API   | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/zen-api)          | `GET https://zen-api-brown.vercel.app/`         |
+| Main API   | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/zen-api)          | `GET https://zen-api-brown.vercel.app/`         |
 | M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/MetaHat/m3u8-streaming-proxy) | `GET https://m3u8proxy.vercel.app/api/v1/streamingProxy?url=`     |
 
 
@@ -148,9 +147,10 @@ $instagram = "https://www.instagram.com/pxr15_";
 
 // all the api you need
 
-$api = "https://your-hosted-api.com/api/v2/hianime"; //https://github.com/ghoshRitesh12/aniwatch-api
 $zpi = "https://your-hosted-api.com/api"; //https://github.com/PacaHat/zen-api
-$proxy = "https://your-hosted-proxy.com/cors?url="; //https://github.com/itzzzme/m3u8proxy
+
+#proxy is optional if you need faster loading speed
+$proxy = "https://your-hosted-proxy.com/api/v1/streamingProxy?url="; //https://github.com/MetaHat/m3u8-streaming-proxy
 
 // Cloudflare Turnstile credentials // Use Links Below 
 $cloudflare_turnstile_site_key = 'your_cloudflare_site_key'; // https://www.cloudflare.com/application-services/products/turnstile/

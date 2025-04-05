@@ -8,7 +8,7 @@ session_start();
 
 $characterId = basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
-$cacheFile = $_SERVER['DOCUMENT_ROOT'] . "/cache/character_{$characterId}.json";
+$cacheFile = $_SERVER['DOCUMENT_ROOT'] . "/cache/chInfo/character_{$characterId}.json";
 $cacheDuration = 3600; 
 
 if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheDuration) {
@@ -270,7 +270,7 @@ if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheDuration
                                                     <img src="<?= htmlspecialchars($actor['profile']) ?>" alt="<?= htmlspecialchars($actor['name']) ?>">
                                                 </a>
                                                 <div class="pi-detail">
-                                                    <h4 class="pi-name"><a href="/people/<?= htmlspecialchars($actor['id']) ?>"><?= htmlspecialchars($actor['name']) ?></a></h4>
+                                                    <h4 class="pi-name"><a href="/actors/<?= htmlspecialchars($actor['id']) ?>"><?= htmlspecialchars($actor['name']) ?></a></h4>
                                                     <span class="pi-cast"><?= htmlspecialchars($actor['language']) ?></span>
                                                 </div>
                                             </div>

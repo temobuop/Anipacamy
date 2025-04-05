@@ -3,14 +3,11 @@ require_once('../../_config.php');
 header('Content-Type: application/json');
 
 if (isset($_GET['keyword'])) {
-    $keyword = trim($_GET['keyword']);
-    $keyword = str_replace(' ', '-', strtolower($keyword));
-    
+    $keyword = trim($_GET['keyword']); // DO NOT alter the keyword here
     $cacheKey = md5($keyword);
     $cachePath = __DIR__ . '/../../cache/search/';
     $cacheFile = $cachePath . $cacheKey . '.json';
-    $cacheTime = 300; 
-
+    $cacheTime = 300;
 
     if (!is_dir($cachePath)) {
         mkdir($cachePath, 0777, true);
@@ -21,7 +18,7 @@ if (isset($_GET['keyword'])) {
         exit;
     }
 
-    $apiUrl = "$api/search?q=" . urlencode($keyword);
+    $apiUrl = "$zpi/search?keyword=" . urlencode($keyword); // Use the full URL here
 
     try {
         $ch = curl_init();
@@ -61,5 +58,4 @@ if (isset($_GET['keyword'])) {
         'success' => false,
         'message' => 'No keyword provided'
     ]);
-} 
- 
+}

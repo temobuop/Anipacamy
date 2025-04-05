@@ -3,18 +3,16 @@
 function fetchAnimeData($animeId) {
     session_start();
 
-    
     require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
-    
-    global $api;
+    global $zpi;
 
-    if (!isset($api)) {
+    if (!isset($zpi)) {
         echo "API endpoint is not defined in _config.php.";
         exit();
     }
 
-    $url = "$api/anime/$animeId";
+    $url = "$zpi/info?id=$animeId";
     $animeDataResponse = file_get_contents($url);
 
     if ($animeDataResponse === false) {
@@ -26,108 +24,120 @@ function fetchAnimeData($animeId) {
 
     if ($animeResponse === null) {
         echo "Failed to decode JSON.";
-        exit;
+        exit();
     }
 
-    if (!empty($animeResponse['success']) && isset($animeResponse['data']['anime'])) {
-        $anime = $animeResponse['data']['anime'];
-        $info = $anime['info'] ?? [];
-        $more = $anime['moreInfo'] ?? [];
-        $sts = $info['stats'] ?? [];
-        $season = $animeResponse['data']['seasons'] ?? [];
+    if (!empty($animeResponse['success']) && isset($animeResponse['results']['data'])) {
+        $data = $animeResponse['results']['data'];
+        $animeInfo = $data['animeInfo'] ?? [];
+        $tvInfo = $animeInfo['tvInfo'] ?? [];
+        $seasons = $animeResponse['results']['seasons'] ?? [];
+        
+        // Process seasons
         $seasonList = [];
-        foreach ($season as $season) {
+        foreach ($seasons as $season) {
             $seasonList[] = [
                 'id' => $season['id'] ?? null,
-                'name' => $season['name'] ?? null,
+                'name' => $season['season'] ?? null,
                 'title' => $season['title'] ?? null,
-                'poster' => $season['poster'] ?? null,
-                'isCurrent' => $season['isCurrent'] ?? false
+                'poster' => $season['season_poster'] ?? null,
+                'isCurrent' => ($season['id'] === $animeId) // Check if this is the current season
             ];
         }
 
-        $trailers = $info['promotionalVideos'] ?? [];
-        $trailerList = [];
-        foreach ($trailers as $trailer) {
-            $trailerList[] = [
-                'title' => $trailer['title'] ?? 'No title',
-                'source' => $trailer['source'] ?? '',
-                'thumbnail' => $trailer['thumbnail'] ?? ''
-            ];
-        }
-
-        $characters = $info['charactersVoiceActors'] ?? [];
+        // Process characters and voice actors
         $chList = [];
+        $characters = $data['charactersVoiceActors'] ?? [];
         foreach ($characters as $character) {
+            $voiceActors = [];
+            foreach ($character['voiceActors'] ?? [] as $actor) {
+                $voiceActors[] = [
+                    'id' => $actor['id'] ?? null,
+                    'name' => $actor['name'] ?? 'Unknown voice actor',
+                    'poster' => $actor['poster'] ?? null
+                ];
+            }
+            
             $chList[] = [
-                'character' => $character['character'] ?? 'Unknown character',
-                'voiceActor' => $character['voiceActor'] ?? 'Unknown voice actor'
-            ];
-        }
-
-        // Add related animes
-        $relatedAnimes = $animeResponse['data']['relatedAnimes'] ?? [];
-        $relatedAnimeList = [];
-        foreach ($relatedAnimes as $relatedAnime) {
-            $relatedAnimeList[] = [
-                'id' => $relatedAnime['id'] ?? null,
-                'name' => $relatedAnime['name'] ?? $relatedAnime['jname'] ?? null,
-                'episodes' => [
-                    'sub' => $relatedAnime['episodes']['sub'] ?? null,
-                    'dub' => $relatedAnime['episodes']['dub'] ?? null
+                'character' => [
+                    'id' => $character['character']['id'] ?? null,
+                    'name' => $character['character']['name'] ?? 'Unknown character',
+                    'poster' => $character['character']['poster'] ?? null,
+                    'cast' => $character['character']['cast'] ?? null
                 ],
-                'poster' => $relatedAnime['poster'] ?? null,
-                'type' => $relatedAnime['type'] ?? null
+                'voiceActors' => $voiceActors
             ];
         }
 
-        // Add recommended animes
-        $recommendedAnimes = $animeResponse['data']['recommendedAnimes'] ?? [];
+        // Process recommended animes
         $recommendedAnimeList = [];
+        $recommendedAnimes = $data['recommended_data'] ?? [];
         foreach ($recommendedAnimes as $recommendedAnime) {
             $recommendedAnimeList[] = [
                 'id' => $recommendedAnime['id'] ?? null,
-                'name' => $recommendedAnime['name'] ?? $recommendedAnime['jname'] ?? null,
+                'data_id' => $recommendedAnime['data_id'] ?? null,
+                'name' => $recommendedAnime['title'] ?? $recommendedAnime['japanese_title'] ?? null,
+                'japanese' => $recommendedAnime['japanese_title'] ?? null,
                 'poster' => $recommendedAnime['poster'] ?? null,
-                'duration' => $recommendedAnime['duration'] ?? null,
-                'type' => $recommendedAnime['type'] ?? null,
-                'rating' => $recommendedAnime['rating'] ?? null,
+                'duration' => $recommendedAnime['tvInfo']['duration'] ?? null,
+                'type' => $recommendedAnime['tvInfo']['showType'] ?? null,
+                'adultContent' => $recommendedAnime['adultContent'] ?? false,
                 'episodes' => [
-                    'sub' => $recommendedAnime['episodes']['sub'] ?? null,
-                    'dub' => $recommendedAnime['episodes']['dub'] ?? null
+                    'sub' => $recommendedAnime['tvInfo']['sub'] ?? $recommendedAnime['tvInfo']['eps'] ?? null,
+                    'dub' => $recommendedAnime['tvInfo']['dub'] ?? null
+                ]
+            ];
+        }
+
+        // Process related animes
+        $relatedAnimeList = [];
+        $relatedAnimes = $data['related_data'] ?? [];
+        foreach ($relatedAnimes as $relatedAnime) {
+            $relatedAnimeList[] = [
+                'id' => $relatedAnime['id'] ?? null,
+                'data_id' => $relatedAnime['data_id'] ?? null,
+                'name' => $relatedAnime['title'] ?? $relatedAnime['japanese_title'] ?? null,
+                'japanese' => $relatedAnime['japanese_title'] ?? null,
+                'poster' => $relatedAnime['poster'] ?? null,
+                'type' => $relatedAnime['tvInfo']['showType'] ?? null,
+                'adultContent' => $relatedAnime['adultContent'] ?? false,
+                'episodes' => [
+                    'sub' => $relatedAnime['tvInfo']['sub'] ?? $relatedAnime['tvInfo']['eps'] ?? null,
+                    'dub' => $relatedAnime['tvInfo']['dub'] ?? null
                 ]
             ];
         }
 
         return [
-            'poster' => $info['poster'] ?? 'default_poster.jpg',
-            'id' => $info['id'] ?? null,
-            'title' => $info['name'] ?? $info['jname'] ?? null,
-            'japanese' => $more['japanese'] ?? null,
-            'overview' => $info['description'] ?? 'No description',
-            'malId' => $info['malId'] ?? null,
-            'anilistId' => $info['anilistId'] ?? null,
-            'showType' => $sts['type'] ?? null,
-            'rating' => $sts['rating'] ?? null,
-            'subEp' => $sts['episodes']['sub'] ?? 0,
-            'dubEp' => $sts['episodes']['dub'] ?? 0,
-            'aired' => $more['aired'] ?? null,
-            'premiered' => $more['premiered'] ?? null,
-            'malscore' => $more['malscore'] ?? null,
-            'status' => $more['status'] ?? null,
-            'genres' => $more['genres'] ?? [],
-            'quality' => $sts['quality'] ?? null,
-            'duration' => $sts['duration'] ?? null,
-            'trailers' => $trailerList,
+            'poster' => $data['poster'] ?? 'default_poster.jpg',
+            'id' => $data['id'] ?? null,
+            'malId' => $data['malId'] ?? null,
+            'anilistId' => $data['anilistId'] ?? null,
+            'data_id' => $data['data_id'] ?? null,
+            'title' => $data['title'] ?? null,
+            'japanese' => $data['japanese_title'] ?? null,
+            'synonyms' => $data['synonyms'] ?? null,
+            'overview' => $animeInfo['Overview'] ?? 'No description',
+            'showType' => $tvInfo['showType'] ?? null,
+            'rating' => $tvInfo['rating'] ?? null,
+            'subEp' => $tvInfo['sub'] ?? $tvInfo['eps'] ?? 0,
+            'dubEp' => $tvInfo['dub'] ?? 0,
+            'aired' => $animeInfo['Aired'] ?? null,
+            'premiered' => $animeInfo['Premiered'] ?? null,
+            'malscore' => $animeInfo['MAL Score'] ?? null,
+            'status' => $animeInfo['Status'] ?? null,
+            'genres' => $animeInfo['Genres'] ?? [],
+            'quality' => $tvInfo['quality'] ?? null,
+            'duration' => $tvInfo['duration'] ?? $animeInfo['Duration'] ?? null,
             'actors' => $chList,
-            'studio' => $more['studios'] ?? null,
-            'producer' => $more['producers'] ?? [],
+            'studio' => $animeInfo['Studios'] ?? null,
+            'producer' => $animeInfo['Producers'] ?? [],
             'season' => $seasonList,
             'relatedAnimes' => $relatedAnimeList,
-            'recommendedAnimes' => $recommendedAnimeList
+            'recommendedAnimes' => $recommendedAnimeList,
+            'adultContent' => $data['adultContent'] ?? false
         ];
     }
 
     return false;
 }
-?>

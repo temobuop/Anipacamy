@@ -1,61 +1,75 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 session_start();
 
-$uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-$uriParts = explode('/', $uri);
+function fetchApi($url) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return $response;
+}
 
-$keyword = isset($uriParts[count($uriParts) - 1]) ? $uriParts[count($uriParts) - 1] : '';
-$keyword = urlencode($keyword);
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1; 
-$query = $keyword ? str_replace(' ', '-', $keyword) : '';
-$tP = 1; 
+$category = basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+$page = max(1, (int)($_GET['page'] ?? 1));
+$currentPage = $page;
 
-if ($query) {
-    $apiUrl = "$api/producer/{$query}?page={$page}";
-    $response = file_get_contents($apiUrl);
-    if ($response === false) {
-        $errorMessage = 'Could not connect to the API.';
+$cacheFile = $_SERVER['DOCUMENT_ROOT'] . "/cache/category/anime_{$category}_page_{$page}.json";
+$cacheDuration = 3600;
+$cacheDir = dirname($cacheFile);
+if (!file_exists($cacheDir)) {
+    mkdir($cacheDir, 0755, true);
+}
+
+$response = false;
+$data = [];
+
+if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheDuration) {
+    $response = file_get_contents($cacheFile);
+} 
+if (!$response) {
+    $apiUrl = "$zpi/producer/{$category}?page={$page}";
+    $response = fetchApi($apiUrl);
+    
+    if ($response !== false) {
+        $tempData = json_decode($response, true);
+        if (json_last_error() === JSON_ERROR_NONE && isset($tempData['success']) && $tempData['success']) {
+            file_put_contents($cacheFile, $response);
+        } else {
+            $errorMessage = "Invalid API response";
+            $response = json_encode(['success' => false, 'error' => $errorMessage]);
+        }
+    } else {
+        $errorMessage = "Failed to fetch data from API";
+        $response = json_encode(['success' => false, 'error' => $errorMessage]);
     }
 }
 
-    try {
-        $response = file_get_contents($apiUrl);
-        if ($response !== false) {
-            $data = json_decode($response, true);
-            if ($data && isset($data['success']) && $data['success'] && isset($data['data'])) {
-                
-                $searchResults = isset($data['data']['animes']) ? $data['data']['animes'] : [];
-                $currentPage = isset($data['data']['currentPage']) ? $data['data']['currentPage'] : 1;
-                $tP = isset($data['data']['totalPages']) ? $data['data']['totalPages'] : 1;
-            } else {
-                $errorMessage = 'Failed to fetch search results. Please try again later.';
-            }
-        } else {
-            $errorMessage = 'Could not connect to the API.';
-        }
-    } catch (Exception $e) {
-        $errorMessage = 'An error occurred: ' . $e->getMessage();
-    }
+$data = json_decode($response, true);
+
+$errorMessage = null;
+$aniResults = $data['results']['data'] ?? null;
+$totalPages = $data['results']['totalPages'] ?? 1;
+$totalResults = $totalPages * 20;
+if (empty($aniResults)) {
+    $errorMessage = "No anime data found";
+}
 
 ?>
-
-<?php if (isset($errorMessage)) : ?>
-    <p>Error: <?php echo htmlspecialchars($errorMessage); ?></p>
-<?php endif; ?>
 <!DOCTYPE html>
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <title> List Of All Popular Animes of <?=$query?>  on <?=$websiteTitle?></title>
+    <title><?= str_replace('-', ' ', ucfirst($category)) ?> Productions Anime on <?=$websiteTitle?></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="title" content=" List Of All Popular <?=$query?> Anime on <?=$websiteTitle?>">
-    <meta name="description" content="Popular <?=$query?> Anime in HD with No Ads. Watch <?=$query?> anime online">
+    <meta name="title" content="List All <?= str_replace('-', ' ', ucfirst($category)) ?> Anime on <?=$websiteTitle?>">
+    <meta name="description" content="Popular Anime in HD with No Ads. Watch anime online">
     <meta name="keywords"
         content="<?=$websiteTitle?>, watch anime online, free anime, anime stream, anime hd, english sub, kissanime, gogoanime, animeultima, 9anime, 123animes, <?=$websiteTitle?>, vidstreaming, gogo-stream, animekisa, zoro.to, gogoanime.run, animefrenzy, animekisa">
     <meta name="charset" content="UTF-8">
@@ -63,9 +77,9 @@ if ($query) {
     <meta name="robots" content="noindex, follow">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Content-Language" content="en">
-    <meta property="og:title" content=" List Of All Popular <?=$query?> Anime on <?=$websiteTitle?>">
+    <meta property="og:title" content="List All <?= str_replace('-', ' ', ucfirst($category)) ?> Anime on <?=$websiteTitle?>">
     <meta property="og:description"
-        content=" List Of All Popular <?=$query?> Anime on <?=$websiteTitle?> in HD with No Ads. Watch <?=$query?> anime online">
+        content="List All <?= str_replace('-', ' ', ucfirst($category)) ?> Anime on <?=$websiteTitle?> in HD with No Ads. Watch anime online">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="<?=$websiteTitle?>">
@@ -92,24 +106,23 @@ if ($query) {
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/styles.min.css?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/min.css?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/new.css?v=<?=$version?>">
-    <script type="text/javascript">
+    <script>
     setTimeout(function() {
-        var wpse326013 = document.createElement('link');
-        wpse326013.rel = 'stylesheet';
-        wpse326013.href =
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css?v=<?=$version?>';
-        wpse326013.type = 'text/css';
-        var godefer = document.getElementsByTagName('link')[0];
-        godefer.parentNode.insertBefore(wpse326013, godefer);
-        var wpse326013_2 = document.createElement('link');
-        wpse326013_2.rel = 'stylesheet';
-        wpse326013_2.href =
-            'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css?v=<?=$version?>';
-        wpse326013_2.type = 'text/css';
-        var godefer2 = document.getElementsByTagName('link')[0];
-        godefer2.parentNode.insertBefore(wpse326013_2, godefer2);
-    }, 500);
+    const cssFiles = [
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css',
+        'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css'
+    ];
+    const firstLink = document.getElementsByTagName('link')[0];
+    cssFiles.forEach(file => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `${file}?v=<?=$version?>`;
+        link.type = 'text/css';
+        firstLink.parentNode.insertBefore(link, firstLink);
+                });
+        }, 500);
     </script>
+
     <noscript>
         <link rel="stylesheet" type="text/css"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css?v=<?=$version?>" />
@@ -121,173 +134,130 @@ if ($query) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<!-- Google tag (gtag.js) -->
 
-</script>
 
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {
-            "@type": "WebSite",
-            "url": "<?= htmlspecialchars($websiteUrl) ?>",
-            "potentialAction": {
-                "@type": "SearchAction",
-                "target": "<?= htmlspecialchars($websiteUrl) ?>/search?keyword={keyword}",
-                "query-input": "required name=keyword"
-            }
-        },
-        {
-            "@type": "CollectionPage",
-            "name": "Anime <?= htmlspecialchars(ucfirst($query)) ?> Genre",
-            "description": "List of anime in the <?= htmlspecialchars($query) ?> genre on <?= htmlspecialchars($websiteTitle) ?>",
-            "url": "<?= htmlspecialchars($websiteUrl) ?>/genre/<?= htmlspecialchars($query) ?>",
-            "hasPart": [
-                <?php if (!empty($searchResults)): ?>
-                <?php foreach ($searchResults as $index => $anime): ?>
-                {
-                    "@type": "TVSeries",
-                    "name": "<?= htmlspecialchars($anime['name']) ?>",
-                    "url": "<?= htmlspecialchars($websiteUrl) ?>/details/<?= htmlspecialchars($anime['id']) ?>",
-                    "image": "<?= htmlspecialchars($anime['poster']) ?>"
-                }<?= ($index < count($searchResults) - 1) ? ',' : '' ?>
-                <?php endforeach; ?>
-                <?php endif; ?>
-            ]
-        }
-    ]
-}
-</script>
+    <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
+    <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
 </head>
 
 <body data-page="page_anime">
     <div id="sidebar_menu_bg"></div>
     <div id="wrapper" data-page="page_home">
-    <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/header.php'); ?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/src/component/header.php'; ?>
         <div class="clearfix"></div>
         <div id="main-wrapper">
             <div class="container">
                 <div id="main-content">
-                <section class="block_area block_area_category">
-        <div class="block_area-header">
-            <div class="float-left bah-heading mr-4">
-                <h2 class="cat-heading">Anime Bye  <?=$query?></h2>
-            </div>
-            <div class="clearfix"></div>
+<section class="block_area block_area_category">
+    <div class="block_area-header">
+        <div class="float-left bah-heading mr-4">
+            <h2 class="cat-heading"> Production House <?= str_replace('-', ' ', ucfirst($category)) ?>  </h2>
         </div>
+        <div class="clearfix"></div>
+    </div>
 
-        <div class="tab-content">
-            <div class="block_area-content block_area-list film_list film_list-grid film_list-wfeature">
-                <div class="film_list-wrap">
-                    <?php if ($query && !empty($searchResults)): ?>
-                        <?php foreach ($searchResults as $anime): ?>
-                            <div class="flw-item">
+    <div class="tab-content">
+        <div class="block_area-content block_area-list film_list film_list-grid film_list-wfeature">
+            <div class="film_list-wrap">
+                <?php if (!empty($aniResults)): ?>
+                    <?php 
+                    $displayedResults = array_slice($aniResults, 0, 12);
+                    foreach ($displayedResults as $anime): ?>
+                        <div class="flw-item">
                                 <div class="film-poster">
-                                    <?php if ($anime['rating']) { ?>
+                                    <?php if ($anime['adultContent']) { ?>
                                         <div class="tick ltr" style="position: absolute; top: 10px; left: 10px;">
                                             <div class="tick-item tick-age amp-algn">18+</div>
                                         </div>
                                     <?php } ?>
                                     <div class="tick ltr" style="position: absolute; bottom: 10px; left: 10px;">
-                                        <?php if (!empty($anime['episodes']['sub'])) { ?>
+                                        <?php if (!empty($anime['tvInfo']['sub'])) { ?>
                                             <div class="tick-item tick-sub amp-algn" style="text-align: left;">
-                                                <i class="fas fa-closed-captioning"></i> &nbsp;<?=$anime['episodes']['sub']?>
+                                                <i class="fas fa-closed-captioning"></i> &nbsp;<?=$anime['tvInfo']['sub']?>
                                             </div>
                                         <?php } ?>
-                                        <?php if (!empty($anime['episodes']['dub'])) { ?>
+                                        <?php if (!empty($anime['tvInfo']['dub'])) { ?>
                                             <div class="tick-item tick-dub amp-algn" style="text-align: left;">
-                                                <i class="fas fa-microphone"></i> &nbsp;<?=$anime['episodes']['dub']?>
+                                                <i class="fas fa-microphone"></i> &nbsp;<?=$anime['tvInfo']['dub']?>
                                             </div>
                                         <?php } ?>
                                     </div>
-                                    <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$anime['poster']?>" alt="<?=$anime['name']?>">
-                                    <a class="film-poster-ahref" href="/details/<?=$anime['id']?>"></a>
+                                    <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$websiteUrl?>/public/images/no_poster.jpg" alt="<?=$anime['title']?>">
+                                    <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['title']?>">
+                                        <i class="fas fa-play"></i>
+                                    </a>
                                 </div>
                                 <div class="film-detail">
-                                     <h3 class="film-name"><a href="/details/<?=$anime['id']?>" title="<?=$anime['name']?>"><?=$anime['name']?></a></h3>
+                                    <h3 class="film-name">
+                                        <a href="/details/<?=$anime['id']?>"><?=$anime['title']?></a>
                                     </h3>
                                     <div class="fd-infor">
-                                        <span class="fdi-item"><?=$anime['type']?></span>
+                                        <span class="fdi-item"><?=$anime['tvInfo']['showType']?></span>
                                         <span class="dot"></span>
-                                        <span class="fdi-item"><?=$anime['duration']?></span>
+                                        <span class="fdi-item"><?=$anime['tvInfo']['duration']?></span>
                                     </div>
                                 </div>
                             </div>
-                  <?php endforeach; ?>
-                        <div class="clearfix"></div>
-                    
-                        <!-- Pagination -->
-                        
-                    <?php elseif ($query): ?>
-                        <div class="no-results">
-                            <p>No results found for "<?=htmlspecialchars($query)?>".</p>
-                            <p>Suggestions:</p>
-                            <ul>
-                                <li>Make sure all words are spelled correctly</li>
-                                <li>Try different keywords</li>
-                                <li>Try more general keywords</li>
-                            </ul>
-                            <p>You can:</p>
-                            <div class="search-options">
-                                <a href="https://www.google.com/search?q=anime+<?=urlencode($query)?>" target="_blank" class="btn btn-sm btn-primary">Search on Google</a>
-                                
-                            </div>
-                        </div>
-   
-                    <?php endif; ?>
-                </div>
+                    <?php endforeach; ?>
+                    <div class="clearfix"></div>
+
+                <?php else: ?>
+                    <p>No results found.</p>
+                <?php endif; ?>
             </div>
-            <div class="pre-pagination mt-5 mb-5">
+             <!-- Pagination -->
+             <div class="pre-pagination mt-5 mb-5">
                 <nav aria-label="Page navigation">
                     <ul class="pagination pagination-lg justify-content-center">
-                        <?php 
+                        <?php
                         // Determine the start and end of the pagination range
                         $range = 2; // Number of pages to show before and after the current page
                         $start = max(1, $currentPage - $range);
-                        $end = min($tP, $currentPage + $range);
+                        $end = min($totalPages, $currentPage + $range);
 
                         // Display the "First" and "Previous" buttons
                         if ($currentPage > 1): ?>
                             <li class="page-item">
-                                <a class="page-link" title="First" href="?keyword=<?= urlencode($query) ?>&page=1">«</a>
+                                <a class="page-link" href="?page=1" title="First">«</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" title="Previous" href="?keyword=<?= urlencode($query) ?>&page=<?= $currentPage - 1 ?>">‹</a>
+                                <a class="page-link" href="?page=<?= $currentPage - 1 ?>" title="Previous">‹</a>
                             </li>
                         <?php endif; ?>
 
                         <!-- Display the range of page numbers -->
                         <?php for ($i = $start; $i <= $end; $i++): ?>
                             <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
-                                <a class="page-link" title="Page <?= $i ?>" href="?keyword=<?= urlencode($query) ?>&page=<?= $i ?>"><?= $i ?></a>
+                                <a class="page-link" href="?page=<?= $i ?>" title="Page <?= $i ?>"><?= $i ?></a>
                             </li>
                         <?php endfor; ?>
 
                         <!-- Display the "Next" and "Last" buttons -->
-                        <?php if ($currentPage < $tP): ?>
+                        <?php if ($currentPage < $totalPages): ?>
                             <li class="page-item">
-                                <a class="page-link" title="Next" href="?keyword=<?= urlencode($query) ?>&page=<?= $currentPage + 1 ?>">›</a>
+                                <a class="page-link" href="?page=<?= $currentPage + 1 ?>" title="Next">›</a>
                             </li>
                             <li class="page-item">
-                                 <a class="page-link" title="Last" href="?keyword=<?= urlencode($query) ?>&page=<?= $tP ?>">»</a>
+                                <a class="page-link" href="?page=<?= $totalPages + 1 ?>" title="Last">»</a>
                             </li>
                         <?php endif; ?>
                     </ul>
                 </nav>
             </div>
-        </section>
+                    <div class="clearfix"></div>
+        </div>
+    </div>
+</section>
 
-        <?php include('./src/component/anime/latest.php'); ?>
 
-            <div class="clearfix"></div>
+                    <div class="clearfix"></div>
                 </div>
-              <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/anime/sidenav.php'); ?>
+                <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/anime/sidenav.php'); ?>
                 <div class="clearfix"></div>
             </div>
         </div>
-        <?php include($_SERVER['DOCUMENT_ROOT'] . '/src/component/footer.php'); ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/src/component/footer.php'; ?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -302,9 +272,8 @@ if ($query) {
         <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/function.js"></script>
 
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </div>
 </body>
 

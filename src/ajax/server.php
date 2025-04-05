@@ -1,74 +1,77 @@
 <?php
 header('Content-Type: application/json');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php'); 
-$episodeId = $_GET['episodeId'] ?? null;
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
+$episodeParam = $_GET['episodeId'] ?? null;
+$api_url = "$zpi/servers/" . $episodeParam;
 
-if (!$episodeId) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'No episode ID provided'
-    ]);
-    exit;
-}
-
-// Debug log
-error_log("Fetching servers for episode: " . $episodeId);
-
-$api_url = "$api/episode/servers?animeEpisodeId=" . urlencode($episodeId);
-
-// Debug log
-error_log("API URL: " . $api_url);
-
-$response = file_get_contents($api_url);
+$response = @file_get_contents($api_url);
 
 if ($response === false) {
     echo json_encode([
         'success' => false,
-        'error' => 'Failed to fetch server data'
+        'error' => 'Failed to fetch from API',
+        
     ]);
     exit;
 }
 
 $data = json_decode($response, true);
-
-// Debug log
-error_log("API Response: " . print_r($data, true));
-
-if (!$data || !isset($data['data'])) {
+if (json_last_error() !== JSON_ERROR_NONE) {
     echo json_encode([
         'success' => false,
-        'error' => 'Invalid API response'
+        'error' => 'Invalid API response',
+        'debug' => [
+            'raw_response' => $response,
+            'url_called' => $api_url
+        ]
     ]);
     exit;
 }
-
-// Check for fallback logic for sub servers only
-$sub_servers = $data['data']['sub'] ?? [];
-$raw_servers = $data['data']['raw'] ?? [];
-
-// Use `raw` servers as a fallback if `sub` is empty
-if (empty($sub_servers) && !empty($raw_servers)) {
-    $sub_servers = $raw_servers;
+if (empty($data['success'])) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'API reported no servers',
+        'api_response' => $data
+    ]);
+    exit;
 }
-
-// Fetch `dub` servers without fallback
-$dub_servers = $data['data']['dub'] ?? [];
-
-// Function to replace specific servers with placeholders
-function replaceWithPlaceholder($servers) {
-    return array_map(function($server) {
-        return [
-            'serverName' => $server['serverName'],
-            'serverId' => $server['serverId']
-        ];
-    }, $servers);
+if (empty($data['results'])) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'No servers available',
+        'debug' => [
+            'api_url' => $api_url,
+            'note' => 'API returned success but empty results'
+        ]
+    ]);
+    exit;
 }
-
-// Format the response to match what the frontend expects
-$result = [
-    'sub' => replaceWithPlaceholder($sub_servers),
-    'dub' => replaceWithPlaceholder($dub_servers)
+$response = [
+    'success' => true,
+    'sub' => [],
+    'dub' => []
 ];
+foreach ($data['results'] as $server) {
+    $type = $server['type'] ?? 'sub';
+    if (in_array($type, ['sub', 'dub'])) {
+        $response[$type][] = [
+            'serverName' => $server['serverName'] ?? 'Unknown',
+            'serverId' => $server['server_id'] ?? '0'
+        ];
+    }
+}
+if (empty($response['sub'])) {
+    foreach ($data['results'] as $server) {
+        if (($server['type'] ?? '') === 'raw') {
+            $response['sub'][] = [
+                'serverName' => $server['serverName'] ?? 'Unknown',
+                'serverId' => $server['server_id'] ?? '0'
+            ];
+        }
+    }
+}
 
-echo json_encode($result);
+echo json_encode($response);
 ?>

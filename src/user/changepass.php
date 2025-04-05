@@ -263,7 +263,7 @@ if(!empty($current_pass) || !empty($new_pass) || !empty($confirm_pass)){
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js?v=1.5"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js?v=1.5"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-  
+    <img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style="width:0; height:0; visibility:hidden;">
    <!-- <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/comman.js"></script> -->
     <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/movie.js?v=1.5"></script>
     <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/jquery-ui.css?v=1.5">

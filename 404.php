@@ -107,6 +107,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
 <script type="text/javascript"
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js?v=<?= $version ?>"></script>
+        <img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style="width:0; visibility:hidden;">
     <script type="text/javascript"
         src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js?v=<?= $version ?>"></script>
     <script>

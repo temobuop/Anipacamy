@@ -219,7 +219,7 @@ $latest_updates_result = $stmt->get_result();
                       <?php if (!empty($anime['dub_count'])): ?>
                         <div class="tick-item tick-dub"><i class="fas fa-microphone mr-1"></i><?php echo htmlspecialchars($anime['dub_count']); ?></div>
                       <?php endif; ?>
-                      <div class="tick-item tick-eps"><?php echo htmlspecialchars($anime['sub_count'] ?? $anime['dub_count']); ?></div>
+                     
                     </div>
                     <img class="film-poster-img" 
                          src="<?php echo htmlspecialchars($anime['poster'] ?? '/path/to/default-image.jpg'); ?>"

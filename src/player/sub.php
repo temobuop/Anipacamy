@@ -11,46 +11,62 @@ $categories = ["sub", "raw"];
 $data = null;
 
 foreach ($categories as $category) {
-    $api_url = "$api/episode/sources?animeEpisodeId=$id&server=$server&category=$category";
+    $api_url = "$zpi/stream?id=$id&server=$server&type=$category";
     $response = file_get_contents($api_url);
     if ($response !== false) {
         $data = json_decode($response, true);
-        if ($data && $data['success']) {
+        if ($data && $data['success'] && isset($data['results']['streamingLink'])) {
             break; // Stop if a successful response is found
         }
     }
 }
 
-if (!$data || !$data['success']) {
-    die("Error: Unable to fetch episode sources.");
+if (!$data || !$data['success'] || !isset($data['results']['streamingLink'])) {
+    die("Error: Unable to fetch episode sources or invalid response structure.");
 }
 
-// Process $data here as needed
+// Process new API response structure
+$streamingData = $data['results']['streamingLink'];
 
-$m3u8_url = $data['data']['sources'][0]['url'];
+// Check if link exists and has file
+if (!isset($streamingData['link']['file'])) {
+    die("Error: No streaming link found in response.");
+}
+
+$m3u8_url = $streamingData['link']['file'];
 $video_url = $server === 'hd-1' 
     ? "{$proxy}{$m3u8_url}&headers=%7B%22Referer%22%3A%22https%3A%2F%2Fmegacloud.club%2F%22%7D" 
     : ($useProxy ? $proxy . $m3u8_url : $m3u8_url);
-$intro_start = $data['data']['intro']['start'];
-$intro_end = $data['data']['intro']['end'];
-$outro_start = $data['data']['outro']['start'];
-$outro_end = $data['data']['outro']['end'];
+    
+// Set default values for intro/outro
+$intro_start = $streamingData['intro']['start'] ?? 0;
+$intro_end = $streamingData['intro']['end'] ?? 0;
+$outro_start = $streamingData['outro']['start'] ?? 0;
+$outro_end = $streamingData['outro']['end'] ?? 0;
 $thumbnail_url = null;
 $subtitles = [];
 
-foreach ($data['data']['tracks'] as $track) {
-    if ($track['kind'] === 'thumbnails') {
-        $thumbnail_url = $track['file'];
-    } elseif ($track['kind'] === 'captions') {
-        $isEnglish = stripos($track['label'], 'English') !== false || 
-                     stripos($track['label'], 'eng') !== false;
-        $subtitles[] = [
-            'label' => $track['label'],
-            'file' => $track['file'],
-            'default' => $isEnglish
-        ];
+// Process tracks if they exist
+if (isset($streamingData['tracks']) && is_array($streamingData['tracks'])) {
+    foreach ($streamingData['tracks'] as $track) {
+        if (!isset($track['kind'])) continue;
+        
+        if ($track['kind'] === 'thumbnails') {
+            $thumbnail_url = $track['file'] ?? null;
+        } elseif ($track['kind'] === 'captions') {
+            $isEnglish = stripos($track['label'] ?? '', 'English') !== false || 
+                         stripos($track['label'] ?? '', 'eng') !== false ||
+                         (isset($track['default']) && $track['default'] === true);
+            $subtitles[] = [
+                'label' => $track['label'] ?? 'Unknown',
+                'file' => $track['file'] ?? '',
+                'default' => $isEnglish
+            ];
+        }
     }
 }
+
+// Rest of your code...
 
 if ($isIframe) {
     ?>

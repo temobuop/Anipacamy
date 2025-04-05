@@ -11,18 +11,18 @@
                 <div class="trending-list" id="trending-home">
                     <div class="trending-container-anime swiper-container">
                         <div class="swiper-wrapper">
-                            <?php if (!empty($data['trendingAnimes'])): ?>
-                                <?php foreach ($data['trendingAnimes'] as $index => $anime): ?>
+                            <?php if (!empty($data['trending'])): ?>
+                                <?php foreach ($data['trending'] as $index => $anime): ?>
                                     <div class="swiper-slide item-qtip" data-id="<?= htmlspecialchars($anime['id'], ENT_QUOTES, 'UTF-8') ?>">
                                         <div class="item">
                                             <div class="number">
                                                 <span><?= str_pad($index + 1, 2, '0', STR_PAD_LEFT) ?></span>
-                                                <div class="film-title dynamic-name" data-jname="<?= htmlspecialchars($anime['name'], ENT_QUOTES, 'UTF-8') ?>">
-                                                    <?= htmlspecialchars($anime['name'], ENT_QUOTES, 'UTF-8') ?>
+                                                <div class="film-title dynamic-name" data-jname="<?= htmlspecialchars($anime['japanese_title'], ENT_QUOTES, 'UTF-8') ?>">
+                                                    <?= htmlspecialchars($anime['title'], ENT_QUOTES, 'UTF-8') ?>
                                                 </div>
                                             </div>
                                             <a href="/details/<?= htmlspecialchars($anime['id'], ENT_QUOTES, 'UTF-8') ?>" class="film-poster">
-                                            <img src="<?= htmlspecialchars($anime['poster'], ENT_QUOTES, 'UTF-8') ?>" class="film-poster-img lazyload" title="<?= htmlspecialchars($anime['name'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($anime['name'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <img src="<?= htmlspecialchars($anime['poster'], ENT_QUOTES, 'UTF-8') ?>" class="film-poster-img lazyload" title="<?= htmlspecialchars($anime['title'], ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($anime['title'], ENT_QUOTES, 'UTF-8') ?>">
                                             </a>
                                             <div class="clearfix"></div>
                                         </div>

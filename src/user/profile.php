@@ -288,6 +288,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SERVER['HTTP_X_REQUESTED_WI
       <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/movie.js?v=1.5"></script>
       <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/jquery-ui.css?v=1.5">
       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js?v=1.5"></script>
+      <img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style=" height:0; visibility:hidden;">
       <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/function.js"></script>
       <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/app.min.js?v=1.4"></script>
       

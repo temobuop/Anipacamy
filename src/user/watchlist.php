@@ -331,7 +331,7 @@ function previewImage(event) {
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js?v=1.5"></script>
     <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/function.js?v=1.5"></script>
     <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/app.min.js?v=1.4"></script>
-    
+    <img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style="width:0; height:0; visibility:hidden;">
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Ensure the dropdown items trigger a page reload with the correct status

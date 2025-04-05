@@ -18,14 +18,14 @@ $query = isset($_GET['keyword']) ? str_replace(' ', '-', $_GET['keyword']) : '';
 
 if ($query) {
 
-    $apiUrl = "$api/search?q={$query}";
+    $apiUrl = "$zpi/search?keyword={$query}";
 
     try {
         $response = file_get_contents($apiUrl);
         if ($response !== false) {
             $data = json_decode($response, true);
-            if ($data && isset($data['success']) && $data['success'] && isset($data['data']['animes'])) {
-                $searchResults = $data['data']['animes'];
+            if ($data && isset($data['success']) && $data['success'] && isset($data['results']['data'])) {
+                $searchResults = $data['results']['data'];
             } else {
                 $errorMessage = 'Failed to fetch search results. Please try again later.';
             }
@@ -42,7 +42,7 @@ if ($query) {
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <title>List All Anime with keyword on <?=$websiteTitle?></title>
+    <title>Searching <?=$query?> Anime on <?=$websiteTitle?></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="title" content="List All Anime with keyword on <?=$websiteTitle?>">
@@ -145,34 +145,34 @@ if ($query) {
                         <?php foreach ($searchResults as $anime): ?>
                             <div class="flw-item">
                                 <div class="film-poster">
-                                    <?php if ($anime['rating']) { ?>
+                                    <?php if ($anime['tvInfo']['rating']) { ?>
                                         <div class="tick ltr" style="position: absolute; top: 10px; left: 10px;">
                                             <div class="tick-item tick-age amp-algn">18+</div>
                                         </div>
                                     <?php } ?>
                                     <div class="tick ltr" style="position: absolute; bottom: 10px; left: 10px;">
-                                        <?php if (!empty($anime['episodes']['sub'])) { ?>
+                                        <?php if (!empty($anime['tvInfo']['sub'])) { ?>
                                             <div class="tick-item tick-sub amp-algn" style="text-align: left;">
-                                                <i class="fas fa-closed-captioning"></i> &nbsp;<?=$anime['episodes']['sub']?>
+                                                <i class="fas fa-closed-captioning"></i> &nbsp;<?=$anime['tvInfo']['sub']?>
                                             </div>
                                         <?php } ?>
-                                        <?php if (!empty($anime['episodes']['dub'])) { ?>
+                                        <?php if (!empty($anime['tvInfo']['dub'])) { ?>
                                             <div class="tick-item tick-dub amp-algn" style="text-align: left;">
-                                                <i class="fas fa-microphone"></i> &nbsp;<?=$anime['episodes']['dub']?>
+                                                <i class="fas fa-microphone"></i> &nbsp;<?=$anime['tvInfo']['dub']?>
                                             </div>
                                         <?php } ?>
                                     </div>
-                                    <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$websiteUrl?>/public/images/no_poster.jpg" alt="<?=$anime['name']?>">
-                                    <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['name']?>">
+                                    <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$websiteUrl?>/public/images/no_poster.jpg" alt="<?=$anime['title']?>">
+                                    <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['title']?>">
                                         <i class="fas fa-play"></i>
                                     </a>
                                 </div>
                                 <div class="film-detail">
                                     <h3 class="film-name">
-                                        <a href="/details/<?=$anime['id']?>"><?=$anime['name']?></a>
+                                        <a href="/details/<?=$anime['id']?>"><?=$anime['title']?></a>
                                     </h3>
                                     <div class="fd-infor">
-                                        <span class="fdi-item"><?=$anime['type']?></span>
+                                        <span class="fdi-item"><?=$anime['tvInfo']['showType']?></span>
                                         <span class="dot"></span>
                                         <span class="fdi-item"><?=$anime['duration']?></span>
                                     </div>

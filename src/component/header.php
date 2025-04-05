@@ -30,7 +30,7 @@
         <li class="nav-item"><a class="nav-link" href="/anime/ona" title="ONAs">ONAs</a></li>
         <li class="nav-item"><a class="nav-link" href="/anime/special" title="Specials">Specials</a></li>
        <!-- <li class="nav-item"><a class="nav-link" href="https://anipaca-app.netlify.app" title="Events"><?= $websiteTitle ?> App</a></li> -->
-        
+      
        
         <li class="nav-item">
             <div class="nav-link" title="Genre"><strong><i class="fa fa-angle-down"></i> Genre</strong></div>

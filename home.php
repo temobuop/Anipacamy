@@ -6,22 +6,48 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-define('BASE_API_URL', $api);
-$endpoint = '/home';
+define('BASE_API_URL', $zpi);
+$endpoint = '';
 $apiUrl = BASE_API_URL . $endpoint;
+$cacheFile = '/cache/home/home.json';
+$cacheTime = 7200;
 
-$response = file_get_contents($apiUrl);
-$data = json_decode($response, true);
-
-if (!$data || !$data['success']) {
-    echo "<script>window.location.reload();</script>";
-    exit;
+function getFromCache($file) {
+    if (file_exists($file)) {
+        return json_decode(file_get_contents($file), true);
+    }
+    return false;
+}
+function writeToCache($file, $data) {
+    $dir = dirname($file);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+    file_put_contents($file, json_encode($data));
 }
 
-$data = $data['data'];
+$cachedData = getFromCache($cacheFile);
 
+if ($cachedData && (time() - filemtime($cacheFile)) < $cacheTime) {
+    $data = $cachedData;
+    $data['_cached'] = true;
+} else {
+    $response = file_get_contents($apiUrl);
+    $data = json_decode($response, true);
 
-
+    if (!$data || !$data['success']) {
+        if ($cachedData) {
+            $data = $cachedData;
+            $data['_stale'] = true;
+        } else {
+            echo "Muhehehe! API request failed and no cache available.";
+            exit;
+        }
+    } else {
+        $data = $data['results'];
+        writeToCache($cacheFile, $data);
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -67,33 +93,44 @@ $data = $data['data'];
     <link rel="mask-icon" href="<?= $websiteUrl ?>/public/logo/safari-pinned-tab.svg" color="#5bbad5">
     <link rel="icon" sizes="192x192" href="<?= $websiteUrl ?>/public/logo/touch-icon-192x192.png?v=<?= $version ?>">
     <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/new.css?v=<?= $version ?>">
-     
-    <script>
-    setTimeout(function() {
-    const cssFiles = [
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css',
-        'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css'
-    ];
-    const firstLink = document.getElementsByTagName('link')[0];
-    cssFiles.forEach(file => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = `${file}?v=<?=$version?>`;
-        link.type = 'text/css';
-        firstLink.parentNode.insertBefore(link, firstLink);
-                });
 
-        // Initialize lazy loading
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
+
+<noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+</noscript>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Dynamically load CSS files after delay
+    setTimeout(() => {
+        const cssFiles = [
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css'
+        ];
+        const firstLink = document.querySelector('link[rel=stylesheet]');
+        cssFiles.forEach(file => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = `${file}?v=<?= $version ?>`;
+            link.type = 'text/css';
+            firstLink.parentNode.insertBefore(link, firstLink);
+        });
+
+        // Native lazy loading support
         if ('loading' in HTMLImageElement.prototype) {
-            // Browser supports native lazy loading
             document.querySelectorAll('img').forEach(img => {
                 img.loading = 'lazy';
             });
         } else {
-            // Fallback for browsers that don't support native lazy loading
+            // Fallback using Lozad.js
             const script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js';
-            script.onload = function() {
+            script.onload = () => {
                 const observer = lozad();
                 observer.observe();
             };
@@ -101,37 +138,21 @@ $data = $data['data'];
         }
     }, 500);
 
-    document.addEventListener('DOMContentLoaded', function() {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('loaded');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                });
-
-                const lazyComponents = document.querySelectorAll('.lazy-component');
-                lazyComponents.forEach(component => observer.observe(component));
-            });
-    </script>
-
-    <noscript>
-        <link rel="stylesheet" type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
-        <link rel="stylesheet" type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
-    </noscript>
-
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=67521dcc10699f0019237fbb&product=inline-share-buttons&source=platform" async="async"></script>
-
-    <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
-    <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
-
+    // Lazy load components
+    const lazyObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('loaded');
+                lazyObserver.unobserve(entry.target);
+            }
+        });
+    });
+    document.querySelectorAll('.lazy-component').forEach(el => lazyObserver.observe(el));
+});
+</script>
+<img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style="width:0; height:0; visibility:hidden;">
+<script defer src="https://platform-api.sharethis.com/js/sharethis.js#property=67521dcc10699f0019237fbb&product=inline-share-buttons&source=platform"></script>
+<script defer src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
 
 </head>
@@ -148,6 +169,7 @@ $data = $data['data'];
         <div class="lazy-component mt-3 ml-3 mr-3" data-component="trending">
         <?php include('./src/component/anime/trending.php') ?>
         </div>
+
         <div class="share-buttons share-buttons-home">
             <div class="container">
                 <div class="share-buttons-block">
@@ -173,7 +195,7 @@ $data = $data['data'];
                 <div id="main-content" class="lazy-component" data-component="main-content">
                     <?php if (isset($_COOKIE['userID'])) {
                         $user_id = $_COOKIE['userID'];
-                        $sql = "SELECT * FROM watch_history WHERE user_id = ? ORDER BY id DESC LIMIT 4";
+                        $sql = "SELECT * FROM watch_history WHERE user_id = ? GROUP BY anime_id, episode_number  ORDER BY MAX(id) DESC  LIMIT 4";
                         $stmt = mysqli_prepare($conn, $sql);
                         mysqli_stmt_bind_param($stmt, "i", $user_id);
                         mysqli_stmt_execute($stmt);
@@ -204,9 +226,7 @@ $data = $data['data'];
                                                                 <div class="tick-item tick-dub"><i class="fas fa-microphone mr-1"></i><?php echo htmlspecialchars($anime['dub_count']); ?></div>
                                                             <?php endif; ?>
                                                         </div>
-                                                        <div class="tick rtl">
-                                                            <div class="tick-item tick-eps">Episode <?php echo htmlspecialchars($anime['episode_number']); ?></div>
-                                                        </div>
+                                                       
                                                         <img class="film-poster-img lazyload" 
                                                              loading="lazy"
                                                              data-src="<?php echo htmlspecialchars($anime['poster']); ?>"

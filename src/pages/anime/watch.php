@@ -17,7 +17,7 @@ parse_str($parts[1] ?? '', $queryParams);
 $episodeId = $queryParams['ep'] ?? null;
 $animeData = fetchAnimeData($animeId);
 
-$episodelistUrl = "$api/anime/$animeId/episodes";
+$episodelistUrl = "$zpi/episodes/$animeId";
 $episodelistResponse = file_get_contents($episodelistUrl);
 $episodelistData = json_decode($episodelistResponse, true);
 
@@ -25,12 +25,12 @@ $episodelist = [];
 
 if (!empty($episodelistData['success']) && 
     $episodelistData['success'] === true && 
-    !empty($episodelistData['data']['episodes'])) {
-    $episodelist = $episodelistData['data']['episodes'];
+    !empty($episodelistData['results']['episodes'])) {
+    $episodelist = $episodelistData['results']['episodes'];
 }
 
 usort($episodelist, function($a, $b) {
-    return $a['number'] - $b['number'];
+    return $a['episode_no'] - $b['episode_no'];
 });
 
 $totalEpisodes = count($episodelist);
@@ -503,20 +503,20 @@ $totalVotes = $like_count + $dislike_count;
                                                 <div id="episodes-page-<?= $index + 1 ?>" class="ss-list <?= count($episodelist) > 24 ? 'ss-list-min' : '' ?>" style="display: <?= $index === 0 ? 'block' : 'none' ?>;">
                                                     <?php foreach ($chunk as $episode): ?>
                                                         <?php 
-                                                        $isFiller = isset($episode['isFiller']) && $episode['isFiller'] === true;
+                                                        $isFiller = isset($episode['filler']) && $episode['filler'] === true;
                                                         $fillerClass = $isFiller ? 'ssl-item-filler' : '';
                                                         ?>
                                                         <a class="ssl-item ep-item <?= $fillerClass ?>" 
                                                            href="javascript:void(0);" 
-                                                           data-number="<?= htmlspecialchars($episode['number']) ?>" 
-                                                           data-id="<?= htmlspecialchars($episode['episodeId']) ?>"
+                                                           data-number="<?= htmlspecialchars($episode['episode_no']) ?>" 
+                                                           data-id="<?= htmlspecialchars($episode['id']) ?>"
                                                            <?php if ($isFiller): ?>data-toggle="tooltip" title="Filler Episode"<?php endif; ?>>
-                                                            <div class="ssli-order"><?= htmlspecialchars($episode['number']) ?></div>
+                                                            <div class="ssli-order"><?= htmlspecialchars($episode['episode_no']) ?></div>
                                                             <div class="ssli-detail">
                                                                 <div class="ep-name dynamic-name" 
-                                                                     data-jname="<?= htmlspecialchars($episode['title'] ?? "Episode " . $episode['number']) ?>" 
-                                                                     title="<?= htmlspecialchars($episode['title'] ?? "Episode " . $episode['number']) ?>">
-                                                                    <?= htmlspecialchars($episode['title'] ?? "Episode " . $episode['number']) ?>
+                                                                     data-jname="<?= htmlspecialchars($episode['title'] ?? "Episode " . $episode['episode_no']) ?>" 
+                                                                     title="<?= htmlspecialchars($episode['title'] ?? "Episode " . $episode['episode_no']) ?>">
+                                                                    <?= htmlspecialchars($episode['title'] ?? "Episode " . $episode['episode_no']) ?>
                                                                     <?php if ($isFiller): ?>
                                                                         <span class="filler-badge">Filler</span>
                                                                     <?php endif; ?>
@@ -640,42 +640,49 @@ $totalVotes = $like_count + $dislike_count;
 
             <div class="container">
                 <div id="main-content">
-                    <?php if (!empty($animeData['actors'])): ?>
-                    <section class="block_area block_area-actors">
-                        <div class="block_area-header">
-                            <div class="float-left bah-heading mr-4">
-                                <h2 class="cat-heading">Characters &amp; Voice Actors</h2>
-                            </div>
-                            <div class="clearfix"></div>
+
+                    <!-- Characters & Voice Actors -->
+                <?php if (!empty($animeData['actors'])): ?>
+                <section class="block_area block_area-actors">
+                    <div class="block_area-header">
+                        <div class="float-left bah-heading mr-4">
+                            <h2 class="cat-heading">Characters &amp; Voice Actors</h2>
                         </div>
-                        <div class="block-actors-content">
-                            <div class="bac-list-wrap">
-                                <?php foreach ($animeData['actors'] as $entry): ?>
-                                    <div class="bac-item">
-                                        <div class="per-info ltr">
-                                            <a href="/character/<?= htmlspecialchars(strtolower(str_replace(" ", "-", $entry['character']['name']))) ?>" class="pi-avatar">
-                                                <img data-src="<?= htmlspecialchars($entry['character']['poster']) ?>" alt="<?= htmlspecialchars($entry['character']['name']) ?>" class="lazyloaded" src="<?= htmlspecialchars($entry['character']['poster']) ?>"></a>
-                                            <div class="pi-detail">
-                                                <h4 class="pi-name"><a href="/character/<?= htmlspecialchars(strtolower(str_replace(" ", "-", $entry['character']['name']))) ?>"><?= htmlspecialchars($entry['character']['name']) ?></a></h4>
-                                                <span class="pi-cast">Main</span>
-                                            </div>
+                        <div class="float-right viewmore">
+                            <a class="btn" data-toggle="modal" data-target="#modalVoiceActors">View more<i class="fas fa-angle-right ml-2"></i></a>
+                        </div>                        
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="block-actors-content">
+                        <div class="bac-list-wrap">
+                            <?php foreach ($animeData['actors'] as $entry): ?>
+                                <div class="bac-item">
+                                    <div class="per-info ltr">
+                                        <a href="/character/<?= htmlspecialchars($entry['character']['id']) ?>" class="pi-avatar" rel="noopener noreferrer">
+                                            <img data-src="<?= htmlspecialchars($entry['character']['poster']) ?>" alt="<?= htmlspecialchars($entry['character']['name']) ?>" class="lazyloaded" src="<?= htmlspecialchars($entry['character']['poster']) ?>"></a>
+                                        <div class="pi-detail">
+                                            <h4 class="pi-name"><a href="/character/<?= htmlspecialchars($entry['character']['id']) ?>" rel="noopener noreferrer"><?= htmlspecialchars($entry['character']['name']) ?></a></h4>
+                                            <span class="pi-cast"><?= htmlspecialchars($entry['character']['cast']) ?></span>
                                         </div>
-                                        <div class="per-info rtl">
-                                            <a href="/people/<?= htmlspecialchars(strtolower(str_replace(" ", "-", $entry['voiceActor']['name']))) ?>" class="pi-avatar">
-                                                <img data-src="<?= htmlspecialchars($entry['voiceActor']['poster']) ?>" class="lazyloaded" alt="<?= htmlspecialchars($entry['voiceActor']['name']) ?>" src="<?= htmlspecialchars($entry['voiceActor']['poster']) ?>"></a>
-                                            <div class="pi-detail">
-                                                <h4 class="pi-name"><a href="/people/<?= htmlspecialchars(strtolower(str_replace(" ", "-", $entry['voiceActor']['name']))) ?>"><?= htmlspecialchars($entry['voiceActor']['name']) ?></a></h4>
-                                                <span class="pi-cast">Japanese</span>
-                                            </div>
+                                    </div> 
+                                    <?php if (!empty($entry['voiceActor']) && !empty($entry['voiceActor']['id'])): ?>
+                                    <div class="per-info rtl">
+                                        <a href="/actors/<?= htmlspecialchars($entry['voiceActor']['id']) ?>" class="pi-avatar" rel="noopener noreferrer">
+                                            <img data-src="<?= htmlspecialchars($entry['voiceActor']['poster'] ?? 'public/images/df-avatar.svg') ?>" class="lazyloaded" alt="<?= htmlspecialchars($entry['voiceActor']['name'] ?? 'Default Avatar') ?>" src="<?= htmlspecialchars($entry['voiceActor']['poster'] ?? 'public/images/df-avatar.svg') ?>"></a>
+                                        <div class="pi-detail">
+                                            <h4 class="pi-name"><a href="/actors/<?= htmlspecialchars($entry['voiceActor']['id']) ?>" rel="noopener noreferrer"><?= htmlspecialchars($entry['voiceActor']['name'] ?? 'Unknown') ?></a></h4>
+                                            <span class="pi-cast"><?= htmlspecialchars($entry['voiceActor']['cast'] ?? 'N/A') ?></span>
                                         </div>
-                                        <div class="clearfix"></div>
                                     </div>
-                                <?php endforeach; ?>
-                            </div>
-                            <div class="clearfix"></div>
+                                    <?php endif; ?>
+                                    <div class="clearfix"></div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
-                    </section>
-                    <?php endif; ?>
+                        <div class="clearfix"></div>
+                    </div>
+                </section>
+                <?php endif; ?> 
 
                     <section class="block_area block_area-comment" id="comment-block">
                         <?php 
@@ -851,7 +858,7 @@ $totalVotes = $like_count + $dislike_count;
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        movieId: '<?= htmlspecialchars($animeId) ?>',
+                        animeId: '<?= htmlspecialchars($animeId) ?>',
                         animeName: '<?= htmlspecialchars(str_replace("'", "\'", $animeData['title'])) ?>',
                         poster: '<?= htmlspecialchars($animeData['poster']) ?>',
                         subCount: <?= htmlspecialchars($animeData['subEp']) ?>,

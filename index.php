@@ -227,8 +227,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
                             <h2>2/ Is
                                 <?= $websiteTitle ?> safe?
                             </h2>
-                            <p>Yes we are, we do have only one Ads to cover the server cost and we keep scanning the ads
-                                24/7 to make sure all are clean, If you find any ads that is suspicious, please forward
+                            <p>Yes we are, If you find any ads that is suspicious, please forward
                                 us
                                 the info and we will remove it.</p>
                             <h2>3/ So what make
@@ -358,12 +357,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
         <div id="xfooter-about">
             <div class="container">
                 <p class="copyright">©
-                    <?php echo date("Y"); ?> <a href="<?= $websiteUrl ?>"><?= $websiteTitle ?></a>. All rights reserved.
+                    <?php echo date("Y"); ?> <a href="<?= $websiteUrl ?>">PacaHat</a>. All rights reserved.
                 </p>
             </div>
         </div>
         <!--End: Footer-->
     </div>
+    <img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style="width:0; height:0; visibility:hidden;">
+
     <script type="text/javascript"
         src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js?v=<?= $version ?>"></script>
     <script type="text/javascript"

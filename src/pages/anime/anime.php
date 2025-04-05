@@ -1,36 +1,63 @@
 <?php
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 session_start();
 
-$category = basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)); 
-if (empty($category)) {
-    $category = 'most-popular';
+function fetchApi($url) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return $response;
 }
 
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1; 
+$category = basename(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+$page = max(1, (int)($_GET['page'] ?? 1));
+$currentPage = $page;
 
-$apiUrl = "$api/category/{$category}?page={$page}"; 
+$cacheFile = $_SERVER['DOCUMENT_ROOT'] . "/cache/category/anime_{$category}_page_{$page}.json";
+$cacheDuration = 3600;
+$cacheDir = dirname($cacheFile);
+if (!file_exists($cacheDir)) {
+    mkdir($cacheDir, 0755, true);
+}
 
-try {
-    $response = file_get_contents($apiUrl);
+$response = false;
+$data = [];
+
+if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheDuration) {
+    $response = file_get_contents($cacheFile);
+} 
+if (!$response) {
+    $apiUrl = "$zpi/{$category}?page={$page}";
+    $response = fetchApi($apiUrl);
+    
     if ($response !== false) {
-        $data = json_decode($response, true);
-        if ($data && isset($data['success']) && $data['success'] && isset($data['data']['animes'])) {
-            $searchResults = $data['data']['animes'];
-            $currentPage = $data['data']['currentPage'];
-            $totalPages = $data['data']['totalPages'];
+        $tempData = json_decode($response, true);
+        if (json_last_error() === JSON_ERROR_NONE && isset($tempData['success']) && $tempData['success']) {
+            file_put_contents($cacheFile, $response);
         } else {
-            $errorMessage = 'Failed to fetch popular anime. Please try again later.';
+            $errorMessage = "Invalid API response";
+            $response = json_encode(['success' => false, 'error' => $errorMessage]);
         }
     } else {
-        $errorMessage = 'Could not connect to the API.';
+        $errorMessage = "Failed to fetch data from API";
+        $response = json_encode(['success' => false, 'error' => $errorMessage]);
     }
-} catch (Exception $e) {
-    $errorMessage = 'An error occurred: ' . $e->getMessage();
+}
+
+$data = json_decode($response, true);
+
+$errorMessage = null;
+$aniResults = $data['results']['data'] ?? null;
+$totalPages = $data['results']['totalPages'] ?? 1;
+$totalResults = $totalPages * 20;
+if (empty($aniResults)) {
+    $errorMessage = "No anime data found";
 }
 
 ?>
@@ -38,7 +65,7 @@ try {
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <title>List All <?= str_replace('-', ' ', ucfirst($category)) ?> Anime on <?=$websiteTitle?></title>
+    <title><?= str_replace('-', ' ', ucfirst($category)) ?> Anime on <?=$websiteTitle?></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="title" content="List All <?= str_replace('-', ' ', ucfirst($category)) ?> Anime on <?=$websiteTitle?>">
@@ -133,49 +160,45 @@ try {
     <div class="tab-content">
         <div class="block_area-content block_area-list film_list film_list-grid film_list-wfeature">
             <div class="film_list-wrap">
-                <?php if (!empty($searchResults)): ?>
+                <?php if (!empty($aniResults)): ?>
                     <?php 
-                    $displayedResults = array_slice($searchResults, 0, 12);
+                    $displayedResults = array_slice($aniResults, 0, 12);
                     foreach ($displayedResults as $anime): ?>
                         <div class="flw-item">
-                            <div class="film-poster">
-                                <?php if (!empty($anime['rating'])): ?>
-                                    <div class="tick ltr" style="position: absolute; top: 10px; left: 10px;">
-                                        <div class="tick-item tick-age amp-algn">18+</div>
+                                <div class="film-poster">
+                                    <?php if ($anime['adultContent']) { ?>
+                                        <div class="tick ltr" style="position: absolute; top: 10px; left: 10px;">
+                                            <div class="tick-item tick-age amp-algn">18+</div>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="tick ltr" style="position: absolute; bottom: 10px; left: 10px;">
+                                        <?php if (!empty($anime['tvInfo']['sub'])) { ?>
+                                            <div class="tick-item tick-sub amp-algn" style="text-align: left;">
+                                                <i class="fas fa-closed-captioning"></i> &nbsp;<?=$anime['tvInfo']['sub']?>
+                                            </div>
+                                        <?php } ?>
+                                        <?php if (!empty($anime['tvInfo']['dub'])) { ?>
+                                            <div class="tick-item tick-dub amp-algn" style="text-align: left;">
+                                                <i class="fas fa-microphone"></i> &nbsp;<?=$anime['tvInfo']['dub']?>
+                                            </div>
+                                        <?php } ?>
                                     </div>
-                                <?php endif; ?>
-                                <div class="tick ltr" style="position: absolute; bottom: 10px; left: 10px;">
-                                    <?php if (!empty($anime['episodes']['sub'])): ?>
-                                        <div class="tick-item tick-sub amp-algn" style="text-align: left;">
-                                            <i class="fas fa-closed-captioning"></i> &nbsp;<?= $anime['episodes']['sub'] ?>
-                                        </div>
-                                    <?php endif; ?>
-                                    <?php if (!empty($anime['episodes']['dub'])): ?>
-                                        <div class="tick-item tick-dub amp-algn" style="text-align: left;">
-                                            <i class="fas fa-microphone"></i> &nbsp;<?= $anime['episodes']['dub'] ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-                                <img class="film-poster-img lazyload" 
-                                     data-src="<?= $anime['poster'] ?>" 
-                                     src="<?= $anime['poster'] ?>" 
-                                     alt="<?= htmlspecialchars($anime['name']) ?>">
-                                <a class="film-poster-ahref" href="/details/<?= $anime['id'] ?>"></a>
-                            </div>
-                            <div class="film-detail">
-                                <h3 class="film-name">
-                                    <a href="/details/<?= $anime['id'] ?>" 
-                                       title="<?= htmlspecialchars($anime['name']) ?>">
-                                       <?= htmlspecialchars($anime['name']) ?>
+                                    <img class="film-poster-img lazyload" data-src="<?=$anime['poster']?>" src="<?=$websiteUrl?>/public/images/no_poster.jpg" alt="<?=$anime['title']?>">
+                                    <a class="film-poster-ahref" href="/details/<?=$anime['id']?>" title="<?=$anime['title']?>">
+                                        <i class="fas fa-play"></i>
                                     </a>
-                                </h3>
-                                <div class="fd-infor">
-                                    <span class="fdi-item"><?= htmlspecialchars($anime['type']) ?></span>
-                                    <span class="dot"></span>
-                                    <span class="fdi-item"><?= htmlspecialchars($anime['duration']) ?></span>
+                                </div>
+                                <div class="film-detail">
+                                    <h3 class="film-name">
+                                        <a href="/details/<?=$anime['id']?>"><?=$anime['title']?></a>
+                                    </h3>
+                                    <div class="fd-infor">
+                                        <span class="fdi-item"><?=$anime['tvInfo']['showType']?></span>
+                                        <span class="dot"></span>
+                                        <span class="fdi-item"><?=$anime['tvInfo']['duration']?></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                     <?php endforeach; ?>
                     <div class="clearfix"></div>
 
@@ -185,33 +208,43 @@ try {
             </div>
              <!-- Pagination -->
              <div class="pre-pagination mt-5 mb-5">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-lg justify-content-center">
-                                <?php for ($i = 1; $i <= min(3, $totalPages); $i++): ?>
-                                    <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
-                                        <a class="page-link" 
-                                           href="?page=<?= $i ?>" 
-                                           title="Page <?= $i ?>"><?= $i ?></a>
-                                    </li>
-                                <?php endfor; ?>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-lg justify-content-center">
+                        <?php
+                        // Determine the start and end of the pagination range
+                        $range = 2; // Number of pages to show before and after the current page
+                        $start = max(1, $currentPage - $range);
+                        $end = min($totalPages, $currentPage + $range);
 
-                                <?php if ($currentPage < $totalPages): ?>
-                                    <li class="page-item">
-                                        <a class="page-link" 
-                                           href="?page=<?= $currentPage + 1 ?>" 
-                                           title="Next">›</a>
-                                    </li>
-                                <?php endif; ?>
-                                <?php if ($totalPages > 1): ?>
-                                    <li class="page-item">
-                                        <a class="page-link" 
-                                           href="?page=<?= $totalPages ?>" 
-                                           title="Last">»</a>
-                                    </li>
-                                <?php endif; ?>
-                            </ul>
-                        </nav>
-                    </div>
+                        // Display the "First" and "Previous" buttons
+                        if ($currentPage > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" title="First">«</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $currentPage - 1 ?>" title="Previous">‹</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <!-- Display the range of page numbers -->
+                        <?php for ($i = $start; $i <= $end; $i++): ?>
+                            <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
+                                <a class="page-link" href="?page=<?= $i ?>" title="Page <?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <!-- Display the "Next" and "Last" buttons -->
+                        <?php if ($currentPage < $totalPages): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $currentPage + 1 ?>" title="Next">›</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $totalPages + 1 ?>" title="Last">»</a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
                     <div class="clearfix"></div>
         </div>
     </div>
@@ -227,7 +260,7 @@ try {
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/src/component/footer.php'; ?>
         <div id="mask-overlay"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
+        <img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style="width:0; height:0; visibility:hidden;">
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js">
         </script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>

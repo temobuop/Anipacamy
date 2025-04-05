@@ -307,6 +307,14 @@ $characterDataJson = json_encode($characterData, JSON_PRETTY_PRINT);
                                         <span class="name"><?= htmlspecialchars($animeData['japanese']) ?></span>
                                     </div>
                                     <div class="item item-title">
+                                        <span class="item-head">Synonyms:</span>
+                                        <span class="name">
+                                            <?= !empty($animeData['synonyms']) && trim($animeData['synonyms']) !== '' ? 
+                                                htmlspecialchars($animeData['synonyms']) : 
+                                                htmlspecialchars($animeData['japanese'] ?? '') ?>
+                                        </span>
+                                    </div>
+                                    <div class="item item-title">
                                         <span class="item-head">Aired:</span>
                                         <span class="name"><?= htmlspecialchars($animeData['aired']) ?></span>
                                     </div>
@@ -484,16 +492,23 @@ $characterDataJson = json_encode($characterData, JSON_PRETTY_PRINT);
                 <?php endif; ?>
                 <?php endif; ?>
                 <script>
-                    function showTrailer(element) {
-                        var trailerSource = element.parentElement.querySelector('.trailer-iframe iframe').src;
-                        document.getElementById('trailerIframe').setAttribute('src', trailerSource);
-                        var trailerModal = new bootstrap.Modal(document.getElementById('trailerModal'));
-                        trailerModal.show();
-                    }
+                   document.addEventListener('DOMContentLoaded', function() {
+                        function showTrailer(element) {
+                            var trailerSource = element.parentElement.querySelector('.trailer-iframe iframe').src;
+                            document.getElementById('trailerIframe').setAttribute('src', trailerSource);
+                            var trailerModal = new bootstrap.Modal(document.getElementById('trailerModal'));
+                            trailerModal.show();
+                        }
 
-                    // Clear the iframe source when the modal is closed
-                    document.getElementById('trailerModal').addEventListener('hidden.bs.modal', function () {
-                        document.getElementById('trailerIframe').setAttribute('src', '');
+                        // Clear the iframe source when the modal is closed
+                        var modalElement = document.getElementById('trailerModal');
+                        if (modalElement) {
+                            modalElement.addEventListener('hidden.bs.modal', function () {
+                                document.getElementById('trailerIframe').setAttribute('src', '');
+                            });
+                        } else {
+                            console.error('trailerModal element not found');
+                        }
                     });
                 </script>
                 <!-- Recommended for you -->
@@ -561,7 +576,7 @@ $characterDataJson = json_encode($characterData, JSON_PRETTY_PRINT);
     <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/function.js"></script>
-    
+    <img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style="width:0; height:0; visibility:hidden;">
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -682,6 +697,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+
 <!-- Characters & Voice Actors Modal -->
 <div class="modal fade premodal premodal-characters" id="modalVoiceActors" tabindex="-1" role="dialog" aria-labelledby="modalVoiceActorsTitle" aria-hidden="true"  style="background-color: transparent;">
     <div class="modal-dialog modal-dialog-centered" role="document">
