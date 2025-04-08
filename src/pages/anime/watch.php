@@ -641,8 +641,8 @@ $totalVotes = $like_count + $dislike_count;
             <div class="container">
                 <div id="main-content">
 
-                    <!-- Characters & Voice Actors -->
-                <?php if (!empty($animeData['actors'])): ?>
+                 <!-- Characters & Voice Actors -->
+                 <?php if (!empty($animeData['actors'])): ?>
                 <section class="block_area block_area-actors">
                     <div class="block_area-header">
                         <div class="float-left bah-heading mr-4">
@@ -659,22 +659,34 @@ $totalVotes = $like_count + $dislike_count;
                                 <div class="bac-item">
                                     <div class="per-info ltr">
                                         <a href="/character/<?= htmlspecialchars($entry['character']['id']) ?>" class="pi-avatar" rel="noopener noreferrer">
-                                            <img data-src="<?= htmlspecialchars($entry['character']['poster']) ?>" alt="<?= htmlspecialchars($entry['character']['name']) ?>" class="lazyloaded" src="<?= htmlspecialchars($entry['character']['poster']) ?>"></a>
+                                            <img data-src="<?= htmlspecialchars($entry['character']['poster']) ?>" alt="<?= htmlspecialchars($entry['character']['name']) ?>" class="lazyloaded" src="<?= htmlspecialchars($entry['character']['poster']) ?>">
+                                        </a>
                                         <div class="pi-detail">
-                                            <h4 class="pi-name"><a href="/character/<?= htmlspecialchars($entry['character']['id']) ?>" rel="noopener noreferrer"><?= htmlspecialchars($entry['character']['name']) ?></a></h4>
+                                            <h4 class="pi-name">
+                                                <a href="/character/<?= htmlspecialchars($entry['character']['id']) ?>" rel="noopener noreferrer">
+                                                    <?= htmlspecialchars($entry['character']['name']) ?>
+                                                </a>
+                                            </h4>
                                             <span class="pi-cast"><?= htmlspecialchars($entry['character']['cast']) ?></span>
                                         </div>
                                     </div> 
-                                    <?php if (!empty($entry['voiceActor']) && !empty($entry['voiceActor']['id'])): ?>
-                                    <div class="per-info rtl">
-                                        <a href="/actors/<?= htmlspecialchars($entry['voiceActor']['id']) ?>" class="pi-avatar" rel="noopener noreferrer">
-                                            <img data-src="<?= htmlspecialchars($entry['voiceActor']['poster'] ?? 'public/images/df-avatar.svg') ?>" class="lazyloaded" alt="<?= htmlspecialchars($entry['voiceActor']['name'] ?? 'Default Avatar') ?>" src="<?= htmlspecialchars($entry['voiceActor']['poster'] ?? 'public/images/df-avatar.svg') ?>"></a>
-                                        <div class="pi-detail">
-                                            <h4 class="pi-name"><a href="/actors/<?= htmlspecialchars($entry['voiceActor']['id']) ?>" rel="noopener noreferrer"><?= htmlspecialchars($entry['voiceActor']['name'] ?? 'Unknown') ?></a></h4>
-                                            <span class="pi-cast"><?= htmlspecialchars($entry['voiceActor']['cast'] ?? 'N/A') ?></span>
+
+                                    <?php if (!empty($entry['voiceActors']) && is_array($entry['voiceActors'])): ?>
+                                        <?php $voiceActor = $entry['voiceActors'][0]; // Get the first voice actor ?>
+                                        <div class="per-info rtl">
+                                            <a href="/actors/<?= htmlspecialchars($voiceActor['id']) ?>" class="pi-avatar" rel="noopener noreferrer">
+                                                <img data-src="<?= htmlspecialchars($voiceActor['poster']) ?>" class="lazyloaded" alt="<?= htmlspecialchars($voiceActor['name']) ?>" src="<?= htmlspecialchars($voiceActor['poster']) ?>">
+                                            </a>
+                                            <div class="pi-detail">
+                                                <h4 class="pi-name">
+                                                    <a href="/actors/<?= htmlspecialchars($voiceActor['id']) ?>" rel="noopener noreferrer">
+                                                        <?= htmlspecialchars($voiceActor['name']) ?>
+                                                    </a>
+                                                </h4>
+                                            </div>
                                         </div>
-                                    </div>
                                     <?php endif; ?>
+
                                     <div class="clearfix"></div>
                                 </div>
                             <?php endforeach; ?>
