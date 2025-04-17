@@ -130,9 +130,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         <?php include('./src/component/anime/slidebar.php'); ?>
      
-        <div class="lazy-component mt-3 ml-3 mr-3" data-component="trending">
+        
         <?php include('./src/component/anime/trending.php') ?>
-        </div>
+        
 
         <div class="share-buttons share-buttons-home">
             <div class="container">
