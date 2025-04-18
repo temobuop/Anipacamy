@@ -20,7 +20,7 @@
                                                 <?= htmlspecialchars($item['title']) ?>
                                             </div>
                                         </div>
-                                        <a href="/<?= htmlspecialchars($item['id']) ?>" class="film-poster">
+                                        <a href="/details/<?= htmlspecialchars($item['id']) ?>" class="film-poster">
                                             <img data-src="<?= htmlspecialchars($item['poster']) ?>" class="film-poster-img lazyloaded" alt="<?= htmlspecialchars($item['title']) ?>" src="<?= htmlspecialchars($item['poster']) ?>">
                                         </a>
                                         <div class="clearfix"></div>
