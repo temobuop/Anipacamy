@@ -14,7 +14,7 @@ $routes = [
   '/^home$/' => 'home.php',
   '/^filter$/' => 'filter.php',
   '/^search$/' => 'search.php',
-  '/^az-list(\/[a-zA-Z0-9])?$/' => 'src/pages/anime/az-list.php',
+  '/^az-list(?:\/[a-zA-Z0-9-]+)?$/' => 'src/pages/anime/az-list.php',
 
   // Anime Pages
   '/^details$/' => 'src/pages/anime/details.php',
