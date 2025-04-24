@@ -16,7 +16,9 @@ if ($query) {
             $data = json_decode($response, true);
             if ($data && isset($data['success']) && $data['success'] && isset($data['results']['data'])) {
                 $searchResults = $data['results']['data'];
-                $totalPages = $data['results']['totalPage'];
+                $currentPage = $data['results']['currentPage'] ?? 1;
+                $totalPages = $data['results']['totalPage'] ?? 1;
+                $hasNextPage = $data['results']['hasNextPage'] ?? false;
             } else {
                 $errorMessage = 'Failed to fetch search results. Please try again later.';
             }
@@ -27,11 +29,6 @@ if ($query) {
         $errorMessage = 'An error occurred: ' . $e->getMessage();
     }
 }
-
-$page = max(1, (int)($_GET['page'] ?? 1));
-$currentPage = $page;
-
-$totalPages = $data['results']['totalPage'] ?? 1;
 
 $itemsPerPage = 36;
 $totalResults = 0;
@@ -49,10 +46,10 @@ if (isset($data['results']['total'])) {
 <html prefix="og: http://ogp.me/ns#" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-    <title>List All Anime with keyword on <?=$websiteTitle?></title>
+    <title>Filtering Catalog on  <?=$websiteTitle?></title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="title" content="List All Anime with keyword on <?=$websiteTitle?>">
+    <meta name="title" content="Filtering Catalog on <?=$websiteTitle?>">
     <meta name="description" content="Popular Anime in HD with No Ads. Watch anime online">
     <meta name="keywords" content="<?=$websiteTitle?>, watch anime online, free anime, anime stream, anime hd, english sub, kissanime, gogoanime, animeultima, 9anime, 123animes, <?=$websiteTitle?>, vidstreaming, gogo-stream, animekisa, zoro.to, gogoanime.run, animefrenzy, animekisa">
     <meta name="charset" content="UTF-8">
@@ -60,8 +57,8 @@ if (isset($data['results']['total'])) {
     <meta name="robots" content="noindex, follow">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Content-Language" content="en">
-    <meta property="og:title" content="List All Anime with keyword on <?=$websiteTitle?>">
-    <meta property="og:description" content="List All Anime with keyword on <?=$websiteTitle?> in HD with No Ads. Watch anime online">
+    <meta property="og:title" content="Filtering Catalog on <?=$websiteTitle?>">
+    <meta property="og:description" content="Filtering Catalog on <?=$websiteTitle?> in HD with No Ads. Watch anime online">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="<?=$websiteTitle?>">
@@ -74,16 +71,16 @@ if (isset($data['results']['total'])) {
     <meta name="theme-color" content="#202125">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css?v=<?=$version?>" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css?v=<?=$version?>" type="text/css">
-    <link rel="apple-touch-icon" href="<?=$websiteUrl?>/public/favicon.png?v=<?=$version?>" />
-    <link rel="shortcut icon" href="<?=$websiteUrl?>/public/favicon.png?v=<?=$version?>" type="image/x-icon"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="<?=$websiteUrl?>/public/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?=$websiteUrl?>/public/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?=$websiteUrl?>/public/favicon-16x16.png">
-    <link rel="mask-icon" href="<?=$websiteUrl?>/public/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="icon" sizes="192x192" href="<?=$websiteUrl?>/src/assets/images/touch-icon-192x192.png?v=<?=$version?>">
+    <link rel="apple-touch-icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" />
+    <link rel="shortcut icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= $websiteUrl ?>/public/logo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= $websiteUrl ?>/public/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= $websiteUrl ?>/public/logo/favicon-16x16.png">
+    <link rel="mask-icon" href="<?= $websiteUrl ?>/public/logo/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="icon" sizes="192x192" href="<?= $websiteUrl ?>/public/logo/touch-icon-192x192.png?v=<?= $version ?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/styles.min.css?v=<?=$version?>">
-    <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/min.css?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/new.css?v=<?=$version?>">
+    <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
     <script>
     setTimeout(function() {
         const cssFiles = [
@@ -110,7 +107,7 @@ if (isset($data['results']['total'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
+
     <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
 </head>
@@ -197,7 +194,7 @@ if (isset($data['results']['total'])) {
                         <nav aria-label="Page navigation">
                             <ul class="pagination pagination-lg justify-content-center">
                           
-                                <?
+                                <?php
                                 $range = 2;
                                 $start = max(1, $currentPage - $range);
                                 $end = min($totalPages, $currentPage + $range);
@@ -217,7 +214,7 @@ if (isset($data['results']['total'])) {
                                     </li>
                                 <?php endfor; ?>
 
-                                <?php if ($currentPage < $totalPages): ?>
+                                <?php if ($hasNextPage): ?>
                                     <li class="page-item">
                                         <a class="page-link" href="?page=<?= $currentPage + 1 ?>" title="Next">›</a>
                                     </li>
@@ -237,16 +234,18 @@ if (isset($data['results']['total'])) {
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
-        <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/app.js"></script>
         <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/comman.js"></script>
-        <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/movie.js"></script>
+        <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/app.js"></script>
         <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/jquery-ui.css">
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/function.js"></script>
+        <script src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/pre-qtip.js"></script>
+        <script type="text/javascript" src="<?= $websiteUrl ?>/src/assets/js/app.min.js?v=1.4"></script>
 
         <script>
         let currentPage = <?= $currentPage ?>;
         let totalPages = <?= $totalPages ?>;
+        let hasNextPage = <?= $hasNextPage ? 'true' : 'false' ?>;
 
         function updateFilterResults(params = null) {
             const query = new URLSearchParams(window.location.search);
@@ -275,7 +274,8 @@ if (isset($data['results']['total'])) {
                         resultsContainer.innerHTML = '';
 
                         totalPages = data.results.totalPage;
-                        currentPage = parseInt(query.get('page'));
+                        currentPage = data.results.currentPage;
+                        hasNextPage = data.results.hasNextPage;
                         const totalResults = data.results.total || (totalPages * 36);
                         document.querySelector('.bah-result span').textContent = `${totalResults} results`;
 
@@ -344,7 +344,7 @@ if (isset($data['results']['total'])) {
                 `;
             }
 
-            if (currentPage < totalPages) {
+            if (hasNextPage) {
                 paginationHTML += `
                     <li class="page-item">
                         <a class="page-link" data-page="${currentPage + 1}" href="#" title="Next">›</a>
