@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchSearchResults(query) {
         try {
-            const response = await fetch(`/src/ajax/anime/search-ajax.php?keyword=${encodeURIComponent(query)}`);
+            const response = await fetch(`/src/ajax/search-ajax.php?keyword=${encodeURIComponent(query)}`);
             const text = await response.text();
 
             let data;
