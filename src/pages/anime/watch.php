@@ -848,7 +848,7 @@ $(document).ready(function() {
 
     async function updateWatchHistory(episodeData) {
         try {
-            const response = await fetch('/src/ajax/anime/wh-up.php', {
+            const response = await fetch('/src/ajax/wh-up.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -875,7 +875,7 @@ $(document).ready(function() {
 
     async function fetchServers(episodeId) {
         try {
-            const response = await fetch(`/src/ajax/anime/server.php?episodeId=${episodeId}`);
+            const response = await fetch(`/src/ajax /server.php?episodeId=${episodeId}`);
             if (!response.ok) throw new Error('Network response was not ok');
             return await response.json();
         } catch (error) {
@@ -1166,7 +1166,7 @@ $(document).ready(async function() {
 
     try {
         const animeId = <?= isset($animeData['id']) ? json_encode($animeData['id']) : 'null' ?>; 
-        const response = await fetch(`/src/ajax/anime/wh-get.php?animeId=${animeId}`); 
+        const response = await fetch(`/src/ajax /wh-get.php?animeId=${animeId}`); 
         const data = await response.json();
         
         if (data.success && Array.isArray(data.watchedEpisodes)) {
