@@ -8,8 +8,8 @@ session_start();
 
 
 $keyword = isset($_GET['keyword']) ? urlencode($_GET['keyword']) : '';
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1; 
-
+$page = max(1, (int)($_GET['page'] ?? 1));
+$currentPage = $page;
 
 $query = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 $query = isset($_GET['keyword']) ? str_replace(' ', '-', $_GET['keyword']) : '';
@@ -18,7 +18,7 @@ $query = isset($_GET['keyword']) ? str_replace(' ', '-', $_GET['keyword']) : '';
 
 if ($query) {
 
-    $apiUrl = "$zpi/search?keyword={$query}";
+    $apiUrl = "$zpi/search?keyword={$query}&page={$page}";
 
     try {
         $response = file_get_contents($apiUrl);
@@ -35,6 +35,8 @@ if ($query) {
     } catch (Exception $e) {
         $errorMessage = 'An error occurred: ' . $e->getMessage();
     }
+    $totalPages = $data['results']['totalPage'] ?? 1;
+    $totalResults = $totalPages * 20;
 }
 
 ?>
@@ -215,6 +217,44 @@ if ($query) {
             </div>
         </div>
     </section>
+    <div class="pre-pagination mt-5 mb-5">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-lg justify-content-center">
+                        <?php
+                        // Determine the start and end of the pagination range
+                        $range = 2; // Number of pages to show before and after the current page
+                        $start = max(1, $currentPage - $range);
+                        $end = min($totalPages, $currentPage + $range);
+
+                        // Display the "First" and "Previous" buttons
+                        if ($currentPage > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=1" title="First">«</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=<?= $currentPage - 1 ?>" title="Previous">‹</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <!-- Display the range of page numbers -->
+                        <?php for ($i = $start; $i <= $end; $i++): ?>
+                            <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
+                                <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=<?= $i ?>" title="Page <?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <!-- Display the "Next" and "Last" buttons -->
+                        <?php if ($currentPage < $totalPages): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=<?= $currentPage + 1 ?>" title="Next">›</a>
+                            </li>
+                            <li class="page-item">
+                            <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=<?= $totalPages ?>" title="Last">»</a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
                     <div class="clearfix"></div>
                 </div>
                 <?php include('src/component/anime/sidenav.php'); ?>
