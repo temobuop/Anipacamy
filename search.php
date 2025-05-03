@@ -8,8 +8,8 @@ session_start();
 
 
 $keyword = isset($_GET['keyword']) ? urlencode($_GET['keyword']) : '';
-$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1; 
-
+$page = max(1, (int)($_GET['page'] ?? 1));
+$currentPage = $page;
 
 $query = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 $query = isset($_GET['keyword']) ? str_replace(' ', '-', $_GET['keyword']) : '';
@@ -18,7 +18,7 @@ $query = isset($_GET['keyword']) ? str_replace(' ', '-', $_GET['keyword']) : '';
 
 if ($query) {
 
-    $apiUrl = "$zpi/search?keyword={$query}";
+    $apiUrl = "$zpi/search?keyword={$query}&page={$page}";
 
     try {
         $response = file_get_contents($apiUrl);
@@ -35,6 +35,8 @@ if ($query) {
     } catch (Exception $e) {
         $errorMessage = 'An error occurred: ' . $e->getMessage();
     }
+    $totalPages = $data['results']['totalPage'] ?? 1;
+    $totalResults = $totalPages * 20;
 }
 
 ?>
@@ -73,13 +75,13 @@ if ($query) {
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css?v=<?=$version?>"
         type="text/css">
-    <link rel="apple-touch-icon" href="<?=$websiteUrl?>/public/favicon.png?v=<?=$version?>" />
-    <link rel="shortcut icon" href="<?=$websiteUrl?>/public/favicon.png?v=<?=$version?>" type="image/x-icon"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="<?=$websiteUrl?>/public/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?=$websiteUrl?>/public/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?=$websiteUrl?>/public/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="<?=$websiteUrl?>/public/logo/favicon.png?v=<?=$version?>" />
+    <link rel="shortcut icon" href="<?=$websiteUrl?>/public/logo/favicon.png?v=<?=$version?>" type="image/x-icon"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="<?=$websiteUrl?>/public/logo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?=$websiteUrl?>/public/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?=$websiteUrl?>/public/logo/favicon-16x16.png">
     <link rel="mask-icon" href="<?=$websiteUrl?>/public/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="icon" sizes="192x192" href="<?=$websiteUrl?>/src/assets/images/touch-icon-192x192.png?v=<?=$version?>">
+    <link rel="icon" sizes="192x192" href="<?=$websiteUrl?>/public/logo/touch-icon-192x192.png?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/styles.min.css?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/min.css?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/new.css?v=<?=$version?>">
@@ -215,6 +217,44 @@ if ($query) {
             </div>
         </div>
     </section>
+    <div class="pre-pagination mt-5 mb-5">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-lg justify-content-center">
+                        <?php
+                        // Determine the start and end of the pagination range
+                        $range = 2; // Number of pages to show before and after the current page
+                        $start = max(1, $currentPage - $range);
+                        $end = min($totalPages, $currentPage + $range);
+
+                        // Display the "First" and "Previous" buttons
+                        if ($currentPage > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=1" title="First">«</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=<?= $currentPage - 1 ?>" title="Previous">‹</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <!-- Display the range of page numbers -->
+                        <?php for ($i = $start; $i <= $end; $i++): ?>
+                            <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
+                                <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=<?= $i ?>" title="Page <?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <!-- Display the "Next" and "Last" buttons -->
+                        <?php if ($currentPage < $totalPages): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=<?= $currentPage + 1 ?>" title="Next">›</a>
+                            </li>
+                            <li class="page-item">
+                            <a class="page-link" href="?keyword=<?= urlencode($_GET['keyword']) ?>&page=<?= $totalPages ?>" title="Last">»</a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
                     <div class="clearfix"></div>
                 </div>
                 <?php include('src/component/anime/sidenav.php'); ?>
