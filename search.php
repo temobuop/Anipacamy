@@ -75,13 +75,13 @@ if ($query) {
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css?v=<?=$version?>"
         type="text/css">
-    <link rel="apple-touch-icon" href="<?=$websiteUrl?>/public/favicon.png?v=<?=$version?>" />
-    <link rel="shortcut icon" href="<?=$websiteUrl?>/public/favicon.png?v=<?=$version?>" type="image/x-icon"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="<?=$websiteUrl?>/public/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?=$websiteUrl?>/public/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?=$websiteUrl?>/public/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="<?=$websiteUrl?>/public/logo/favicon.png?v=<?=$version?>" />
+    <link rel="shortcut icon" href="<?=$websiteUrl?>/public/logo/favicon.png?v=<?=$version?>" type="image/x-icon"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="<?=$websiteUrl?>/public/logo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?=$websiteUrl?>/public/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?=$websiteUrl?>/public/logo/favicon-16x16.png">
     <link rel="mask-icon" href="<?=$websiteUrl?>/public/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="icon" sizes="192x192" href="<?=$websiteUrl?>/src/assets/images/touch-icon-192x192.png?v=<?=$version?>">
+    <link rel="icon" sizes="192x192" href="<?=$websiteUrl?>/public/logo/touch-icon-192x192.png?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/styles.min.css?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/min.css?v=<?=$version?>">
     <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/new.css?v=<?=$version?>">
