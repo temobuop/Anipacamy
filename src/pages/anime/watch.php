@@ -875,7 +875,7 @@ $(document).ready(function() {
 
     async function fetchServers(episodeId) {
         try {
-            const response = await fetch(`/src/ajax /server.php?episodeId=${episodeId}`);
+            const response = await fetch(`/src/ajax/server.php?episodeId=${episodeId}`);
             if (!response.ok) throw new Error('Network response was not ok');
             return await response.json();
         } catch (error) {
