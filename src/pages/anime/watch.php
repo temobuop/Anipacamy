@@ -1166,7 +1166,7 @@ $(document).ready(async function() {
 
     try {
         const animeId = <?= isset($animeData['id']) ? json_encode($animeData['id']) : 'null' ?>; 
-        const response = await fetch(`/src/ajax /wh-get.php?animeId=${animeId}`); 
+        const response = await fetch(`/src/ajax/wh-get.php?animeId=${animeId}`); 
         const data = await response.json();
         
         if (data.success && Array.isArray(data.watchedEpisodes)) {
