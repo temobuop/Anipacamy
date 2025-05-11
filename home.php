@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.lazy-component').forEach(el => lazyObserver.observe(el));
 });
 </script>
-<img src="https://anipaca.fun/yamete.php?domain=<?= urlencode($_SERVER['HTTP_HOST']) ?>&trackingId=UwU" style="width:0; height:0; visibility:hidden;">
+
 <script defer src="https://platform-api.sharethis.com/js/sharethis.js#property=67521dcc10699f0019237fbb&product=inline-share-buttons&source=platform"></script>
 <script defer src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
 
