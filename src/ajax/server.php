@@ -11,8 +11,11 @@ $response = @file_get_contents($api_url);
 if ($response === false) {
     echo json_encode([
         'success' => false,
-        'error' => 'Failed to fetch from API',
-        
+        'error' => 'Invalid API response',
+        'debug' => [
+            'raw_response' => $response,
+            'url_called' => $api_url
+        ]
     ]);
     exit;
 }
@@ -53,6 +56,14 @@ $response = [
     'sub' => [],
     'dub' => []
 ];
+
+// Function to sort servers by serverName
+$sortServers = function(&$servers) {
+    usort($servers, function($a, $b) {
+        return strnatcasecmp($a['serverName'], $b['serverName']);
+    });
+};
+
 foreach ($data['results'] as $server) {
     $type = $server['type'] ?? 'sub';
     if (in_array($type, ['sub', 'dub'])) {
@@ -62,6 +73,7 @@ foreach ($data['results'] as $server) {
         ];
     }
 }
+
 if (empty($response['sub'])) {
     foreach ($data['results'] as $server) {
         if (($server['type'] ?? '') === 'raw') {
@@ -72,6 +84,10 @@ if (empty($response['sub'])) {
         }
     }
 }
+
+// Sort both sub and dub arrays
+$sortServers($response['sub']);
+$sortServers($response['dub']);
 
 echo json_encode($response);
 ?>
