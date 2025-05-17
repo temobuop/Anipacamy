@@ -2,16 +2,30 @@
 session_start();
 require_once($_SERVER['DOCUMENT_ROOT'] . '/_config.php');
 
+
+
 define('BASE_API_URL', $zpi);
 $endpoint = '';
 $apiUrl = BASE_API_URL . $endpoint;
-$response = file_get_contents($apiUrl);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+$response = curl_exec($ch);
+
+if (curl_errno($ch)) {
+    echo 'Curl error: ' . curl_error($ch);
+    exit;
+}
+curl_close($ch);
+
 $data = json_decode($response, true);
 
 if (!$data || !$data['success']) {
     echo "Muhehehe! API request failed and no cache available.";
     exit;
 }
+
 $data = $data['results'];
 ?>
 <!DOCTYPE html>
