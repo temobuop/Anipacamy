@@ -100,69 +100,43 @@ $totalVotes = $like_count + $dislike_count;
     <meta name="robots" content="index, follow">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Content-Language" content="en">
-    <meta property="og:title" content="Watch <?= htmlspecialchars($episode['title']) ?> on <?= htmlspecialchars($websiteTitle) ?>">
+    <meta property="og:title" content="Watch <?= htmlspecialchars($animeData['title']) ?> on <?= htmlspecialchars($websiteTitle) ?>">
     <meta property="og:description" content="<?= htmlspecialchars(substr($animeData['overview'], 0, 150)) ?> ... at <?= htmlspecialchars($websiteUrl) ?>">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="<?= htmlspecialchars($websiteTitle) ?>">
     <meta property="og:url" content="<?= htmlspecialchars($websiteUrl) ?>/anime/<?= htmlspecialchars($url) ?>">
     <meta itemprop="image" content="<?= htmlspecialchars($animeData['poster']) ?>">
-
-
-
     <meta property="twitter:title" content="Watch on <?= htmlspecialchars($websiteTitle) ?>">
     <meta property="twitter:description" content="<?= htmlspecialchars(substr($animeData['overview'], 0, 150)) ?> ... at <?= htmlspecialchars($websiteUrl) ?>">
-    <meta property="twitter:url" content="<?= htmlspecialchars($websiteUrl) ?>/anime/<?= htmlspecialchars($url) ?>">
+    <meta property="twitter:url" content="<?= htmlspecialchars($websiteUrl) ?>/details/<?= htmlspecialchars($url) ?>">
     <meta property="twitter:card" content="summary">
     <meta name="apple-mobile-web-app-status-bar" content="#202125">
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-63430163bc99824a"></script>
     <meta name="theme-color" content="#202125">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" type="text/css">
-    <link rel="apple-touch-icon" href="<?= htmlspecialchars($websiteUrl) ?>/favicon.png?v=<?= htmlspecialchars($version) ?>" />
-    <link rel="shortcut icon" href="<?= htmlspecialchars($websiteUrl) ?>/favicon.png?v=<?= htmlspecialchars($version) ?>" type="image/x-icon" />
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/favicon-16x16.png">
-    <link rel="mask-icon" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="icon" sizes="192x192" href="<?= htmlspecialchars($websiteUrl) ?>/public/logo/touch-icon-192x192.png?v=<?= htmlspecialchars($version) ?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/styles.min.css?v=<?= htmlspecialchars($version) ?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/min.css?v=<?= htmlspecialchars($version) ?>">
-    <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/new.css?v=<?= htmlspecialchars($version) ?>">
+    <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/styles.min.css?v=<?= $version ?>">
+    <link rel="apple-touch-icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" />
+    <link rel="shortcut icon" href="<?= $websiteUrl ?>/public/logo/favicon.png?v=<?= $version ?>" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= $websiteUrl ?>/public/logo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= $websiteUrl ?>/public/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= $websiteUrl ?>/public/logo/favicon-16x16.png">
+    <link rel="mask-icon" href="<?= $websiteUrl ?>/public/logo/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="icon" sizes="192x192" href="<?= $websiteUrl ?>/public/logo/touch-icon-192x192.png?v=<?= $version ?>">
+    <link rel="stylesheet" href="<?= $websiteUrl ?>/src/assets/css/new.css?v=<?= $version ?>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="<?=$websiteUrl?>/src/assets/css/search.css">
+    <script src="<?=$websiteUrl?>/src/assets/js/search.js"></script>
     
-    <script>
-    setTimeout(function() {
-        const cssFiles = [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css',
-            'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css'
-        ];
-
-        const firstLink = document.getElementsByTagName('link')[0];
-
-        cssFiles.forEach(file => {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = `${file}?v=<?= htmlspecialchars($version) ?>`;
-            link.type = 'text/css';
-            firstLink.parentNode.insertBefore(link, firstLink);
-        });
-    }, 500);
-    </script>
-
     <noscript>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" />
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css>
+    <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css>
     </noscript>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-R34F2GCSBW');
-    </script>
- 
-    <link rel="stylesheet" href="<?= htmlspecialchars($websiteUrl) ?>/src/assets/css/search.css">
-    <script src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/search.js"></script>
+    <script>const cssFiles=["https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css","https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"],firstLink=document.getElementsByTagName("link")[0];cssFiles.forEach((s=>{const t=document.createElement("link");t.rel="stylesheet",t.href=`${s}?v=<?=$version?>`,t.type="text/css",firstLink.parentNode.insertBefore(t,firstLink)}))</script>
+    <link rel=stylesheet href=https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css>
+    <link rel=stylesheet href=https://use.fontawesome.com/releases/v5.3.1/css/all.css>
+    <link rel=stylesheet href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
         .pizza{ margin: 2rem auto; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 1.5rem; border-radius: .6rem; text-align: center; color: #000; font-size: 16px; font-weight: 400; background-color: #FAACA8; background-image: linear-gradient(19deg, #FAACA8 0%, #DDD6F3 100%);}
         .pizza a{ color: #000; font-weight: 500;text-shadow: 0 1px 0 #fff;}
@@ -175,25 +149,7 @@ $totalVotes = $like_count + $dislike_count;
             .pizza{ font-size: 13px; gap: .6rem}
             .pizza-y{ min-height: 200px;}
         }
-
-
-
-
     </style>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.2/dist/index.min.js"></script>
-
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=67521dcc10699f0019237fbb&product=inline-share-buttons&source=platform" async="async"></script>
-
-
-    <script type="text/javascript" src="<?= htmlspecialchars($websiteUrl) ?>/src/assets/js/play.js"></script>
-
 </head>
 
 <body data-page="movie_watch">
@@ -698,7 +654,7 @@ $totalVotes = $like_count + $dislike_count;
 
                     <section class="block_area block_area-comment" id="comment-block">
                         <?php 
-                        $animeId = trim(explode('?', $streaming)[0]); 
+                        $animeId = $animeData['id']; 
                         $episodeId = isset($_GET['ep']) ? $_GET['ep'] : '1';
                         $user_id = $_COOKIE['userID'] ?? null;
                         $user = null;
@@ -808,7 +764,7 @@ $(document).ready(function() {
     let currentServerType = localStorage.getItem('preferredServerType') || 'dub';
     let currentServerName = localStorage.getItem('preferredServerName') || '';
     let currentEpisodeId = '<?= htmlspecialchars($streaming) ?>';
-    let animeId = '<?= htmlspecialchars($animeId) ?>';
+    let animeId = '<?= htmlspecialchars($animeData['id']) ?>';
     let autoNextEnabled = true;
     let autoSkipEnabled = true;
 
@@ -852,7 +808,7 @@ $(document).ready(function() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    animeId: '<?= htmlspecialchars($animeId) ?>',
+                    animeId: '<?= htmlspecialchars($animeData['id']) ?>',
                     animeName: '<?= htmlspecialchars(str_replace("'", "\'", $animeData['title'])) ?>',
                     poster: '<?= htmlspecialchars($animeData['poster']) ?>',
                     subCount: <?= htmlspecialchars($animeData['subEp']) ?>,
@@ -933,6 +889,7 @@ $(document).ready(function() {
             foundPreferred.first().click();
             console.log(`Preferred server found and selected: type=${currentServerType}, name=${currentServerName}`);
         } else {
+            
             // Fallback: select first available server and update preference
             let fallbackServer = $('.btn-server').first();
             if (fallbackServer.length) {
