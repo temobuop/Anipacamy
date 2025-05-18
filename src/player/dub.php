@@ -34,7 +34,7 @@ if (!isset($streamingData['link']['file'])) {
 }
 
 $m3u8_url = $streamingData['link']['file'];
-$video_url = $server === 'hd-1' 
+$video_url = $server === 'HD-3' 
     ? "{$proxy}{$m3u8_url}&headers=%7B%22Referer%22%3A%22https%3A%2F%2Fmegacloud.club%2F%22%7D" 
     : ($useProxy ? $proxy . $m3u8_url : $m3u8_url);
     
