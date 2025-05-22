@@ -22,7 +22,7 @@ $telegram = "https://t.me/anipaca";
 $instagram = "https://www.instagram.com/pxr15_"; 
 
 // all the api you need
-$zpi = "https://github.com/PacaHat/Anipaca"; //https://github.com/PacaHat/zen-api
+$zpi = "https://api-gamma-lac-17.vercel.app/"; //https://github.com/PacaHat/zen-api
 $proxy = $websiteUrl . "/src/ajax/proxy.php?url=";
 
 //If you want faster loading speed just put // before the first proxy and remove slashes from this one 
