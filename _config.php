@@ -1,6 +1,6 @@
 <?php 
 
-$conn = new mysqli("sql207.infinityfree.com", "if0_39053689", "BVeEvm6KU1GRHF", "DATABASE"); //just like $conn = new mysqli("localhost", "root", "", "anipaca");
+$conn = new mysqli("sql207.infinityfree.com", "if0_39053689", "BVeEvm6KU1GRHF", "if0_39053689_anipacamy"); //just like $conn = new mysqli("localhost", "root", "", "anipaca");
 
 
 if ($conn->connect_error) {
