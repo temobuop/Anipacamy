@@ -105,7 +105,7 @@ To get a website running up follow these simple example steps.
 | API Name     | Deploy Link                                                                                              | Example API Link                                     |
 |--------------|----------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | Main API   | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/zen-api)          | `GET https://zen-api-brown.vercel.app/`         |
-| M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/MetaHat/m3u8-streaming-proxy) | `GET https://m3u8proxy.vercel.app/api/v1/streamingProxy?url=`     |
+| M3U8 Proxy    | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/PacaHat/shrina-proxy) | `GET https://m3u8proxy.vercel.app/proxy?url=`     |
 
 
 
@@ -151,7 +151,7 @@ $zpi = "https://your-hosted-api.com/api"; //https://github.com/PacaHat/zen-api
 $proxy = $websiteUrl . "/src/ajax/proxy.php?url=";
 
 //If you want faster loading speed
-//$proxy = "https://your-hosted-proxy.com/api/v1/streamingProxy?url="; //https://github.com/MetaHat/m3u8-streaming-proxy
+//$proxy = "https://your-hosted-proxy.com/proxy?url="; //https://github.com/PacaHat/shrina-proxy
 
 
 
