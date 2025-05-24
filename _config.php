@@ -1,6 +1,6 @@
 <?php 
 
-$conn = new mysqli("sql207.infinityfree.com", "if0_39053689", "BVeEvm6KU1GRHF", "if0_39053689_anipacamy"); //just like $conn = new mysqli("localhost", "root", "", "anipaca");
+$conn = new mysqli("HOSTNAME", "USERNAME", "PASSWORD", "DATABASE"); //just like $conn = new mysqli("localhost", "root", "", "anipaca");
 
 
 if ($conn->connect_error) {
@@ -22,7 +22,7 @@ $telegram = "https://t.me/anipaca";
 $instagram = "https://www.instagram.com/pxr15_"; 
 
 // all the api you need
-$zpi = "https://api-gamma-lac-17.vercel.app/api"; //https://github.com/PacaHat/zen-api
+$zpi = "https://vercel.app/api"; //https://github.com/PacaHat/zen-api
 $proxy = $websiteUrl . "/src/ajax/proxy.php?url=";
 
 //If you want faster loading speed just put // before the first proxy and remove slashes from this one 
